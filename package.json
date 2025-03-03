@@ -1,23 +1,44 @@
 {
   "name": "light-assistant",
   "displayName": "Light Assistant",
+  "publisher": "HiMeditator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HiMeditator/light-assistant"
+  },
+  "homepage": "https://github.com/HiMeditator/light-assistant",
   "description": "A lightweight code assistant plugin for VS Code.",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.97.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
-    "Other"
+    "AI",
+    "Chat",
+    "Education",
+    "Programming Languages"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "light-assistant.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "light-assistant",
+          "title": "Light Assistant",
+          "icon": "assets/icon/light-assistant-icon.png"
+        }
+      ]
+    },
+    "views": {
+      "light-assistant": [
+        {
+          "type": "webview",
+          "id": "light-assistant.main",
+          "name": "Light Assistant"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
