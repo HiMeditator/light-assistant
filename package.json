@@ -21,6 +21,13 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "la.test",
+        "title": "Test",
+        "icon": "$(gear)"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -36,6 +43,15 @@
           "type": "webview",
           "id": "light-assistant.main",
           "name": "Light Assistant"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "la.test",
+          "when": "view == light-assistant.main",
+          "group": "navigation"
         }
       ]
     }

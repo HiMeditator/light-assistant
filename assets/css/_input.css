@@ -1,0 +1,82 @@
+#div-input {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+#ta-prompt-input {
+    width: 100%;
+    max-height: 500px;
+    scrollbar-width: thin;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none;
+}
+
+#ta-prompt-input:focus {
+    border: 1px solid #007BFF;
+    outline: none;
+}
+
+#div-options {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    font-size: 13px;
+    line-height: 16px;
+    align-items: center;
+}
+
+#model-select {
+    padding: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+#model-select:hover #model-option {
+   display: block;
+}
+
+#model-option {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    z-index: 10;
+    box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#model-option li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#model-option li:hover {
+    background-color: darkseagreen;
+    color: #fff;
+}
+
+#model-option li.selected {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+#send-prompt {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.input-icon {
+    width: 13px;
+    height: 13px;
+}
