@@ -1,0 +1,103 @@
+#div-input::before {
+    content: '';
+    display: block;
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    width: calc(100% + 20px);
+    position: absolute;
+    top: 0;
+    left: -10px;
+}
+
+#div-input {
+    width: calc(100% - 20px);
+    margin: 10px;
+    border-radius: 10px;
+    position: fixed;
+    bottom: 0;
+    padding: 10px 10px 0 10px;
+    font-size: 12px;
+    background-color: var(--vscode-input-background);
+}
+
+#ta-prompt-input {
+    width: 100%;
+    max-height: 500px;
+    scrollbar-width: thin;
+    padding: 10px;
+    box-sizing: border-box;
+    color: var(--vscode-input-foreground);
+    background-color: var(--vscode-input-background);
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    border-radius: 4px;
+    resize: none;
+}
+
+#ta-prompt-input:focus {
+    border: 1px solid var(--vscode-button-background);
+    outline: none;
+}
+
+#div-options {
+    display: flex;
+    justify-content: space-between;
+    color: var(--vscode-disabledForeground);
+    align-items: center;
+}
+
+#model-select {
+    margin: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+#model-select:hover #model-option {
+    color: var(--vscode-foreground);
+}
+
+#model-select:hover #model-option {
+   display: block;
+}
+
+#model-option {
+    display: none;
+    width: auto;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    list-style: none;
+    border: 1px solid var(--vscode-dropdown-border);
+    border-radius: 4px;
+    background-color: var(--vscode-dropdown-background);
+}
+
+#model-option li {
+    width: auto;
+    white-space: nowrap;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#model-option li:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+#model-option li.selected {
+    background-color: var(--vscode-list-activeSelectionBackground);
+
+}
+
+#send-prompt {
+    user-select: none;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#send-prompt:hover {
+    color: var(--vscode-foreground);
+}
+
+svg{
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}

@@ -1,0 +1,46 @@
+#div-dialog {
+    height: calc(100vh - 120px);
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.dialog-item {
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(128, 128, 128, 0.2);
+    border-radius: 10px;
+}
+
+.info-head {
+    width: 24px;
+    height: 24px;
+    color: white;
+    border-radius: 50%;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-info {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    color: var(--vscode-foreground);
+    line-height: 1.6em;
+    margin-top: 10px;
+    margin-left: 20px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.user-head {
+    background-color: blueviolet;
+}
+
+.model-head {
+    background-color: cornflowerblue;
+}

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { MainViewProvider } from './views/main';
+import { MainViewProvider } from './views/MainViewProvider';
 
 export let extensionPath: string;
 

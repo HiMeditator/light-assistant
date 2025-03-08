@@ -14,7 +14,7 @@ function adjustDialogHeight() {
     const divInput = document.getElementById('div-input');
     const divInputHeight = divInput.offsetHeight;
     const windowHeight = window.innerHeight;
-    divDialog.style.height = `${windowHeight - divInputHeight}px`;
+    divDialog.style.height = `${windowHeight - divInputHeight - 20}px`;
 }
 
 const taPromptInput = document.getElementById('ta-prompt-input');
@@ -24,13 +24,3 @@ const resizeObserver = new ResizeObserver(entries => {
 
 resizeObserver.observe(taPromptInput);
 
-
-document.getElementById('ta-prompt-input').addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key === 'Enter') {
-        handleCtrlEnter();
-    }
-});
-
-function handleCtrlEnter() {
-
-}
