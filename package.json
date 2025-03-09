@@ -2,6 +2,7 @@
   "name": "light-assistant",
   "displayName": "Light Assistant",
   "publisher": "HiMeditator",
+  "icon": "assets/icon/light-assistant.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/HiMeditator/light-assistant"
@@ -10,7 +11,7 @@
   "description": "A lightweight code assistant plugin for VS Code.",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.97.0"
   },
   "categories": [
     "AI",
@@ -21,19 +22,12 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "la.test",
-        "title": "Test",
-        "icon": "$(gear)"
-      }
-    ],
     "viewsContainers": {
       "activitybar": [
         {
           "id": "light-assistant",
           "title": "Light Assistant",
-          "icon": "assets/icon/light-assistant-icon.png"
+          "icon": "assets/icon/light-assistant-sidebar.png"
         }
       ]
     },
@@ -42,18 +36,51 @@
         {
           "type": "webview",
           "id": "light-assistant.main",
-          "name": "Light Assistant"
+          "name": "Light Assistant",
+          "icon": "assets/icon/light-assistant-sidebar.png"
         }
       ]
     },
+    "commands": [
+      {
+        "command": "light-assistant.goto.settings",
+        "title": "Open Settings",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "light-assistant.goto.config",
+        "title": "Open Config",
+        "icon": "$(json)"
+      }
+    ],
     "menus": {
       "view/title": [
         {
-          "command": "la.test",
+          "command": "light-assistant.goto.settings",
+          "when": "view == light-assistant.main",
+          "group": "navigation"
+        },
+        {
+          "command": "light-assistant.goto.config",
           "when": "view == light-assistant.main",
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "Light Assistant",
+      "properties": {
+        "lightAssistant.test.string": {
+          "type": "string",
+          "default": "hello",
+          "description": "Test string."
+        },
+        "lightAssistant.test.number": {
+          "type": "number",
+          "default": 0,
+          "description": "Test number."
+        }
+      }
     }
   },
   "scripts": {
@@ -82,6 +109,8 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "ollama": "^0.5.14"
+    "ollama": "^0.5.14",
+    "openai": "^4.86.2",
+    "path": "^0.12.7"
   }
 }

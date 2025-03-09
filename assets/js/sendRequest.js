@@ -11,18 +11,24 @@ document.getElementById('send-prompt').addEventListener('click', function() {
     handleUserRequest();
 });
 
+document.getElementById('load-config').addEventListener('click', function() {
+    vscode.postMessage({command: 'models.load'});
+});
+
 function handleUserRequest() {
     if(disableSend){
         return;
     }
     let userPrompt = document.getElementById('ta-prompt-input').value;
+    let model = document.getElementById('model-selected-value').value;
     document.getElementById('ta-prompt-input').value = '';
     document.getElementById('ta-prompt-input').style.height = 'auto';
-    console.log(userPrompt);
+    // console.log(userPrompt);
     createUserRequestElement(userPrompt);
     vscode.postMessage({
-        command: 'prompt',
-        prompt: userPrompt
+        command: 'user.request',
+        prompt: userPrompt,
+        model: model
     });
 }
 

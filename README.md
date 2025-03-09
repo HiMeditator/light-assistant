@@ -1,6 +1,7 @@
 <div align="center" >
-<img src="assets/icon/light-assistant.ico"/>
+<img src="assets/icon/light-assistant.png" width="90px" height="90px"/>
 </div>
+
 
 <h1 align="center">light-assistant</h1>
 
@@ -15,3 +16,4 @@
 <hr>
 
 Currently, this extension is in the early stages of development.
+
