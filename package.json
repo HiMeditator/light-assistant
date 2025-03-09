@@ -70,15 +70,11 @@
     "configuration": {
       "title": "Light Assistant",
       "properties": {
-        "lightAssistant.test.string": {
+        "lightAssistant.sendRequestShortcut": {
           "type": "string",
-          "default": "hello",
-          "description": "Test string."
-        },
-        "lightAssistant.test.number": {
-          "type": "number",
-          "default": 0,
-          "description": "Test number."
+          "enum": ["Ctrl+Enter", "Enter"],
+          "default": "Ctrl+Enter",
+          "description": "Set the shortcut key for sending requests."
         }
       }
     }

@@ -1,0 +1,68 @@
+.div-center {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 80%;
+    padding: 20px 20px 20px 0;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: var(--vscode-input-background);
+    color: var(--vscode-foreground);
+    text-align: center;
+    z-index: 1000;
+}
+
+#model-form-title{
+    font-size: 24px;
+    font-weight: 600;
+    margin: 20px;
+}
+
+.div-form-radio {
+    display: flex;
+    justify-content: center;
+}
+
+.div-form-radio div {
+    display: inline-block;
+    line-height: 24px;
+    width: 30%;
+    cursor: pointer;
+    margin: auto 10px;
+}
+
+.div-form-radio div:hover {
+    border-radius: 5px;
+    border: 1px solid var(--vscode-button-border);
+    color: var(--vscode-button-foreground);
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.div-form-radio .checked {
+    border-radius: 5px;
+    border: 1px solid var(--vscode-button-border);
+    color: var(--vscode-button-foreground);
+    background-color: var(--vscode-button-background);
+}
+
+.div-form-entry {
+    margin: 30px;
+    justify-content: center;
+}
+
+.div-form-entry label{
+    display: inline-block;
+    width: 24%;
+    text-align: right;
+}
+
+.div-form-entry input {
+    display: inline-block;
+    width: 60%;
+}
+
+.div-center button{
+    width: 40%;
+}

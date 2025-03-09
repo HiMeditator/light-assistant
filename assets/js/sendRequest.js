@@ -15,6 +15,40 @@ document.getElementById('load-config').addEventListener('click', function() {
     vscode.postMessage({command: 'models.load'});
 });
 
+document.getElementById('add-model-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+});
+
+document.getElementById('btn-add-submit').onclick = () => {
+    const form = document.getElementById('add-model-form');
+    if (!form.checkValidity()) { return; }
+    const optionOllama = document.getElementById('option-ollama');
+    let modelData = {};
+    modelData['model'] = document.getElementById('i-model').value;
+    modelData['title'] = document.getElementById('i-title').value;
+    if(modelData['title'] === '') { delete modelData['title']; }
+    if(optionOllama.classList.contains('checked')){
+        modelData['type'] = 'ollama';
+    }
+    else{
+        modelData['type'] = 'remote';
+        modelData['base_url'] = document.getElementById('i-base_url').value;
+        modelData['api_key'] = document.getElementById('i-api_key').value;
+    }
+    form.reset();
+    vscode.postMessage({
+        command: 'model.add',
+        modelData: JSON.stringify(modelData)
+    });
+    document.getElementById('div-add-model').style.display = 'none';
+};
+
+document.getElementById('btn-add-cancel').onclick = () => {
+    const form = document.getElementById('add-model-form');
+    form.reset();
+    document.getElementById('div-add-model').style.display = 'none';
+};
+
 function handleUserRequest() {
     if(disableSend){
         return;

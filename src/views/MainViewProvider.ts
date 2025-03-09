@@ -1,113 +1,18 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import ollama from 'ollama';
-import OpenAI from 'openai';
+import { ConfigFile } from '../utils/configFile';
+import {RequestModel} from '../utils/requestModel';
 
 export class MainViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'light-assistant.main';
     private _view?: vscode.WebviewView;
-    private _faIcons: any;
     constructor(
         private readonly _extensionUri: vscode.Uri,
-        private readonly _configUrl: vscode.Uri,
-        private readonly _context: vscode.ExtensionContext
-    ) {
-        const faPath = vscode.Uri.joinPath(this._extensionUri, '/assets/icon/font-awesome.json').fsPath;
-        this._faIcons = JSON.parse(fs.readFileSync(faPath, 'utf8'));
-    }
+        private _faIcons: any,
+        private configFile: ConfigFile,
+        private requestModel: RequestModel
+    ) {}
 
-    private async _useOllama(prompt: string, model: string) {
-        this._view?.webview.postMessage({command: 'response.new'});
-        const message = { role: 'user', content: prompt };
-        const response = await ollama.chat({
-            model: model,
-            messages: [message],
-            stream: true
-        });
-        for await (const part of response) {
-            this._view?.webview.postMessage({
-                command: 'response.stream',
-                data: part.message.content
-            });
-        }
-        this._view?.webview.postMessage({command: 'response.end'});
-    }
-
-    private async _useOpenAI(prompt: string, model: string, base_url: string, api_key: string) {
-        this._view?.webview.postMessage({command: 'response.new'});
-        const message = { role: 'user', content: prompt };
-        const openai = new OpenAI({
-            apiKey: api_key,
-            baseURL: base_url
-        });
-        const completion = await openai.chat.completions.create({
-            model: model,
-            messages: [
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
-            ],
-            stream: true,
-        });
-        for await (const chunk of completion) {
-            console.log(chunk['choices'][0]['delta']);
-            let content = ('reasoning_content' in chunk['choices'][0]['delta']) ?
-                chunk['choices'][0]['delta']['reasoning_content'] : 
-                chunk['choices'][0]['delta']['content'];
-            if(content === '') {
-                content = chunk['choices'][0]['delta']['content'];
-            }
-            // let content = chunk['choices'][0]['delta']['content'];
-            this._view?.webview.postMessage({
-                command: 'response.stream',
-                data: content
-            });
-        }
-        this._view?.webview.postMessage({command: 'response.end'});
-    }
-    private _handleUserRequest(prompt: string, modelStr: string) {
-        if(modelStr === undefined || modelStr === ''){
-            vscode.window.showErrorMessage('No model selected, please select a model first.');
-            return;
-        }
-        const model = JSON.parse(modelStr);
-        if(model['type'] === 'ollama'){
-            this._useOllama(prompt, model['model']);
-        }
-        else{
-            this._useOpenAI(prompt, model['model'], model['base_url'], model['api_key']);
-        }
-    }
-
-    private _getConfigModels(alert: boolean = true) {
-        if(!fs.existsSync(this._configUrl.fsPath)){
-            if(alert) {
-                vscode.window.showErrorMessage('Config file not found, please create one.');
-            }
-            return '';
-        }
-        let config;
-        try {
-            config = JSON.parse(fs.readFileSync(this._configUrl.fsPath, 'utf8'));
-        } catch(error) {
-            vscode.window.showErrorMessage('Config file is not valid JSON.');
-            return '';
-        }
-        return JSON.stringify(config['models']);
-    }
-
-    public updateModelListFromConfig(alert: boolean = true) {
-        const configModels = this._getConfigModels(alert);
-        let currentModel = this._context.globalState.get<string>('model');
-        if(currentModel === undefined){ currentModel = ''; }
-        this._view?.webview.postMessage({
-            command:'update.models',
-            models: configModels,
-            currentModel: currentModel,
-            icon1: this._faIcons['circle-nodes'],
-            icon2: this._faIcons['hexagon-node']
-        });
-        console.log('updateModelListFromConfig');
-    }
     public resolveWebviewView(
         webviewView: vscode.WebviewView,
         _context: vscode.WebviewViewResolveContext,
@@ -121,21 +26,23 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
             ]
         };
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-        console.log('resolveWebviewView begin');
-        this.updateModelListFromConfig(false);
-        console.log('resolveWebviewView');
+        this.configFile.updateModelListFromConfig(this._view);
+
         webviewView.webview.onDidReceiveMessage(message => {
-            // console.log(message);
+            console.log(message);
             switch (message.command) {
                 case 'user.request':
-                    this._handleUserRequest(message.prompt, message.model);
+                    this.requestModel.handelRequest(message.prompt, message.model, this._view);
                     break;
                 case 'models.load':
-                    this.updateModelListFromConfig();
+                    this.configFile.updateModelListFromConfig(this._view);
                     vscode.commands.executeCommand('light-assistant.goto.config');
                     break;
                 case 'model.select':
-                    this._context.globalState.update('model', message.model);
+                    this.configFile.updateCurrentModel(message.model);
+                    break;
+                case 'model.add':
+                    this.configFile.addModelToConfig(message.modelData, this._view);
                     break;
             }
         });
@@ -146,6 +53,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         const styleVSCode = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/vscode.css'));
         const styleDialog = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/dialog.css'));
         const styleInput = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/input.css'));
+        const styleCenter = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/center.css'));
         const libScriptAutoSize = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/js/libs/autosize.min.js'));
         const libScriptMarkdownIt = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/js/libs/markdown-it.min.js'));
         const scriptDomUtil = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/js/domUtil.js'));
@@ -160,11 +68,39 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
             <link href="${styleVSCode}" rel="stylesheet">
             <link href="${styleDialog}" rel="stylesheet">
             <link href="${styleInput}" rel="stylesheet">
+            <link href="${styleCenter}" rel="stylesheet">
             <script src="${libScriptAutoSize}"></script>
             <script src="${libScriptMarkdownIt}"></script>
             <title>Light Assistant</title>
         </head>
         <body>
+            <div class="div-center" id="div-add-model">
+                <form id="add-model-form">
+                    <div id="model-form-title">Add Model</div>
+                    <div class="div-form-radio">
+                        <div id="option-ollama">ollama</div>
+                        <div id="option-remote">remote</div>
+                    </div>
+                    <div class="div-form-entry">
+                        <label for="i-model">model</label>
+                        <input type="text" id="i-model" name="model" required>
+                    </div>
+                    <div class="div-form-entry">
+                        <label for="i-title">title</label>
+                        <input type="text" id="i-title" name="title">
+                    </div>
+                    <div id="div-url-input" class="div-form-entry">
+                        <label for="i-base_url">base_url</label>
+                        <input type="text" id="i-base_url" name="base_url" required><br>
+                    </div>
+                    <div id="div-api-input" class="div-form-entry">
+                        <label for="i-api_key">api_key</label>
+                        <input type="text" id="i-api_key" name="api_key" required><br>
+                    </div>
+                    <button id="btn-add-submit">Submit</button>
+                    <button id="btn-add-cancel">Cancel</button>
+                </form>
+            </div>
             <div id="div-dialog">
             </div>
             <div id="div-input">

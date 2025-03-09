@@ -4,7 +4,7 @@ const md = markdownit();
 
 window.addEventListener('message', event => {
     const message = event.data;
-    console.log('get msg:',message);
+    console.log('Get mesaage:',message);
     switch (message.command) {
         case 'response.new':
             createResponseElement();
