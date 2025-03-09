@@ -13,7 +13,9 @@ const resizeObserver = new ResizeObserver(entries => {
     adjustDialogHeight();
 });
 resizeObserver.observe(taPromptInput);
-
+window.addEventListener('resize', () => {
+    adjustDialogHeight();
+});
 
 document.getElementById('add-model').onclick = () => {
     document.getElementById('div-add-model').style.display = 'block';
@@ -37,4 +39,4 @@ document.getElementById('option-remote').onclick = () => {
     document.getElementById('option-remote').classList.add('checked');
 };
 
-document.getElementById('option-ollama').click();
+document.getElementById('option-remote').click();

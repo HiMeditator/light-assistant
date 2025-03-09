@@ -1,8 +1,12 @@
 const vscode = acquireVsCodeApi();
 let disableSend = false;
+let sendShortcut = '';
 
 document.getElementById('ta-prompt-input').addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key === 'Enter') {
+    if (event.ctrlKey && event.key === 'Enter' && sendShortcut === 'Ctrl+Enter') {
+        handleUserRequest();
+    }
+    else if (event.key === 'Enter' && sendShortcut === 'Enter') {
         handleUserRequest();
     }
 });
@@ -54,10 +58,20 @@ function handleUserRequest() {
         return;
     }
     let userPrompt = document.getElementById('ta-prompt-input').value;
+    if(userPrompt.trim() === ''){
+        document.getElementById('ta-prompt-input').value = '';
+        document.getElementById('ta-prompt-input').focus();
+        return;
+    }
     let model = document.getElementById('model-selected-value').value;
+    if(model === '' || model === undefined){
+        vscode.postMessage({
+            command: 'error.noModel'
+        });
+        return;
+    }
     document.getElementById('ta-prompt-input').value = '';
     document.getElementById('ta-prompt-input').style.height = 'auto';
-    // console.log(userPrompt);
     createUserRequestElement(userPrompt);
     vscode.postMessage({
         command: 'user.request',

@@ -74,7 +74,7 @@
           "type": "string",
           "enum": ["Ctrl+Enter", "Enter"],
           "default": "Ctrl+Enter",
-          "description": "Set the shortcut key for sending requests."
+          "markdownDescription": "Set the shortcut key for sending requests. When selecting the `Enter` option, both `Ctrl+Enter` and `Enter` will trigger the action."
         }
       }
     }

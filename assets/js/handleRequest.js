@@ -19,6 +19,9 @@ window.addEventListener('message', event => {
         case 'update.models':
             updateModelList(message.models, message.currentModel, message.icon1, message.icon2);
             break;
+        case 'update.configurations':
+            updateConfigurations(message.configurations);
+            break;
     }
 });
 
@@ -97,4 +100,11 @@ function updateModelList(models, currentModel, icon1, icon2) {
         }
     }
     currentLi.click();
+}
+
+function updateConfigurations(configurations) {
+    configurations = JSON.parse(configurations);
+    const sendRequestShortcut = configurations['sendRequestShortcut'];
+    document.getElementById('send-note').innerText = sendRequestShortcut;
+    sendShortcut = sendRequestShortcut;
 }

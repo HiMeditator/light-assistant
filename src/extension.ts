@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as path from 'path';
 import { ConfigFile } from './utils/configFile';
 import { RequestModel } from './utils/requestModel';
 import { MainViewProvider } from './views/MainViewProvider';
+
+
 export function activate(context: vscode.ExtensionContext) {
     const configUri = vscode.Uri.joinPath(context.globalStorageUri, "config.json");
     const faPath = vscode.Uri.joinPath(context.extensionUri, '/assets/icon/font-awesome.json').fsPath;
@@ -34,6 +35,13 @@ export function activate(context: vscode.ExtensionContext) {
             {webviewOptions: {retainContextWhenHidden: true}}
         )
     );
+
+    const configurationChange = vscode.workspace.onDidChangeConfiguration(event =>{
+        if(event.affectsConfiguration('lightAssistant')){
+            mainViewProvider.updateConfiguration();
+        }
+    });
+    context.subscriptions.push(configurationChange);
 }
 
 

@@ -9,11 +9,20 @@
 <p>Light Assistant is a lightweight code assistant plugin for VS Code.</p></div>
 <div align="center" >
 <p>
-| <b>English</b> | <a href="docs/README_zh_cn.md">简体中文</a> |
+| <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> |
 </p>
 </div>
 
 <hr>
 
-Currently, this extension is in the early stages of development.
+Currently, this extension is in the early stages of development, with only the chat feature completed.
 
+## Features
+
+### Customizable Models
+
+![](docs/img/media/01.png)
+
+### In-IDE Chat
+
+![](docs/img/media/02.png)

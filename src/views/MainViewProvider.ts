@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 import { ConfigFile } from '../utils/configFile';
 import {RequestModel} from '../utils/requestModel';
-
+import { updateConfigurations } from '../utils/configuration'
 export class MainViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'light-assistant.main';
     private _view?: vscode.WebviewView;
@@ -12,6 +11,10 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         private configFile: ConfigFile,
         private requestModel: RequestModel
     ) {}
+
+    public updateConfiguration() {
+        updateConfigurations(this._view);
+    }
 
     public resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -27,10 +30,14 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         };
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
         this.configFile.updateModelListFromConfig(this._view);
+        this.updateConfiguration();
 
         webviewView.webview.onDidReceiveMessage(message => {
             console.log(message);
             switch (message.command) {
+                case 'error.noModel':
+                    vscode.window.showErrorMessage("No model selected, please select a model first.");
+                    break;
                 case 'user.request':
                     this.requestModel.handelRequest(message.prompt, message.model, this._view);
                     break;
@@ -78,8 +85,14 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                 <form id="add-model-form">
                     <div id="model-form-title">Add Model</div>
                     <div class="div-form-radio">
-                        <div id="option-ollama">ollama</div>
-                        <div id="option-remote">remote</div>
+                        <div id="option-remote">
+                            <svg viewBox="0 0 512 512"><path d="${this._faIcons['hexagon-node']}"/></svg>
+                            remote
+                        </div>
+                        <div id="option-ollama">
+                            <svg viewBox="0 0 512 512"><path d="${this._faIcons['circle-nodes']}"/></svg>
+                            ollama
+                        </div>
                     </div>
                     <div class="div-form-entry">
                         <label for="i-model">model</label>
@@ -125,7 +138,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                         </span>
                     </div>
                     <div id="send-prompt">
-                        <span id="send-note">Ctrl+Enter</span>
+                        <span id="send-note"></span>
                         <svg viewBox="0 0 448 512"><path d="${this._faIcons['right-arrow']}"/></svg>
                     </div>
                 </div>
