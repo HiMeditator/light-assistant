@@ -71,6 +71,9 @@
 
 #model-list {
     list-style: none;
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 
 #model-list li, #add-model, #load-config {

@@ -11,15 +11,21 @@
     background-color: var(--vscode-input-background);
     color: var(--vscode-foreground);
     text-align: center;
-    z-index: 1000;
+    z-index: 10;
 }
 
 #model-form-title{
     font-size: 24px;
     font-weight: 600;
-    margin: 12px 20px 20px 20px;
 }
 
+#option-note {
+    margin: 16px 0;
+}
+
+#option-note p {
+    display: none;
+}
 .div-form-radio {
     display: flex;
     justify-content: center;

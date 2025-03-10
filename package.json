@@ -51,6 +51,16 @@
         "command": "light-assistant.goto.config",
         "title": "Open Config",
         "icon": "$(json)"
+      },
+      {
+        "command": "light-assistant.logs.view",
+        "title": "View Chat Logs",
+        "icon": "$(history)"
+      },
+      {
+        "command": "light-assistant.chat.new",
+        "title": "New Chat Session",
+        "icon": "$(plus)"
       }
     ],
     "menus": {
@@ -62,6 +72,16 @@
         },
         {
           "command": "light-assistant.goto.config",
+          "when": "view == light-assistant.main",
+          "group": "navigation"
+        },
+        {
+          "command": "light-assistant.logs.view",
+          "when": "view == light-assistant.main",
+          "group": "navigation"
+        },
+        {
+          "command": "light-assistant.chat.new",
           "when": "view == light-assistant.main",
           "group": "navigation"
         }

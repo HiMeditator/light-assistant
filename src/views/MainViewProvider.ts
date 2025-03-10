@@ -1,19 +1,23 @@
 import * as vscode from 'vscode';
 import { ConfigFile } from '../utils/configFile';
-import {RequestModel} from '../utils/requestModel';
+import { RequestModel } from '../utils/requestModel';
 import { updateConfigurations } from '../utils/configuration'
 export class MainViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'light-assistant.main';
     private _view?: vscode.WebviewView;
     constructor(
         private readonly _extensionUri: vscode.Uri,
-        private _faIcons: any,
+        private faIcons: any,
         private configFile: ConfigFile,
         private requestModel: RequestModel
     ) {}
 
     public updateConfiguration() {
         updateConfigurations(this._view);
+    }
+
+    public newChatSession() {
+        this.requestModel.newChatSession(this._view);
     }
 
     public resolveWebviewView(
@@ -24,9 +28,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         this._view = webviewView;
         webviewView.webview.options = {
             enableScripts: true,
-            localResourceRoots: [
-                this._extensionUri
-            ]
+            localResourceRoots: [ this._extensionUri ]
         };
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
         this.configFile.updateModelListFromConfig(this._view);
@@ -84,13 +86,17 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
             <div class="div-center" id="div-add-model">
                 <form id="add-model-form">
                     <div id="model-form-title">Add Model</div>
+                    <div id="option-note">
+                        <p id="option-openai-note">The model you provided needs to be compatible with the OpenAI API.</p>
+                        <p id="option-ollama-note">Please confirm that you have installed Ollama locally and configured the corresponding model.</p>
+                    </div>
                     <div class="div-form-radio">
-                        <div id="option-remote">
-                            <svg viewBox="0 0 512 512"><path d="${this._faIcons['hexagon-node']}"/></svg>
-                            remote
+                        <div id="option-openai">
+                            <svg viewBox="0 0 512 512"><path d="${this.faIcons['hexagon-node']}"/></svg>
+                            openai
                         </div>
                         <div id="option-ollama">
-                            <svg viewBox="0 0 512 512"><path d="${this._faIcons['circle-nodes']}"/></svg>
+                            <svg viewBox="0 0 512 512"><path d="${this.faIcons['circle-nodes']}"/></svg>
                             ollama
                         </div>
                     </div>
@@ -124,22 +130,22 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                             <ul id="model-list">
                             </ul>
                             <div id="add-model">
-                                <svg viewBox="0 0 448 512"><path d="${this._faIcons['plus']}"/></svg>
+                                <svg viewBox="0 0 448 512"><path d="${this.faIcons['plus']}"/></svg>
                                 Add Model
                             </div>
                             <div id="load-config">
-                                <svg viewBox="0 0 512 512"><path d="${this._faIcons['rotate-right']}"/></svg>
+                                <svg viewBox="0 0 512 512"><path d="${this.faIcons['rotate-right']}"/></svg>
                                 Load Config
                             </div>
                         </div>
                         <span id="model-selected">
                             <span id="model-selected-value">Select model</span>
-                            <svg viewBox="0 0 448 512"><path d="${this._faIcons['arrow-down']}"/></svg>
+                            <svg viewBox="0 0 448 512"><path d="${this.faIcons['arrow-down']}"/></svg>
                         </span>
                     </div>
                     <div id="send-prompt">
                         <span id="send-note"></span>
-                        <svg viewBox="0 0 448 512"><path d="${this._faIcons['right-arrow']}"/></svg>
+                        <svg viewBox="0 0 448 512"><path d="${this.faIcons['right-arrow']}"/></svg>
                     </div>
                 </div>
             </div>

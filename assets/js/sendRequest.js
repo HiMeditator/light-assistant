@@ -35,7 +35,7 @@ document.getElementById('btn-add-submit').onclick = () => {
         modelData['type'] = 'ollama';
     }
     else{
-        modelData['type'] = 'remote';
+        modelData['type'] = 'openai';
         modelData['base_url'] = document.getElementById('i-base_url').value;
         modelData['api_key'] = document.getElementById('i-api_key').value;
     }

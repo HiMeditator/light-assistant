@@ -7,7 +7,7 @@ export class ConfigFile {
         public configUri: vscode.Uri,
         public context: vscode.ExtensionContext,
         public ollamaIcon: string,
-        public remoteIcon: string
+        public openaiIcon: string
     ) {
         const folerPath = path.dirname(this.configUri.fsPath);
         if(!fs.existsSync(folerPath)){
@@ -27,7 +27,7 @@ export class ConfigFile {
             models: JSON.stringify(models),
             currentModel: currentModel ? currentModel : '',
             icon1: this.ollamaIcon,
-            icon2: this.remoteIcon
+            icon2: this.openaiIcon
         });
     }
 

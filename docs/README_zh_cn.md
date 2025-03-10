@@ -1,21 +1,18 @@
 <div align="center" >
-<img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
-</div>
-
-
-<h1 align="center">light-assistant</h1>
-
-<div align="center" >
-<p>Light Assistant 是一个轻量级的 VS Code 代码助手插件.</p></div>
-<div align="center" >
-<p>
-| <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> |
-</p>
+    <img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
+    <h1 align="center">light-assistant</h1>
+    <p>Light Assistant 是一个轻量级的 VS Code 代码助手插件.</p>
+    <p>
+        | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> |
+    </p>
 </div>
 
 <hr>
 
-目前，本插件正在初步开发中，仅聊天功能开发完成。
+<div align="center" >
+    <p>目前，本插件正在初步开发中，仅聊天功能开发完成。</p>
+</div>
+
 
 ## 特性
 
@@ -25,4 +22,4 @@
 
 ### IDE 内聊天
 
-![](img/media/02.png)
+<img src="img/media/02.png" style="zoom:100%;" />

@@ -22,6 +22,9 @@ window.addEventListener('message', event => {
         case 'update.configurations':
             updateConfigurations(message.configurations);
             break;
+        case 'chat.new':
+            newChatSession();
+            break;
     }
 });
 
@@ -107,4 +110,8 @@ function updateConfigurations(configurations) {
     const sendRequestShortcut = configurations['sendRequestShortcut'];
     document.getElementById('send-note').innerText = sendRequestShortcut;
     sendShortcut = sendRequestShortcut;
+}
+
+function newChatSession(){
+    document.getElementById('div-dialog').innerHTML = '';
 }
