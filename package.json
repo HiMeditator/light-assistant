@@ -1,23 +1,34 @@
 {
   "name": "light-assistant",
-  "displayName": "Light Assistant",
-  "publisher": "HiMeditator",
+  "displayName": "Light Assistant (Under Development)",
+  "publisher": "himeditator",
   "icon": "assets/icon/light-assistant.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/HiMeditator/light-assistant"
   },
   "homepage": "https://github.com/HiMeditator/light-assistant",
-  "description": "A lightweight code assistant plugin for VS Code.",
-  "version": "0.0.1",
+  "license": "MIT",
+  "description": "A lightweight code assistant for VS Code.",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.97.0"
+  },
+  "galleryBanner": {
+    "color": "#1A1A1A",
+    "theme": "dark"
   },
   "categories": [
     "AI",
     "Chat",
     "Education",
-    "Programming Languages"
+    "Machine Learning"
+  ],
+  "keywords": [
+    "copilot",
+    "openai",
+    "ollama",
+    "chat"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",

@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant 是一个轻量级的 VS Code 代码助手插件.</p>
+    <p>Light Assistant 是一个开源的面向 VS Code 的轻量级智能助手插件。该项目的最主要目的是为 IDE 智能助手的开发提供入门参考。</p>
     <p>
         | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> |
     </p>
@@ -10,7 +10,7 @@
 <hr>
 
 <div align="center" >
-    <p>目前，本插件正在初步开发中，仅聊天功能开发完成。</p>
+    <p>目前，本插件正在初步开发中，仅聊天功能开发完成。更多功能和信息敬请期待。</p>
 </div>
 
 
@@ -18,8 +18,8 @@
 
 ### 自由配置模型
 
-![](img/media/01.png)
+<img src="img/media/01.png" />
 
 ### IDE 内聊天
 
-<img src="img/media/02.png" style="zoom:100%;" />
+<img src="img/media/02.png" style="zoom:60%;" />
