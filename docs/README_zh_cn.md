@@ -13,6 +13,10 @@
     <p>目前，本插件正在初步开发中，仅聊天功能开发完成。更多功能和信息敬请期待。</p>
 </div>
 
+## 用户手册
+
+[用户手册](user-manual_zh_cn.md)
+[User Manual](user-manual.md)
 
 ## 特性
 

@@ -8,9 +8,14 @@
     "url": "https://github.com/HiMeditator/light-assistant"
   },
   "homepage": "https://github.com/HiMeditator/light-assistant",
+  "bugs": {
+    "url": "https://github.com/HiMeditator/light-assistant/issues",
+    "email": "plutopupchen@gmail.com"
+  },
+  "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "A lightweight code assistant for VS Code.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.97.0"
   },

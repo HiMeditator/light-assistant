@@ -13,6 +13,10 @@
     <p>Currently, this extension is in the early stages of development, with only the chat feature completed. More features and information will be available soon.</p>
 </div>
 
+## User Manual
+
+[User Manual](docs/user-manual.md)
+[用户手册](docs/user-manual_zh_cn.md)
 
 ## Features
 

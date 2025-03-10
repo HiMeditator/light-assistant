@@ -71,9 +71,9 @@ function updateModelList(models, currentModel, icon1, icon2) {
     modelList.innerHTML = '';
     document.getElementById('model-selected-value').value = '';
     document.getElementById('model-selected-value').textContent = 'Select Model';
-    models = JSON.parse(models);
-    currentModel = JSON.parse(currentModel);
-    let currentLi;
+    models = JSONparse(models);
+    currentModel = JSONparse(currentModel);
+    let currentLi = undefined;
     for (let model of models) {
         let li = document.createElement('li');
         li.setAttribute('data-value', JSON.stringify(model));
@@ -102,11 +102,11 @@ function updateModelList(models, currentModel, icon1, icon2) {
             currentLi = li;
         }
     }
-    currentLi.click();
+    if(currentLi !== undefined){ currentLi.click(); }
 }
 
 function updateConfigurations(configurations) {
-    configurations = JSON.parse(configurations);
+    configurations = JSONparse(configurations);
     const sendRequestShortcut = configurations['sendRequestShortcut'];
     document.getElementById('send-note').innerText = sendRequestShortcut;
     sendShortcut = sendRequestShortcut;
@@ -114,4 +114,15 @@ function updateConfigurations(configurations) {
 
 function newChatSession(){
     document.getElementById('div-dialog').innerHTML = '';
+}
+
+function JSONparse(str) {
+    let obj;
+    try {
+        obj = JSON.parse(str);
+        return obj;
+    } catch (e) { 
+        console.log(e);
+        return {};
+    }
 }
