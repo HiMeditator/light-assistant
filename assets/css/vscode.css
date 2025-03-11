@@ -12,7 +12,7 @@ body {
 	font-size: var(--vscode-font-size);
 	font-weight: var(--vscode-font-weight);
 	font-family: var(--vscode-font-family);
-	background-color: var(--vscode-sidebar-background);
+	background-color: var(--vscode-sidebar-background, #f2f2f2);
 }
 
 /* ol,
@@ -51,13 +51,13 @@ button {
 	text-align: center;
 	outline: 1px solid transparent;
 	outline-offset: 2px !important;
-	color: var(--vscode-button-foreground);
-	background: var(--vscode-button-background);
+	color: var(--vscode-button-foreground, #ffffff);
+	background: var(--vscode-button-background, #705697);
 }
 
 button:hover {
 	cursor: pointer;
-	background: var(--vscode-button-hoverBackground);
+	background: var(--vscode-button-hoverBackground, #5a4579);
 }
 
 button:focus {

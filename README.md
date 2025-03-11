@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="assets/icon/light-assistant.png" width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. The primary goal of this project is to provide a starting reference for developing IDE intelligent assistants.</p>
+    <p>Light Assistant (Chinese: 轻亮助手) is an open-source lightweight intelligent assistant plugin for VS Code. The primary goal of this project is to provide a starting reference for developing IDE intelligent assistants.</p>
     <p>
         | <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> |
     </p>
@@ -10,7 +10,7 @@
 <hr>
 
 <div align="center" >
-    <p>Currently, this extension is in the early stages of development, with only the chat feature completed. More features and information will be available soon.</p>
+    <p><b>Currently, this extension is in the early stages of development, with only the chat feature completed.</b> More features and information will be available soon.</p>
 </div>
 
 ## User Manual

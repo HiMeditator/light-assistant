@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+  <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{reset.css}}" rel="stylesheet">
+    <link href="{{vscode.css}}" rel="stylesheet">
+    <link href="{{popup.css}}" rel="stylesheet">
+    <link href="{{dialog.css}}" rel="stylesheet">
+    <link href="{{input.css}}" rel="stylesheet">
+    <script src="{{autosize.min.js}}"></script>
+    <script src="{{markdown-it.min.js}}"></script>
+    <title>Light Assistant</title>
+  </head>
+
+  <body>
+    <div class="div-popup" id="div-add-model">
+      <form id="form-add-model">
+        <div id="title-add-model">Add Model</div>
+        <div id="note-add-model">
+          <p id="note-add-model-openai">The model you provided needs to be compatible with the OpenAI API.</p>
+          <p id="note-add-model-ollama">Please confirm that you have installed Ollama locally and configured the corresponding model.</p>
+        </div>
+        <div class="div-form-radio">
+          <div id="option-openai">
+            <svg viewBox="0 0 512 512"><path d="{{i-hexagon-node}}"/></svg>
+            openai
+          </div>
+          <div id="option-ollama" class="add-model-option">
+            <svg viewBox="0 0 512 512"><path d="{{i-circle-nodes}}"/></svg>
+            ollama
+          </div>
+        </div>
+        <div class="div-form-entry">
+          <label for="i-model">model</label>
+          <input type="text" id="i-model" name="model" required>
+        </div>
+        <div class="div-form-entry">
+          <label for="i-title">title</label>
+          <input type="text" id="i-title" name="title">
+        </div>
+        <div id="div-url-input" class="div-form-entry">
+          <label for="i-base_url">base_url</label>
+          <input type="text" id="i-base_url" name="base_url" required><br>
+        </div>
+        <div id="div-api-input" class="div-form-entry">
+          <label for="i-api_key">api_key</label>
+          <input type="text" id="i-api_key" name="api_key" required><br>
+        </div>
+        <button id="btn-add-submit">Submit</button>
+        <button id="btn-add-cancel">Cancel</button>
+      </form>
+    </div>
+
+    <div id="div-dialog">
+    </div>
+
+    <div id="div-input">
+      <textarea id="ta-prompt-input" rows="1" placeholder="Ask me anything..."></textarea>
+      <div id="div-options">
+        <div id="model-select">
+          <div id="model-option">
+            <ul id="model-list">
+            </ul>
+            <div id="add-model">
+              <svg viewBox="0 0 448 512"><path d="{{i-plus}}"/></svg>
+              Add Model
+            </div>
+            <div id="load-config">
+              <svg viewBox="0 0 512 512"><path d="{{i-rotate-right}}"/></svg>
+              Load Config
+            </div>
+          </div>
+          <span id="model-selected">
+            <span id="model-selected-value">Select model</span>
+            <svg viewBox="0 0 448 512"><path d="{{i-arrow-down}}"/></svg>
+          </span>
+        </div>
+        <div id="send-prompt">
+            <span id="send-shortcut">Ctrl+Enter</span>
+            <svg viewBox="0 0 448 512"><path d="{{i-right-arrow}}"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{commonUtils.js}}"></script>
+    <script src="{{sendRequests.js}}"></script>
+    <script src="{{handleRequests.js}}"></script>
+  </body>
+</html>

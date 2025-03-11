@@ -1,7 +1,3 @@
-const vscode = acquireVsCodeApi();
-let disableSend = false;
-let sendShortcut = '';
-
 document.getElementById('ta-prompt-input').addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'Enter' && sendShortcut === 'Ctrl+Enter') {
         handleUserRequest();
@@ -9,6 +5,7 @@ document.getElementById('ta-prompt-input').addEventListener('keydown', function(
     else if (event.key === 'Enter' && sendShortcut === 'Enter') {
         handleUserRequest();
     }
+    // TODO: Add support for event.key === 'ArrowUp'
 });
 
 document.getElementById('send-prompt').addEventListener('click', function() {
@@ -19,18 +16,18 @@ document.getElementById('load-config').addEventListener('click', function() {
     vscode.postMessage({command: 'models.load'});
 });
 
-document.getElementById('add-model-form').addEventListener('submit', function(event) {
+document.getElementById('form-add-model').addEventListener('submit', function(event) {
     event.preventDefault();
 });
 
 document.getElementById('btn-add-submit').onclick = () => {
-    const form = document.getElementById('add-model-form');
+    const form = document.getElementById('form-add-model');
     if (!form.checkValidity()) { return; }
     const optionOllama = document.getElementById('option-ollama');
     let modelData = {};
     modelData['model'] = document.getElementById('i-model').value;
     modelData['title'] = document.getElementById('i-title').value;
-    if(modelData['title'] === '') { delete modelData['title']; }
+    if(modelData['title'].trim() === '') { delete modelData['title']; }
     if(optionOllama.classList.contains('checked')){
         modelData['type'] = 'ollama';
     }
@@ -48,7 +45,7 @@ document.getElementById('btn-add-submit').onclick = () => {
 };
 
 document.getElementById('btn-add-cancel').onclick = () => {
-    const form = document.getElementById('add-model-form');
+    const form = document.getElementById('form-add-model');
     form.reset();
     document.getElementById('div-add-model').style.display = 'none';
 };
@@ -60,6 +57,7 @@ function handleUserRequest() {
     let userPrompt = document.getElementById('ta-prompt-input').value;
     if(userPrompt.trim() === ''){
         document.getElementById('ta-prompt-input').value = '';
+        document.getElementById('ta-prompt-input').style.height = 'auto';
         document.getElementById('ta-prompt-input').focus();
         return;
     }
@@ -85,7 +83,7 @@ function createUserRequestElement(userPrompt) {
     dialogItem.className = 'dialog-item';
 
     let divInfo = document.createElement('div');
-    divInfo.className = 'div-info';
+    divInfo.className = 'div-dialog-info';
     dialogItem.appendChild(divInfo);
 
     let infoHead = document.createElement('div');
@@ -99,7 +97,7 @@ function createUserRequestElement(userPrompt) {
     divInfo.appendChild(userName);
 
     let userContent = document.createElement('div');
-    userContent.className = 'content user-content';
+    userContent.className = 'dialog-content user-content';
     userContent.textContent = userPrompt;
     dialogItem.appendChild(userContent);
 

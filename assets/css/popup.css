@@ -1,0 +1,85 @@
+svg{
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
+
+.div-popup {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 80%;
+    padding: 20px;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: var(--vscode-input-background, #ffffff);
+    color: var(--vscode-foreground, #616161);
+    text-align: center;
+    z-index: 10;
+}
+
+.div-form-radio {
+    display: flex;
+    justify-content: center;
+}
+
+.div-form-radio div {
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    line-height: 24px;
+    cursor: pointer;
+    margin: auto 10px;
+}
+
+.div-form-radio div:hover {
+    color: var(--vscode-button-foreground, #ffffff);
+    background-color: var(--vscode-button-hoverBackground, #5a4579);
+}
+
+.div-form-radio .checked {
+    color: var(--vscode-button-foreground, #ffffff);
+    background-color: var(--vscode-button-background, #705697);
+}
+
+.div-form-entry {
+    margin: 30px;
+    justify-content: center;
+}
+
+
+
+#title-add-model {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+#note-add-model {
+    margin: 16px 0;
+}
+
+#note-add-model p {
+    display: none;
+}
+
+#div-add-model label {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+}
+
+#div-add-model input {
+    display: inline-block;
+    width: calc(80% - 50px);
+}
+
+#option-openai, #option-ollama {
+    width: 25%;
+}
+
+#div-add-model button{
+    width: 36%;
+    margin: auto 10px;
+}

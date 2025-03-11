@@ -8,8 +8,16 @@
 .dialog-item {
     margin: 10px;
     padding: 10px;
-    background-color: rgba(128, 128, 128, 0.2);
+    background-color: rgba(128, 128, 128, 0.12);
     border-radius: 10px;
+}
+
+.dialog-item:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+.div-dialog-info {
+    display: flex;
+    align-items: center;
 }
 
 .info-head {
@@ -23,24 +31,19 @@
     align-items: center;
 }
 
-.div-info {
-    display: flex;
-    align-items: center;
-}
-
-.content {
-    color: var(--vscode-foreground);
-    line-height: 1.6em;
-    margin-top: 10px;
-    margin-left: 20px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-}
-
 .user-head {
     background-color: blueviolet;
 }
 
 .model-head {
     background-color: cornflowerblue;
+}
+
+.dialog-content {
+    color: var(--vscode-foreground, #616161);
+    line-height: 1.6em;
+    margin-top: 10px;
+    margin-left: 20px;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }

@@ -1,7 +1,3 @@
-let modelResponseContent;
-let modelResponseObject;
-const md = markdownit();
-
 window.addEventListener('message', event => {
     const message = event.data;
     console.log('Get mesaage:',message);
@@ -39,7 +35,7 @@ function createResponseElement() {
     dialogItem.className = 'dialog-item';
 
     let divInfo = document.createElement('div');
-    divInfo.className = 'div-info';
+    divInfo.className = 'div-dialog-info';
     dialogItem.appendChild(divInfo);
 
     let infoHead = document.createElement('div');
@@ -53,7 +49,7 @@ function createResponseElement() {
     divInfo.appendChild(modelName);
 
     modelResponseObject = document.createElement('div');
-    modelResponseObject.className = 'content model-content';
+    modelResponseObject.className = 'dialog-content model-content';
     dialogItem.appendChild(modelResponseObject);
 
     document.getElementById('div-dialog').appendChild(dialogItem);
@@ -108,7 +104,7 @@ function updateModelList(models, currentModel, icon1, icon2) {
 function updateConfigurations(configurations) {
     configurations = JSONparse(configurations);
     const sendRequestShortcut = configurations['sendRequestShortcut'];
-    document.getElementById('send-note').innerText = sendRequestShortcut;
+    document.getElementById('send-shortcut').innerText = sendRequestShortcut;
     sendShortcut = sendRequestShortcut;
 }
 

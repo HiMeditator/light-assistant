@@ -1,3 +1,14 @@
+const vscode = acquireVsCodeApi();
+
+let disableSend = false;
+let sendShortcut = '';
+
+let modelResponseContent;
+let modelResponseObject;
+
+const md = markdownit();
+
+
 autosize(document.getElementById('ta-prompt-input'));
 
 function adjustDialogHeight() {
@@ -24,8 +35,8 @@ document.getElementById('add-model').onclick = () => {
 document.getElementById('option-ollama').onclick = () => {
     document.getElementById('div-url-input').style.display = 'none';
     document.getElementById('div-api-input').style.display = 'none';
-    document.getElementById('option-openai-note').style.display = 'none';
-    document.getElementById('option-ollama-note').style.display = 'block';
+    document.getElementById('note-add-model-openai').style.display = 'none';
+    document.getElementById('note-add-model-ollama').style.display = 'block';
     document.getElementById('i-base_url').required = false;
     document.getElementById('i-api_key').required = false;
     document.getElementById('option-ollama').classList.add('checked');
@@ -35,8 +46,8 @@ document.getElementById('option-ollama').onclick = () => {
 document.getElementById('option-openai').onclick = () => {
     document.getElementById('div-url-input').style.display = 'block';
     document.getElementById('div-api-input').style.display = 'block';
-    document.getElementById('option-openai-note').style.display = 'block';
-    document.getElementById('option-ollama-note').style.display = 'none';
+    document.getElementById('note-add-model-openai').style.display = 'block';
+    document.getElementById('note-add-model-ollama').style.display = 'none';
     document.getElementById('i-base_url').required = true;
     document.getElementById('i-api_key').required = true;
     document.getElementById('option-ollama').classList.remove('checked');

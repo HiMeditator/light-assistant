@@ -10,37 +10,40 @@
 
 #div-input {
     width: calc(100% - 20px);
-    margin: 10px;
     border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.12);
     position: fixed;
-    bottom: 0;
-    padding: 10px 10px 0 10px;
-    font-size: 12px;
-    background-color: var(--vscode-input-background);
+    bottom: 5px;
+    margin: 10px;
+    padding: 5px 10px;
+    background-color: var(--vscode-input-background, #ffffff);
+}
+
+#div-input:focus-within {
+    border: 1px solid var(--vscode-button-hoverBackground, #5a4579);
 }
 
 #ta-prompt-input {
     width: 100%;
     max-height: 500px;
     scrollbar-width: thin;
-    padding: 10px;
+    padding: 10px 5px;
     box-sizing: border-box;
-    color: var(--vscode-input-foreground);
-    background-color: var(--vscode-input-background);
-    border: 1px solid rgba(128, 128, 128, 0.4);
+    color: var(--vscode-input-foreground, #616161);
+    background-color: var(--vscode-input-background, #ffffff);
     border-radius: 4px;
     resize: none;
+    border: none;
 }
 
 #ta-prompt-input:focus {
-    border: 1px solid var(--vscode-button-background);
     outline: none;
 }
 
 #div-options {
     display: flex;
     justify-content: space-between;
-    color: var(--vscode-disabledForeground);
+    color: var(--vscode-disabledForeground, rgba(97, 97, 97, 0.5));
     align-items: center;
 }
 
@@ -51,11 +54,11 @@
 }
 
 #model-select:hover #model-option {
-    color: var(--vscode-foreground);
+    display: block;
 }
 
-#model-select:hover #model-option {
-   display: block;
+#model-select:hover {
+    color: var(--vscode-foreground, #616161);
 }
 
 #model-option {
@@ -64,9 +67,9 @@
     position: absolute;
     bottom: 100%;
     left: 0;
-    border: 1px solid var(--vscode-dropdown-border);
+    border: 1px solid var(--vscode-dropdown-border， #cecece);
     border-radius: 4px;
-    background-color: var(--vscode-dropdown-background);
+    background-color: var(--vscode-dropdown-background, #f5f5f5);
 }
 
 #model-list {
@@ -87,15 +90,16 @@
     margin-left: 2px;
 }
 
-#add-model, #load-config {
-    border-top: 1px solid rgba(128, 128, 128, 0.2);
-}
 #model-list li:hover, #model-option div:hover {
     background-color: rgba(128, 128, 128, 0.1);
 }
 
 #model-list li.selected {
-    background-color: var(--vscode-list-activeSelectionBackground);
+    background-color: var(--vscode-list-activeSelectionBackground, #c4d9b1);
+}
+
+#add-model, #load-config {
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 
 #send-prompt {
@@ -105,11 +109,5 @@
 }
 
 #send-prompt:hover {
-    color: var(--vscode-foreground);
-}
-
-svg{
-    width: 1em;
-    height: 1em;
-    fill: currentColor;
+    color: var(--vscode-foreground, #616161);
 }

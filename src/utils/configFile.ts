@@ -18,6 +18,7 @@ export class ConfigFile {
             vscode.window.showInformationMessage(`Config file created: ${this.configUri.fsPath}`);
         }
     }
+
     public updateModelListFromConfig(view?: vscode.WebviewView){
         const configContent = this.getConfigContent();
         const models = JSON.parse(configContent).models;
@@ -35,6 +36,17 @@ export class ConfigFile {
         let configContent = this.getConfigContent();
         let configObj = JSON.parse(configContent);
         configObj['models'].push(JSON.parse(modelData));
+        fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));
+        this.updateModelListFromConfig(view);
+    }
+
+    public deleteModelFromConfig(modelData: string, view?: vscode.WebviewView) {
+        let configContent = this.getConfigContent();
+        let configObj = JSON.parse(configContent);
+        const modelToDelete = JSON.parse(modelData);
+        configObj['models'] = configObj['models'].filter((model: any) => 
+            model.name !== modelToDelete.name || model.type !== modelToDelete.type
+        );
         fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));
         this.updateModelListFromConfig(view);
     }

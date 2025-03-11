@@ -1,3 +1,11 @@
-https://dribbble.com/roundicons
-https://www.iconfinder.com/paonkz
-https://fontawesome.com
+# Icon Resource License Information
+
+## CC BY 4.0 License
+The following icons are used under CC BY 4.0 license:
+1. light-assistant.png
+2. light-assistant-sidebar.png
+3. light-assistant-alternative.png
+
+Source:
+- https://icon-icons.com/en/pack/Duetone/2064 (1 and 2)
+- https://icon-icons.com/en/pack/Ui/3923 (3)
