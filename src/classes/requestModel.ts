@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { getTimeStr } from './functions';
+import { getTimeStr } from '../utils/functions';
 import ollama from 'ollama';
 import OpenAI from 'openai';
 

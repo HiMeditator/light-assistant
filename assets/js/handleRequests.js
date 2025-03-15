@@ -2,6 +2,9 @@ window.addEventListener('message', event => {
     const message = event.data;
     console.log('Get mesaage:',message);
     switch (message.command) {
+        case 'icons':
+            icons = JSON.parse(message.icons);
+            break;
         case 'response.new':
             createResponseElement();
             disableInput(true);
@@ -13,7 +16,7 @@ window.addEventListener('message', event => {
             disableInput(false);
             break;
         case 'update.models':
-            updateModelList(message.models, message.currentModel, message.icon1, message.icon2);
+            updateModelList(message.models, message.currentModel);
             break;
         case 'update.configurations':
             updateConfigurations(message.configurations);
@@ -62,7 +65,9 @@ function updateResponseStream(data) {
     const html = md.render(modelResponseContent);
     modelResponseObject.innerHTML = html;
 }
-function updateModelList(models, currentModel, icon1, icon2) {
+function updateModelList(models, currentModel) {
+    const icon1 = icons['circle-nodes'];
+    const icon2 = icons['hexagon-node'];
     const modelList = document.getElementById('model-list');
     modelList.innerHTML = '';
     document.getElementById('model-selected-value').value = '';

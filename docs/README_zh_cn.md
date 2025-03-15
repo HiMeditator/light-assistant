@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant（轻亮助手）是一个开源的面向 VS Code 的轻量级智能助手插件。该项目的最主要目的是为 IDE 智能助手的开发提供入门参考。</p>
+    <p>Light Assistant（轻亮助手）是一个开源的面向 VS Code 的轻量级智能助手插件。该项目的目的之一是为 IDE 智能助手的开发提供入门参考。</p>
     <p>
         | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> |
     </p>

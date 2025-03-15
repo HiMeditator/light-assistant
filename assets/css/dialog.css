@@ -15,6 +15,7 @@
 .dialog-item:hover {
     background-color: rgba(128, 128, 128, 0.2);
 }
+
 .div-dialog-info {
     display: flex;
     align-items: center;

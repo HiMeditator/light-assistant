@@ -25,3 +25,10 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 - Add: user manual
 - Fix: load config error
+
+## v0.0.4
+
+2025-03-15
+
+- Improve: user interface
+- Add: some data validation checks

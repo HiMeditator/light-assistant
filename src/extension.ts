@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { ConfigFile } from './utils/configFile';
-import { RequestModel } from './utils/requestModel';
+import { ConfigFile } from './classes/configFile';
+import { RequestModel } from './classes/requestModel';
 import { MainViewProvider } from './views/MainViewProvider';
 
 let faIcons: any;
@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     const chatLogFolderUri = vscode.Uri.joinPath(context.globalStorageUri, "chatLogs");
     const faPath = vscode.Uri.joinPath(context.extensionUri, '/assets/icon/font-awesome.json').fsPath;
     faIcons = JSON.parse(fs.readFileSync(faPath, 'utf8'));
-    configFile = new ConfigFile(configUri, context, faIcons['circle-nodes'], faIcons['hexagon-node']);
+    configFile = new ConfigFile(configUri, context);
     requestModel = new RequestModel(chatLogFolderUri);
 
 

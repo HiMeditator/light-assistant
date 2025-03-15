@@ -5,9 +5,7 @@ import * as fs from 'fs';
 export class ConfigFile {
     constructor(
         public configUri: vscode.Uri,
-        public context: vscode.ExtensionContext,
-        public ollamaIcon: string,
-        public openaiIcon: string
+        public context: vscode.ExtensionContext
     ) {
         const folerPath = path.dirname(this.configUri.fsPath);
         if(!fs.existsSync(folerPath)){
@@ -26,16 +24,23 @@ export class ConfigFile {
         view?.webview.postMessage({
             command:'update.models',
             models: JSON.stringify(models),
-            currentModel: currentModel ? currentModel : '',
-            icon1: this.ollamaIcon,
-            icon2: this.openaiIcon
+            currentModel: currentModel ? currentModel : ''
         });
     }
 
     public addModelToConfig(modelData: string, view?: vscode.WebviewView) {
         let configContent = this.getConfigContent();
         let configObj = JSON.parse(configContent);
+        let modelDataObj = JSON.parse(modelData);
         configObj['models'].push(JSON.parse(modelData));
+        if(!modelDataObj?.model || modelDataObj.model.length > 128){
+            vscode.window.showErrorMessage('Model name is too long!');
+            return;
+        }
+        if(modelDataObj?.title && modelDataObj.title.length > 128){
+            vscode.window.showErrorMessage('Model title is too long!');
+            return;
+        }
         fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));
         this.updateModelListFromConfig(view);
     }

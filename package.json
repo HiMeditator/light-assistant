@@ -15,7 +15,7 @@
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. The primary goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.1.0",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.96.0"
   },

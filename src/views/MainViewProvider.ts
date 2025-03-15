@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { ConfigFile } from '../utils/configFile';
-import { RequestModel } from '../utils/requestModel';
+import { ConfigFile } from '../classes/configFile';
+import { RequestModel } from '../classes/requestModel';
 import { updateConfigurations } from '../utils/configuration';
 
 export class MainViewProvider implements vscode.WebviewViewProvider {
@@ -33,12 +33,15 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
             localResourceRoots: [ this._extensionUri ]
         };
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
-        this.configFile.updateModelListFromConfig(this._view);
-        this.updateConfiguration();
 
         webviewView.webview.onDidReceiveMessage(message => {
             console.log(message);
             switch (message.command) {
+                case 'init.ready':
+                    this._view?.webview.postMessage({command: 'icons', icons: JSON.stringify(this.faIcons)});
+                    this.updateConfiguration();
+                    this.configFile.updateModelListFromConfig(this._view);
+                    break;
                 case 'error.noModel':
                     vscode.window.showErrorMessage("No model selected, please select a model first.");
                     break;

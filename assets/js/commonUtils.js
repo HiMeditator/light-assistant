@@ -1,4 +1,5 @@
 const vscode = acquireVsCodeApi();
+const md = markdownit();
 
 let disableSend = false;
 let sendShortcut = '';
@@ -6,7 +7,11 @@ let sendShortcut = '';
 let modelResponseContent;
 let modelResponseObject;
 
-const md = markdownit();
+let icons;
+
+vscode.postMessage({
+    command: 'init.ready'
+});
 
 
 autosize(document.getElementById('ta-prompt-input'));
@@ -30,6 +35,12 @@ window.addEventListener('resize', () => {
 
 document.getElementById('add-model').onclick = () => {
     document.getElementById('div-add-model').style.display = 'block';
+    document.getElementById('popup-background').style.display = 'block';
+};
+
+document.getElementById('popup-background').onclick = () => {
+    document.getElementById('div-add-model').style.display = 'none';
+    document.getElementById('popup-background').style.display = 'none';
 };
 
 document.getElementById('option-ollama').onclick = () => {

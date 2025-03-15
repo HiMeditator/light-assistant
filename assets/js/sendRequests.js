@@ -5,7 +5,6 @@ document.getElementById('ta-prompt-input').addEventListener('keydown', function(
     else if (event.key === 'Enter' && sendShortcut === 'Enter') {
         handleUserRequest();
     }
-    // TODO: Add support for event.key === 'ArrowUp'
 });
 
 document.getElementById('send-prompt').addEventListener('click', function() {
@@ -42,12 +41,14 @@ document.getElementById('btn-add-submit').onclick = () => {
         modelData: JSON.stringify(modelData)
     });
     document.getElementById('div-add-model').style.display = 'none';
+    document.getElementById('popup-background').style.display = 'none';
 };
 
 document.getElementById('btn-add-cancel').onclick = () => {
     const form = document.getElementById('form-add-model');
     form.reset();
     document.getElementById('div-add-model').style.display = 'none';
+    document.getElementById('popup-background').style.display = 'none';
 };
 
 function handleUserRequest() {
