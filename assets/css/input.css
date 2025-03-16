@@ -74,7 +74,7 @@
 
 #model-list {
     list-style: none;
-    max-height: 220px;
+    max-height: 240px;
     overflow-y: auto;
     scrollbar-width: thin;
 }
@@ -84,10 +84,13 @@
     white-space: nowrap;
     padding: 6px 12px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 #model-list li span {
     margin-left: 2px;
+    margin-right: 8px;
 }
 
 #model-list li:hover, #model-option div:hover {
@@ -102,13 +105,18 @@
     border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 
-/* #model-selected-value {
-    max-width: 60%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+#model-list li svg:last-child {
+    display: none;
+    margin-left: auto;
+}
+
+#model-list li:hover svg:last-child {
     display: inline-block;
-} */
+}
+
+#model-list li:hover svg:last-child:hover {
+    background-color: rgba(128, 128, 128, 0.2);
+}
 
 #send-prompt {
     user-select: none;

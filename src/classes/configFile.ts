@@ -50,7 +50,7 @@ export class ConfigFile {
         let configObj = JSON.parse(configContent);
         const modelToDelete = JSON.parse(modelData);
         configObj['models'] = configObj['models'].filter((model: any) => 
-            model.name !== modelToDelete.name || model.type !== modelToDelete.type
+            model.model !== modelToDelete.model || model.type !== modelToDelete.type
         );
         fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));
         this.updateModelListFromConfig(view);

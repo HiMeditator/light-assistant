@@ -32,3 +32,11 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 - Improve: user interface
 - Add: some data validation checks
+
+## v0.0.5
+
+2025-03-16
+
+- Add: delete model option
+- Add: select history chat session
+- Add: delete history chat session

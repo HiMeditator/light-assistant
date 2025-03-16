@@ -14,8 +14,8 @@
   },
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
-  "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. The primary goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.0.4",
+  "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -69,8 +69,8 @@
         "icon": "$(json)"
       },
       {
-        "command": "light-assistant.logs.view",
-        "title": "View Chat Logs",
+        "command": "light-assistant.sessions.load",
+        "title": "Load Chat Session",
         "icon": "$(history)"
       },
       {
@@ -92,7 +92,7 @@
           "group": "navigation"
         },
         {
-          "command": "light-assistant.logs.view",
+          "command": "light-assistant.sessions.load",
           "when": "view == light-assistant.main",
           "group": "navigation"
         },
@@ -111,6 +111,11 @@
           "enum": ["Ctrl+Enter", "Enter"],
           "default": "Ctrl+Enter",
           "markdownDescription": "Set the shortcut key for sending requests. When selecting the `Enter` option, both `Ctrl+Enter` and `Enter` will trigger the action."
+        },
+        "lightAssistant.loadLastChatSession": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Whether to load the last chat session when the extension is started."
         }
       }
     }

@@ -4,8 +4,11 @@ const md = markdownit();
 let disableSend = false;
 let sendShortcut = '';
 
+let currentModelName = 'Model';
 let modelResponseContent;
 let modelResponseObject;
+
+let toDelteModel;
 
 let icons;
 
@@ -13,7 +16,7 @@ vscode.postMessage({
     command: 'init.ready'
 });
 
-
+autosize(document.getElementById('ta-del-model-info'));
 autosize(document.getElementById('ta-prompt-input'));
 
 function adjustDialogHeight() {
@@ -39,6 +42,7 @@ document.getElementById('add-model').onclick = () => {
 };
 
 document.getElementById('popup-background').onclick = () => {
+    document.getElementById('div-del-model').style.display = 'none';
     document.getElementById('div-add-model').style.display = 'none';
     document.getElementById('popup-background').style.display = 'none';
 };
@@ -66,3 +70,14 @@ document.getElementById('option-openai').onclick = () => {
 };
 
 document.getElementById('option-openai').click();
+
+
+
+function createSvg(icon){
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 448 512');
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', icon);
+    svg.appendChild(path);
+    return svg;
+}
