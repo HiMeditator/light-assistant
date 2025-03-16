@@ -27,3 +27,7 @@
 ### IDE 内聊天
 
 <img src="img/media/02.png" style="zoom:60%;" />
+
+### 聊天记录管理
+
+<img src="img/media/03.png" style="zoom:80%;" />

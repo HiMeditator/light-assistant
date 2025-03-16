@@ -71,12 +71,15 @@ svg{
     justify-content: center;
 }
 
-
-
-#title-add-model {
+.popup-title {
     font-size: 24px;
     font-weight: 600;
 }
+
+#note-del-model {
+    margin: 20px 0;
+}
+
 
 #note-add-model {
     margin: 16px 0;
@@ -101,7 +104,7 @@ svg{
     width: 25%;
 }
 
-#div-add-model button{
+#div-add-model button, #div-del-model button{
     width: 36%;
     margin: auto 5px;
 }

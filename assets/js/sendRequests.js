@@ -19,6 +19,20 @@ document.getElementById('form-add-model').addEventListener('submit', function(ev
     event.preventDefault();
 });
 
+document.getElementById('btn-del-submit').onclick = () => {
+    vscode.postMessage({
+        command: 'model.delete',
+        modelData: toDelteModel
+    });
+    document.getElementById('div-del-model').style.display = 'none';
+    document.getElementById('popup-background').style.display = 'none';
+};
+
+document.getElementById('btn-del-cancel').onclick = () => {
+    document.getElementById('div-del-model').style.display = 'none';
+    document.getElementById('popup-background').style.display = 'none';
+};
+
 document.getElementById('btn-add-submit').onclick = () => {
     const form = document.getElementById('form-add-model');
     if (!form.checkValidity()) { return; }

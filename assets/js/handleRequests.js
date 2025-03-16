@@ -1,9 +1,15 @@
 window.addEventListener('message', event => {
     const message = event.data;
-    console.log('Get mesaage:',message);
+    // console.log('Get mesaage:',message);
     switch (message.command) {
         case 'icons':
             icons = JSON.parse(message.icons);
+            break;
+        case 'prompt.load':
+            createUserRequestElement(message.data);
+            break;
+        case 'response.load':
+            loadResponse(message.model, message.data);
             break;
         case 'response.new':
             createResponseElement();
@@ -33,6 +39,12 @@ function disableInput(value){
     textarea.disabled = value;
 }
 
+function loadResponse(model, data) {
+    currentModelName = model;
+    createResponseElement();
+    updateResponseStream(data);
+}
+
 function createResponseElement() {
     let dialogItem = document.createElement('div');
     dialogItem.className = 'dialog-item';
@@ -48,7 +60,7 @@ function createResponseElement() {
 
     let modelName = document.createElement('div');
     modelName.className = 'model-name';
-    modelName.textContent = 'Model';
+    modelName.textContent = currentModelName;
     divInfo.appendChild(modelName);
 
     modelResponseObject = document.createElement('div');
@@ -65,9 +77,11 @@ function updateResponseStream(data) {
     const html = md.render(modelResponseContent);
     modelResponseObject.innerHTML = html;
 }
+
 function updateModelList(models, currentModel) {
     const icon1 = icons['circle-nodes'];
     const icon2 = icons['hexagon-node'];
+    const icon3 = icons['trash-can'];
     const modelList = document.getElementById('model-list');
     modelList.innerHTML = '';
     document.getElementById('model-selected-value').value = '';
@@ -78,18 +92,17 @@ function updateModelList(models, currentModel) {
     for (let model of models) {
         let li = document.createElement('li');
         li.setAttribute('data-value', JSON.stringify(model));
-        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', '0 0 448 512');
-        let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', model['type'] === 'ollama' ? icon1 : icon2);
-        svg.appendChild(path);
+        let svg = createSvg(model['type'] === 'ollama' ? icon1 : icon2);
+        let svg2 = createSvg(icon3);
         let span = document.createElement('span');
         span.textContent = ('title' in model) ? model['title'] : model['model'];
         li.appendChild(svg);
         li.appendChild(span);
+        li.appendChild(svg2);
         li.addEventListener('click', function () {
             let target = document.getElementById('model-selected-value');
-            target.textContent = this.querySelector('span').textContent;
+            target.innerHTML = this.querySelector('span').textContent;
+            currentModelName = `${this.querySelector('span').textContent}`;
             target.value = this.getAttribute('data-value');
             document.querySelectorAll('#model-list li').forEach(_li => _li.classList.remove('selected'));
             li.classList.add('selected');
@@ -97,6 +110,14 @@ function updateModelList(models, currentModel) {
                 command: 'model.select',
                 model: this.getAttribute('data-value')
             });
+        });
+        svg2.addEventListener('click', function (event) {
+            toDelteModel = this.parentNode.getAttribute('data-value');
+            const delModel = JSON.parse(this.parentNode.getAttribute('data-value'))['model'];
+            event.stopPropagation();
+            document.getElementById("note-del-model").innerHTML = `Are you sure you want to delete <b>${delModel}</b>?`;
+            document.getElementById('popup-background').style.display = 'block';
+            document.getElementById('div-del-model').style.display = 'block';
         });
         modelList.appendChild(li);
         if(model['type'] === currentModel['type'] && model['model'] === currentModel['model']){

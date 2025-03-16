@@ -34,6 +34,11 @@
 - `base_url`：若 `type` 为 `openai` 则必须。API 请求的基础 URL，取决于您的模型服务商。
 - `api_key`：若 `type` 为 `openai` 则必须。API 密钥，从您的模型服务商获取。
 
+以下是一些提供商的 `base_url`：
+- OpenAI: https://api.openai.com/v1
+- DeepSeek：https://api.deepseek.com
+- 阿里云：https://dashscope.aliyuncs.com/compatible-mode/v1
+
 以下是一个具体示例：
 
 ```json
@@ -55,11 +60,10 @@
       "api_key": "sk-********************************"
     },
     {
+      "model": "gpt-4o",
       "type": "openai",
-      "model": "deepseek-r1-distill-llama-70b",
-      "title": "ds-r1-dstl-llama"
-      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-      "api_key": "sk-********************************"
+      "base_url": "https://api.openai.com/v1",
+      "api_key": "sk-proj-<omitted>"
     }
   ]
 }

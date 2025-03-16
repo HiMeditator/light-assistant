@@ -1,3 +1,4 @@
+import exp from 'constants';
 import * as vscode from 'vscode';
 
 export function updateConfigurations(view?: vscode.WebviewView) {
@@ -6,7 +7,7 @@ export function updateConfigurations(view?: vscode.WebviewView) {
     const configurations = {
         'sendRequestShortcut': sendRequestShortcut
     };
-    console.log(configurations);
+    // console.log(configurations);
     view?.webview.postMessage({
         command: 'update.configurations',
         configurations: JSON.stringify(configurations)

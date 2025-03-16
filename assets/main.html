@@ -16,10 +16,19 @@
 
   <body>
     <div id="root">
+
     <div id="popup-background"></div>
+
+    <div class="div-popup" id="div-del-model">
+      <div class="popup-title">Delete Model</div>
+      <div id="note-del-model"></div>
+      <button id="btn-del-submit">Yes</button> 
+      <button id="btn-del-cancel">No</button>
+    </div>
+
     <div class="div-popup" id="div-add-model">
       <form id="form-add-model">
-        <div id="title-add-model">Add Model</div>
+        <div class="popup-title">Add Model</div>
         <div id="note-add-model">
           <p id="note-add-model-openai">The model you provided needs to be compatible with the OpenAI API.</p>
           <p id="note-add-model-ollama">Please confirm that you have installed Ollama locally and configured the corresponding model.</p>
@@ -85,6 +94,7 @@
         </div>
       </div>
     </div>
+
     </div>
     
     <script src="{{commonUtils.js}}"></script>

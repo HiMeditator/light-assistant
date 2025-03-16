@@ -27,3 +27,7 @@
 ### In-IDE Chat
 
 <img src="docs/img/media/02.png" style="zoom:60%;" />
+
+### Chat Log Management
+
+<img src="docs/img/media/03.png" style="zoom:80%;" />

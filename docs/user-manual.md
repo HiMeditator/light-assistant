@@ -34,6 +34,11 @@ The configuration format is as follows:
 - `base_url`: Required if `type` is `openai`. The base URL for API requests, depending on your model service provider.
 - `api_key`: Required if `type` is `openai`. The API key is obtained from your model service provider.
 
+Here are the `base_url` of some providers:
+- OpenAI: https://api.openai.com/v1
+- DeepSeek: https://api.deepseek.com
+- Alibaba Cloud: https://dashscope.aliyuncs.com/compatible-mode/v1
+
 Here is a specific example:
 
 ```json
@@ -55,11 +60,10 @@ Here is a specific example:
       "api_key": "sk-********************************"
     },
     {
+      "model": "gpt-4o",
       "type": "openai",
-      "model": "deepseek-r1-distill-llama-70b",
-      "title": "ds-r1-dstl-llama",
-      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-      "api_key": "sk-********************************"
+      "base_url": "https://api.openai.com/v1",
+      "api_key": "sk-proj-<omitted>"
     }
   ]
 }
