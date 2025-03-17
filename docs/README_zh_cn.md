@@ -31,3 +31,9 @@
 ### 聊天记录管理
 
 <img src="img/media/03.png" style="zoom:80%;" />
+
+### 数学公式渲染
+
+相当多的代码助手不支持数学公式渲染，但 light-assistant 提供了良好的数学公式渲染。
+
+<img src="img/media/04.png" style="zoom:80%;" />

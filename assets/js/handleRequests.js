@@ -74,7 +74,11 @@ function createResponseElement() {
 
 function updateResponseStream(data) {
     modelResponseContent += data;
-    const html = marked.parse(modelResponseContent);
+    // const contentKaTeX = modelResponseContent;
+    const contentKaTeX = replaceMathFormulas(modelResponseContent);
+    // console.log(modelResponseContent);
+    // console.log(contentKaTeX);
+    const html = marked.parse(contentKaTeX);
     modelResponseObject.innerHTML = html;
     modelResponseObject.querySelectorAll('pre code').forEach(el => {
         const pre = el.parentNode;
@@ -107,9 +111,8 @@ function updateResponseStream(data) {
         hljs.highlightElement(el);
         // console.log(el.textContent);
     });
-    console.log(data);
-    console.log(html);
-    console.log(modelResponseObject);
+    // console.log(html);
+    // console.log(modelResponseObject);
 }
 
 function updateModelList(models, currentModel) {
@@ -181,4 +184,45 @@ function JSONparse(str) {
         console.log(e);
         return {};
     }
+}
+
+function replaceMathFormulas(markdownText) {
+    const regexCodeBlock = /```[\s\S]*?```|`[^`]*`/g;
+
+    const regexInlineDollar = /\$(.*?)\$/g;
+    const regexBlockDollar = /\$\$(.*?)\$\$/gs;
+    const regexInlineParentheses = /\\\((.*?)\\\)/g;
+    const regexBlockBrackets = /\\\[([\s\S]*?)\\\]/g;
+
+    const placeholders = [];
+    let placeholderIndex = 0;
+    const textWithoutCode = markdownText.replace(regexCodeBlock, (match) => {
+        placeholders.push(match);
+        return `__CODE_PLACEHOLDER_${placeholderIndex++}__`;
+    });
+
+    let replacedText = textWithoutCode.replace(regexInlineDollar,(match, p1) => {
+        return katex.renderToString(p1, { throwOnError: false });
+    });
+    replacedText = replacedText.replace(regexInlineParentheses, (match, p1) => {
+        return katex.renderToString(p1, { throwOnError: false });
+    });
+    replacedText = replacedText.replace(regexBlockDollar, (match, p1) => {
+        return katex.renderToString(p1, {
+            displayMode: true,
+            throwOnError: false
+        });
+    });
+    replacedText = replacedText.replace(regexBlockBrackets, (match, p1) => {
+        return katex.renderToString(p1, {
+            displayMode: true,
+            throwOnError: false
+        });
+    });
+
+    placeholders.forEach((code, index) => {
+        // replacedText = replacedText.replace(`__CODE_PLACEHOLDER_${index}__`, code);
+        replacedText = replacedText.split(`__CODE_PLACEHOLDER_${index}__`).join(code);
+    });
+    return replacedText;
 }

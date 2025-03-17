@@ -46,4 +46,6 @@ This is the first release of the plugin, and currently it only has the chatting 
 2025-03-17
 
 - Improve: markdown display effect
-- Add: code highlight
+- Add: code block highlighting
+- Add: highlight theme
+- Add: mathematical formula rendering

@@ -85,9 +85,10 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
     private _getHtmlForWebview(webview: vscode.Webview) {
         const styleSheets = [
             'reset', 'vscode', 'popup', 'dialog', 'input',
-            `highlight.js/${this.config.get<string>('codeHighlightTheme')}`
+            `highlight.js/${this.config.get<string>('codeHighlightTheme')}`,
+            'katex/katex.min'
         ];
-        const libs = ['autosize.min', 'highlight.min' ,'marked.min'];
+        const libs = ['autosize.min', 'highlight.min' ,'marked.min', 'katex.min'];
         const scripts = ['commonUtils', 'handleRequests', 'sendRequests'];
         const htmlPath = vscode.Uri.joinPath(this._extensionUri, 'assets/main.html');
         let htmlContent = fs.readFileSync(htmlPath.fsPath, 'utf8');

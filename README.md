@@ -31,3 +31,9 @@
 ### Chat Log Management
 
 <img src="docs/img/media/03.png" style="zoom:80%;" />
+
+### Mathematical Formula Rendering
+
+Many code assistants do not support mathematical formula rendering, but light-assistant provides good rendering of mathematical formulas.
+
+<img src="docs/img/media/04.png" style="zoom:80%;" />
