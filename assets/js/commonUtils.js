@@ -1,5 +1,4 @@
 const vscode = acquireVsCodeApi();
-const md = markdownit();
 
 let disableSend = false;
 let sendShortcut = '';
@@ -11,6 +10,7 @@ let modelResponseObject;
 let toDelteModel;
 
 let icons;
+
 
 vscode.postMessage({
     command: 'init.ready'
@@ -76,6 +76,18 @@ document.getElementById('option-openai').click();
 function createSvg(icon){
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 448 512');
+    let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', icon);
+    svg.appendChild(path);
+    return svg;
+}
+
+function createSvgWithTitle(icon, titleText) {
+    let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 448 512');
+    let title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.textContent = titleText;
+    svg.appendChild(title);
     let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', icon);
     svg.appendChild(path);

@@ -50,7 +50,7 @@ export class RequestModel{
             }
         } catch(error) {
             vscode.window.showErrorMessage(`Request failed: ${error}`);
-            console.log(error);
+            // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',
                 data: `**${error}**`
@@ -106,7 +106,7 @@ export class RequestModel{
             }
         } catch(error) {
             vscode.window.showErrorMessage(`Request failed: ${error}`);
-            console.log(error);
+            // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',
                 data: `**${error}**`

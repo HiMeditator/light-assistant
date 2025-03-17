@@ -83,15 +83,23 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview) {
-        const styleSheets = ['reset', 'vscode', 'popup', 'dialog', 'input'];
-        const libs = ['autosize.min', 'markdown-it.min'];
+        const styleSheets = [
+            'reset', 'vscode', 'popup', 'dialog', 'input',
+            `highlight.js/${this.config.get<string>('codeHighlightTheme')}`
+        ];
+        const libs = ['autosize.min', 'highlight.min' ,'marked.min'];
         const scripts = ['commonUtils', 'handleRequests', 'sendRequests'];
         const htmlPath = vscode.Uri.joinPath(this._extensionUri, 'assets/main.html');
         let htmlContent = fs.readFileSync(htmlPath.fsPath, 'utf8');
         // console.log(htmlContent);
         for(const styleSheet of styleSheets) {
             const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/', styleSheet + '.css'));
-            htmlContent = htmlContent.replace(`{{${styleSheet}.css}}`, styleUri.toString());
+            if(styleSheet.includes('highlight.js/')){
+                htmlContent = htmlContent.replace(`{{highlight.css}}`, styleUri.toString());
+            }
+            else{
+                htmlContent = htmlContent.replace(`{{${styleSheet}.css}}`, styleUri.toString());
+            }
         }
         for(const lib of libs) {
             const libUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/js/libs/', lib + '.js'));

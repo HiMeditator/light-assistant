@@ -10,7 +10,7 @@ import * as os from 'os';
 
 import { ConfigFile } from './classes/configFile';
 import { RequestModel } from './classes/requestModel';
-import { ChatSessions } from './classes/chatSessions'
+import { ChatSessions } from './classes/chatSessions';
 import { MainViewProvider } from './views/MainViewProvider';
 
 let faIcons: any;
@@ -68,7 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
         // vscode.commands.executeCommand('revealFileInOS', sessionDirUri);
         const quickPick = vscode.window.createQuickPick();
         let sessionItems = [];
-        for (const session of chatSessions.manifest){
+        for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
+            const session = chatSessions.manifest[i];
             sessionItems.push({
                 label: session.name,
                 description: `$(symbol-folder)${session.workspace}`,
@@ -88,7 +89,8 @@ export function activate(context: vscode.ExtensionContext) {
             if (event.button.tooltip === 'Delete Session') {
                 mainViewProvider.deleteChatSession(event.item.label);
                 sessionItems = [];
-                for (const session of chatSessions.manifest){
+                for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
+                    const session = chatSessions.manifest[i];
                     sessionItems.push({
                         label: session.name,
                         description: `$(symbol-folder)${session.workspace}`,

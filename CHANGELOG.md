@@ -40,3 +40,10 @@ This is the first release of the plugin, and currently it only has the chatting 
 - Add: delete model option
 - Add: select history chat session
 - Add: delete history chat session
+
+## v0.0.6
+
+2025-03-17
+
+- Improve: markdown display effect
+- Add: code highlight

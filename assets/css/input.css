@@ -19,6 +19,11 @@
     background-color: var(--vscode-input-background, #ffffff);
 }
 
+#div-input ul, #div-input ol {
+    margin: 0;
+    padding: 0;
+}
+
 #div-input:focus-within {
     border: 1px solid var(--vscode-button-hoverBackground, #5a4579);
 }

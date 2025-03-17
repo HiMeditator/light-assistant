@@ -74,8 +74,42 @@ function createResponseElement() {
 
 function updateResponseStream(data) {
     modelResponseContent += data;
-    const html = md.render(modelResponseContent);
+    const html = marked.parse(modelResponseContent);
     modelResponseObject.innerHTML = html;
+    modelResponseObject.querySelectorAll('pre code').forEach(el => {
+        const pre = el.parentNode;
+        if(pre.querySelector('code-info-div') === null){
+            const codeClasses = el.className.split(' ');
+            let language = 'unknown';
+            for(let codeClass of codeClasses){
+                if(codeClass.startsWith('language-')){
+                    language = codeClass.substring(9);
+                    break;
+                }
+            }
+            const codeInfoDiv = document.createElement('div');
+            codeInfoDiv.className = 'code-info-div';
+            const svgInfo = createSvgWithTitle(icons['info'], language);
+            const svgCopy = createSvgWithTitle(icons['clipboard'], 'copy');
+            svgCopy.addEventListener('click', () => {
+                const path = svgCopy.querySelector('path');
+                const originalD = path.getAttribute('d');
+                path.setAttribute('d', icons['check']);
+                setTimeout(() => {
+                    path.setAttribute('d', originalD);
+                }, 500);
+                navigator.clipboard.writeText(el.textContent);
+            });
+            codeInfoDiv.appendChild(svgInfo);
+            codeInfoDiv.appendChild(svgCopy);
+            pre.appendChild(codeInfoDiv);
+        }
+        hljs.highlightElement(el);
+        // console.log(el.textContent);
+    });
+    console.log(data);
+    console.log(html);
+    console.log(modelResponseObject);
 }
 
 function updateModelList(models, currentModel) {

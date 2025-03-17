@@ -15,7 +15,7 @@
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -84,22 +84,22 @@
         {
           "command": "light-assistant.goto.settings",
           "when": "view == light-assistant.main",
-          "group": "navigation"
+          "group": "navigation@4"
         },
         {
           "command": "light-assistant.goto.config",
           "when": "view == light-assistant.main",
-          "group": "navigation"
+          "group": "navigation@3"
         },
         {
           "command": "light-assistant.sessions.load",
           "when": "view == light-assistant.main",
-          "group": "navigation"
+          "group": "navigation@2"
         },
         {
           "command": "light-assistant.chat.new",
           "when": "view == light-assistant.main",
-          "group": "navigation"
+          "group": "navigation@1"
         }
       ]
     },
@@ -108,7 +108,10 @@
       "properties": {
         "lightAssistant.sendRequestShortcut": {
           "type": "string",
-          "enum": ["Ctrl+Enter", "Enter"],
+          "enum": [
+            "Ctrl+Enter",
+            "Enter"
+          ],
           "default": "Ctrl+Enter",
           "markdownDescription": "Set the shortcut key for sending requests. When selecting the `Enter` option, both `Ctrl+Enter` and `Enter` will trigger the action."
         },
@@ -116,6 +119,19 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Whether to load the last chat session when the extension is started."
+        },
+        "lightAssistant.codeHighlightTheme": {
+          "type": "string",
+          "enum": [
+            "arduino-light",
+            "github",
+            "qtcreator-light",
+            "androidstudio",
+            "github-dark",
+            "github-dark-dimmed"
+          ],
+          "default": "github",
+          "markdownDescription": "Set the theme for code highlighting. **This will take effect after restarting the plugin.**"
         }
       }
     }
