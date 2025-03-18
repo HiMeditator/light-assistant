@@ -15,7 +15,7 @@
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -69,7 +69,7 @@
         "icon": "$(json)"
       },
       {
-        "command": "light-assistant.sessions.load",
+        "command": "light-assistant.load.sessions",
         "title": "Load Chat Session",
         "icon": "$(history)"
       },
@@ -92,7 +92,7 @@
           "group": "navigation@3"
         },
         {
-          "command": "light-assistant.sessions.load",
+          "command": "light-assistant.load.sessions",
           "when": "view == light-assistant.main",
           "group": "navigation@2"
         },

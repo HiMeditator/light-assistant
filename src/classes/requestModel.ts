@@ -121,9 +121,10 @@ export class RequestModel{
         this.isRequesting = false;
     }
 
-    public clearChatSession(){
+    public clearChatSession(view?: vscode.WebviewView){
         this.chatMessages = [];
         this.chatSession = [];
+        view?.webview.postMessage({command: 'chat.new'});
     }
     
     public pushUserMessage(content: string){

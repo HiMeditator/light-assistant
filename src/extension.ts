@@ -21,14 +21,17 @@ let chatSessions: ChatSessions;
 export function activate(context: vscode.ExtensionContext) {
 
     const pluginDir = vscode.Uri.joinPath(vscode.Uri.file(os.homedir()),'/.light-assistant');
+
     const configUri = vscode.Uri.joinPath(pluginDir, "config.json");
     const sessionDirUri = vscode.Uri.joinPath(pluginDir, "sessions");
     const sessionManifestUri = vscode.Uri.joinPath(sessionDirUri, 'manifest.json');
     const faPath = vscode.Uri.joinPath(context.extensionUri, '/assets/icon/font-awesome.json').fsPath;
+    
     faIcons = JSON.parse(fs.readFileSync(faPath, 'utf8'));
     configFile = new ConfigFile(configUri, context);
     requestModel = new RequestModel(sessionDirUri);
     chatSessions = new ChatSessions(sessionDirUri, sessionManifestUri, requestModel);
+
 
     const mainViewProvider = new MainViewProvider(
         context.extensionUri,
@@ -46,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
     );
 
 
-    const configurationChange = vscode.workspace.onDidChangeConfiguration(event =>{
+    const configurationChange = vscode.workspace.onDidChangeConfiguration(event => {
         if(event.affectsConfiguration('lightAssistant')){
             mainViewProvider.updateConfiguration();
         }
@@ -55,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
     const gotoSettings = vscode.commands.registerCommand('light-assistant.goto.settings', () => {
-        vscode.commands.executeCommand('workbench.action.openSettings', '@ext:HiMeditator.light-assistant');
+        vscode.commands.executeCommand('workbench.action.openSettings', '@ext:himeditator.light-assistant');
     });
     context.subscriptions.push(gotoSettings);
 
@@ -64,15 +67,16 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(gotoConfig);
 
-    const sessionsLoad = vscode.commands.registerCommand('light-assistant.sessions.load', () => {
+    const sessionsLoad = vscode.commands.registerCommand('light-assistant.load.sessions', () => {
         // vscode.commands.executeCommand('revealFileInOS', sessionDirUri);
         const quickPick = vscode.window.createQuickPick();
         let sessionItems = [];
+        console.log(chatSessions.manifest);
         for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
             const session = chatSessions.manifest[i];
             sessionItems.push({
                 label: session.name,
-                description: `$(symbol-folder)${session.workspace}`,
+                description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
                 detail: session.overview,
                 buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: 'Delete Session'}]
             });
@@ -93,7 +97,7 @@ export function activate(context: vscode.ExtensionContext) {
                     const session = chatSessions.manifest[i];
                     sessionItems.push({
                         label: session.name,
-                        description: `$(symbol-folder)${session.workspace}`,
+                        description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
                         detail: session.overview,
                         buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: 'Delete Session'}]
                     });
@@ -116,5 +120,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
     chatSessions.saveChatSession();
+    chatSessions.syncManifestWithFiles();
     chatSessions.saveManifest();
 }

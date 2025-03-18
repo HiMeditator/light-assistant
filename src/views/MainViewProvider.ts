@@ -32,10 +32,12 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
     public deleteChatSession(fileName: string) {
         this.chatSessions.deleteChatSession(fileName, this._view);
     }
+    
     public initView(){
         this._view?.webview.postMessage({command: 'icons', icons: JSON.stringify(this.faIcons)});
         this.updateConfiguration();
         this.configFile.updateModelListFromConfig(this._view);
+        this.chatSessions.syncManifestWithFiles();
         if(this.config.get<boolean>('loadLastChatSession')){
             this.chatSessions.loadLastChatSession(this._view);
         }

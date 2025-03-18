@@ -3,7 +3,24 @@ import * as fs from 'fs';
 import { getTimeStr } from '../utils/functions';
 import { RequestModel } from './requestModel';
 
-export class ChatSessions {
+
+interface ChatSessionsInterface {
+    manifest: any[];
+    sessionName: string;
+    sessionDirUri: vscode.Uri;
+    sessionManifestUri: vscode.Uri;
+    requestModel: RequestModel;
+    deleteChatSession(fileName: string, view?: vscode.WebviewView): void;
+    newChatSession(view?: vscode.WebviewView, saveChatLog?: boolean): void;
+    loadLastChatSession(view?: vscode.WebviewView): void;
+    loadChatSession(fileName: string, view?: vscode.WebviewView): void;
+    saveChatSession(): void;
+    saveManifest(): void;
+    syncManifestWithFiles(): void;
+}
+
+
+export class ChatSessions implements ChatSessionsInterface {
     manifest: any[] = [];
     sessionName: string;
     constructor(
@@ -17,14 +34,22 @@ export class ChatSessions {
         if(!fs.existsSync(this.sessionManifestUri.fsPath)){
             fs.writeFileSync(this.sessionManifestUri.fsPath, `[]`);
         }
-        this.manifest = JSON.parse(fs.readFileSync(sessionManifestUri.fsPath, 'utf8'));
+        try{
+            this.manifest = JSON.parse(fs.readFileSync(sessionManifestUri.fsPath, 'utf8'));
+        }
+        catch (error) {
+            this.manifest = [];
+        }
         this.sessionName = `${getTimeStr()}.json`;
         // console.log(this.sessionManifest);
     }
 
     public deleteChatSession(fileName: string, view?: vscode.WebviewView){
         const filePath = vscode.Uri.joinPath(this.sessionDirUri, fileName);
-        fs.unlinkSync(filePath.fsPath);
+        try{
+            fs.unlinkSync(filePath.fsPath);
+        }
+        catch (error) {}
         for(let i = 0; i < this.manifest.length; i++){
             if(this.manifest[i].name === fileName){
                 this.manifest.splice(i, 1);
@@ -46,13 +71,12 @@ export class ChatSessions {
             this.saveChatSession();
         }
         this.sessionName = `${getTimeStr()}.json`;
-        this.requestModel.clearChatSession();
-        view?.webview.postMessage({command: 'chat.new'});
+        this.requestModel.clearChatSession(view);
     }
 
     public loadLastChatSession(view?: vscode.WebviewView){
-        if(this.manifest.length === 0) { return;}
-        this.loadChatSession(this.manifest[this.manifest.length -1].name, view);
+        if(this.manifest.length === 0) { return; }
+        this.loadChatSession(this.manifest[this.manifest.length - 1].name, view);
     }
 
     public loadChatSession(fileName: string, view?: vscode.WebviewView){
@@ -71,28 +95,32 @@ export class ChatSessions {
         }
         this.sessionName = fileName;
         const filePath = vscode.Uri.joinPath(this.sessionDirUri, fileName);
-        const chatSession = JSON.parse(fs.readFileSync(filePath.fsPath, 'utf8'));
-        view?.webview.postMessage({command: 'chat.new'});
-        this.requestModel.clearChatSession();
-        for(const message of chatSession){
-            if(message.role === 'user'){
-                this.requestModel.pushUserMessage(message.content);
-                view?.webview.postMessage({
-                    command: 'prompt.load',
-                    data: message.content
-                });
+        try {
+            const chatSession = JSON.parse(fs.readFileSync(filePath.fsPath, 'utf8'));
+            this.requestModel.clearChatSession(view);
+            for(const message of chatSession){
+                if(message.role === 'user'){
+                    this.requestModel.pushUserMessage(message.content);
+                    view?.webview.postMessage({
+                        command: 'prompt.load',
+                        data: message.content
+                    });
+                }
+                else{
+                    this.requestModel.pushModelMessage(
+                        message.content, message.role,
+                        message.model, message.success
+                    );
+                    view?.webview.postMessage({
+                        command: 'response.load',
+                        model: message.model,
+                        data: message.content
+                    });
+                }
             }
-            else{
-                this.requestModel.pushModelMessage(
-                    message.content, message.role,
-                    message.model, message.success
-                );
-                view?.webview.postMessage({
-                    command: 'response.load',
-                    model: message.model,
-                    data: message.content
-                });
-            }
+        }
+        catch (error) {
+            vscode.window.showErrorMessage(`Error loading chat session: ${error}`);
         }
     }
 
@@ -110,7 +138,7 @@ export class ChatSessions {
         if(!inManifest){
             let content = this.requestModel.chatSession[0].content;
             if(content.length > 64){
-                content = content.substring(0, 100) + '...';
+                content = content.substring(0, 64) + '...';
             }
             this.manifest.push({
                 name: this.sessionName,
@@ -123,7 +151,7 @@ export class ChatSessions {
         const filePath = vscode.Uri.joinPath(this.sessionDirUri, this.sessionName);
         fs.writeFileSync(
             filePath.fsPath,
-            JSON.stringify(this.requestModel.chatSession,null, 2)
+            JSON.stringify(this.requestModel.chatSession, null, 2)
         );
         this.sessionName = `${getTimeStr()}.json`;
     }
@@ -133,5 +161,45 @@ export class ChatSessions {
             this.sessionManifestUri.fsPath,
             JSON.stringify(this.manifest, null, 2)
         );
+    }
+
+    public syncManifestWithFiles(){
+        const files: string[] = [];
+        try {
+            const entries = fs.readdirSync(this.sessionDirUri.fsPath);
+            for(const entry of entries){
+                if(entry.endsWith('.json') && entry !== 'manifest.json'){
+                    files.push(entry);
+                }
+            };
+        } catch (err) {}
+
+        for(let i = 0; i < this.manifest.length; i++){
+            if(!files.includes(this.manifest[i].name)){
+                this.manifest.splice(i, 1);
+                i--;
+            }
+        }
+
+        for(const file of files){
+            if(!this.manifest.find(item => item.name === file)){
+                const filePath = vscode.Uri.joinPath(this.sessionDirUri, file);
+                let content = '';
+                try {
+                    content = JSON.parse(fs.readFileSync(filePath.fsPath, 'utf8'))[0]['content'];
+                }
+                catch (error) { content = 'load content error'; }
+                if(content.length > 64){
+                    content = content.substring(0, 64) + '...';
+                }
+                this.manifest.push({
+                    name: file,
+                    overview: content,
+                    workspace: vscode.workspace.workspaceFolders?.[0].uri.fsPath,
+                    update: new Date().toLocaleString()
+                });
+            }
+        }
+        console.log(this.manifest);
     }
 }
