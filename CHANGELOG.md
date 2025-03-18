@@ -52,7 +52,10 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 ## v0.0.7
 
-2025-03-18
+2025-03-19
 
-- Fix: problems encountered when loading chat sessions
+- Fix: problems encountered when managing chat sessions
+- Fix: mathematical formula rendering with double dollars
+- Improve: reasoning content display
 - Add: some exception handling
+- Add: chat item delete option

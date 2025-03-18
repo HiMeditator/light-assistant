@@ -30,7 +30,8 @@
 
 ### 聊天记录管理
 
-<img src="img/media/03.png" style="zoom:80%;" />
+<img src="img/media/03.png" style="zoom:40%;" />
+<img src="img/media/05.png" style="zoom:50%;" />
 
 ### 数学公式渲染
 

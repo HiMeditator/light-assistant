@@ -99,22 +99,27 @@ export class ChatSessions implements ChatSessionsInterface {
             const chatSession = JSON.parse(fs.readFileSync(filePath.fsPath, 'utf8'));
             this.requestModel.clearChatSession(view);
             for(const message of chatSession){
-                if(message.role === 'user'){
-                    this.requestModel.pushUserMessage(message.content);
+                if(message['role'] === 'user'){
+                    this.requestModel.pushUserMessage(message['content'], message['iso_time']);
                     view?.webview.postMessage({
-                        command: 'prompt.load',
-                        data: message.content
+                        command: 'request.load',
+                        prompt: message['content'],
+                        id: message['iso_time']
                     });
                 }
                 else{
                     this.requestModel.pushModelMessage(
-                        message.content, message.role,
-                        message.model, message.success
+                        message['content'], message['reasoning'],
+                        message['iso_time'], message['type'],
+                        message['model'], message['success']
                     );
+                    let full_content = message['reasoning'] + message['content'];
+                    // console.log(full_content);
                     view?.webview.postMessage({
                         command: 'response.load',
-                        model: message.model,
-                        data: message.content
+                        model: message['model'],
+                        data: full_content,
+                        id: message['iso_time']
                     });
                 }
             }
@@ -125,7 +130,27 @@ export class ChatSessions implements ChatSessionsInterface {
     }
 
     public saveChatSession(){
-        if(this.requestModel.chatSession.length === 0) { return; }
+        if(this.requestModel.chatSession.length <= 1) {
+            const filePath = vscode.Uri.joinPath(this.sessionDirUri, this.sessionName);
+            try{
+                fs.unlinkSync(filePath.fsPath);
+                for(let i = 0; i < this.manifest.length; i++){
+                    if(this.manifest[i].name === this.sessionName){
+                        this.manifest.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            catch(error) { }
+            return;
+        }
+        
+        const lastMessage = this.requestModel.chatMessages[this.requestModel.chatMessages.length - 1];
+        if(lastMessage.role === 'user'){
+            this.requestModel.chatMessages.pop();
+            this.requestModel.chatSession.pop();
+        }
+
         let inManifest = false;
         for(let i = 0; i < this.manifest.length; i++){
             if(this.sessionName === this.manifest[i].name){

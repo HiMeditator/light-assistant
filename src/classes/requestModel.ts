@@ -10,11 +10,12 @@ interface RequestModelInterface{
     chatSessionFolderUri: vscode.Uri;
     handleStop(view?: vscode.WebviewView): void;
     handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView): void;
-    requestOllama(prompt: string, model: string, view?: vscode.WebviewView): void;
-    requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, view?: vscode.WebviewView): void;
+    requestOllama(prompt: string, model: string, messageID: string, view?: vscode.WebviewView): void;
+    requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, messageID: string, view?: vscode.WebviewView): void;
     clearChatSession(view?: vscode.WebviewView): void;
-    pushUserMessage(content: string): void;
-    pushModelMessage(content: string, modelType: string, model: string, success?: boolean): void;
+    deleteMessageID(messageID: string, view?: vscode.WebviewView): void;
+    pushUserMessage(content: string, messageID: string): void;
+    pushModelMessage(content: string, cot: string, messageID: string, modelType: string, model: string, success?: boolean): void;
 }
 
 export class RequestModel implements RequestModelInterface{
@@ -39,13 +40,19 @@ export class RequestModel implements RequestModelInterface{
             vscode.window.showErrorMessage('No model selected, please select a model first.');
             return;
         }
+        const messageID = new Date().toISOString();
+        view?.webview.postMessage({
+            command: 'request.load',
+            prompt: prompt,
+            id: messageID
+        });
         const model = JSON.parse(modelStr);
         this.isRequesting = true;
         if(model['type'] === 'ollama'){
-            this.requestOllama(prompt, model['model'], view);
+            this.requestOllama(prompt, model['model'], messageID, view);
         }
         else if(model['type'] === 'openai'){
-            this.requestOpenAI(prompt, model['model'], model['base_url'], model['api_key'], view);
+            this.requestOpenAI(prompt, model['model'], model['base_url'], model['api_key'], messageID, view);
         }
         else {
             vscode.window.showErrorMessage('Error: unexpected model type. Check your config file.');
@@ -53,9 +60,11 @@ export class RequestModel implements RequestModelInterface{
         }
     }
     
-    public async requestOllama(prompt: string, model: string, view?: vscode.WebviewView){
+    public async requestOllama(prompt: string, model: string, messageID: string, view?: vscode.WebviewView){
         let responseContent = '';
-        view?.webview.postMessage({command: 'response.new'});
+        let cot = '';
+        this.pushUserMessage(prompt, messageID);
+        view?.webview.postMessage({command: 'response.new', id: messageID});
         try{
             const response = await ollama.chat({
                 model: model,
@@ -77,24 +86,26 @@ export class RequestModel implements RequestModelInterface{
                 data: `**${error}**`
             });
             view?.webview.postMessage({command: 'response.end'});
-            this.pushModelMessage(`${error}`, 'ollama', model, false);
+            this.pushModelMessage(`${error}`, cot, messageID, 'ollama', model, false);
             this.isRequesting = false;
             return;
         }
         view?.webview.postMessage({command: 'response.end'});
         if(responseContent.startsWith('<think>') && responseContent.indexOf('</think>') >= 0){
             const pos = responseContent.indexOf('</think>');
+            cot = responseContent.substring(0, pos + 8);
             responseContent = responseContent.substring(pos + 8);
         }
-        this.pushUserMessage(prompt);
-        this.pushModelMessage(responseContent, 'ollama', model);
+        this.pushModelMessage(responseContent, cot, messageID, 'ollama', model);
         this.isRequesting = false;
     }
 
-    public async requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, view?: vscode.WebviewView) {
+    public async requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, messageID:string, view?: vscode.WebviewView) {
         let responseContent = '';
+        let cot = '';
         let isReasoning = false;
-        view?.webview.postMessage({command: 'response.new'});
+        this.pushUserMessage(prompt, messageID);
+        view?.webview.postMessage({command: 'response.new', id: messageID});
         try {
             const openai = new OpenAI({
                 apiKey: api_key,
@@ -114,10 +125,12 @@ export class RequestModel implements RequestModelInterface{
                         isReasoning = true;
                     }
                     content += delta['reasoning_content'];
+                    cot += content;
                 }
                 if(delta['content']){
                     if(isReasoning){
                         content += '\n</think>\n\n';
+                        cot += '\n</think>\n\n';
                         isReasoning = false;
                     }
                     content += delta['content'];
@@ -137,13 +150,12 @@ export class RequestModel implements RequestModelInterface{
                 data: `**${error}**`
             });
             view?.webview.postMessage({command: 'response.end'});
-            this.pushModelMessage(`${error}`, 'openai', model, false);
+            this.pushModelMessage(`${error}`, cot, messageID, 'openai', model, false);
             this.isRequesting = false;
             return;
         }
         view?.webview.postMessage({command: 'response.end'});
-        this.pushUserMessage(prompt);
-        this.pushModelMessage(responseContent, 'openai', model);
+        this.pushModelMessage(responseContent, cot, messageID, 'openai', model);
         this.isRequesting = false;
     }
 
@@ -153,14 +165,34 @@ export class RequestModel implements RequestModelInterface{
         view?.webview.postMessage({command: 'chat.new'});
     }
     
-    public pushUserMessage(content: string){
-        this.chatMessages.push({ 'role': 'user', 'content': content });
-        this.chatSession.push({'role': 'user', 'content': content});
+    public deleteMessageID(messageID: string, view?: vscode.WebviewView) {
+        for(let i = 0; i < this.chatSession.length; i++){
+            if(this.chatSession[i]['iso_time'] === messageID && this.chatSession[i]['role'] === 'user') {
+                view?.webview.postMessage({command: 'request.delete', id: messageID});
+                this.chatSession.splice(i, 1);
+                this.chatMessages.splice(i, 1);
+            }
+            if(this.chatSession[i]['iso_time'] === messageID && this.chatSession[i]['role'] === 'assistant') {
+                view?.webview.postMessage({command: 'response.delete', id: messageID});
+                this.chatSession.splice(i, 1);
+                this.chatMessages.splice(i, 1);
+                break;
+            }
+        }
     }
-    public pushModelMessage(content: string, modelType: string, model: string, success: boolean = true){
+
+    public pushUserMessage(content: string, messageID: string){
+        this.chatMessages.push({ 'role': 'user', 'content': content });
+        this.chatSession.push({
+            'role': 'user', 'content': content,
+            'iso_time': messageID
+        });
+    }
+    public pushModelMessage(content: string, cot: string, messageID: string, modelType: string, model: string, success = true){
         this.chatMessages.push({ 'role': 'assistant', 'content': content });
         this.chatSession.push({
             'role': 'assistant', 'content': content,
+            'reasoning': cot, 'iso_time': messageID,
             'type': modelType, 'model': model, 'success': success
         });
     }

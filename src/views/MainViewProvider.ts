@@ -56,7 +56,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
         webviewView.webview.onDidReceiveMessage(message => {
-            // console.log(message);
+            // console.log('ts API',message);
             switch (message.command) {
                 case 'init.ready':
                     this.initView();
@@ -83,6 +83,9 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                 case 'model.delete':
                     this.configFile.deleteModelFromConfig(message.modelData, this._view);
                     break;
+                case 'id.delete':
+                    this.requestModel.deleteMessageID(message.id, this._view);
+                    break;
             }
         });
     }
@@ -94,7 +97,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
             'katex/katex.min'
         ];
         const libs = ['autosize.min', 'highlight.min' ,'marked.min', 'katex.min'];
-        const scripts = ['commonUtils', 'handleRequests', 'sendRequests'];
+        const scripts = ['common', 'dialog', 'input', 'popup'];
         const htmlPath = vscode.Uri.joinPath(this._extensionUri, 'assets/main.html');
         let htmlContent = fs.readFileSync(htmlPath.fsPath, 'utf8');
         // console.log(htmlContent);

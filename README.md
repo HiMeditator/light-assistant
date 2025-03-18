@@ -30,7 +30,8 @@
 
 ### Chat Log Management
 
-<img src="docs/img/media/03.png" style="zoom:80%;" />
+<img src="docs/img/media/03.png" style="zoom:40%;" />
+<img src="docs/img/media/05.png" style="zoom:50%;" />
 
 ### Mathematical Formula Rendering
 
