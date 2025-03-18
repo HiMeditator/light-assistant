@@ -200,6 +200,6 @@ export class ChatSessions implements ChatSessionsInterface {
                 });
             }
         }
-        console.log(this.manifest);
+        // console.log(this.manifest);
     }
 }

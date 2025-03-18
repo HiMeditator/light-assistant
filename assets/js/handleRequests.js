@@ -63,9 +63,43 @@ function createResponseElement() {
     modelName.textContent = currentModelName;
     divInfo.appendChild(modelName);
 
-    modelResponseObject = document.createElement('div');
-    modelResponseObject.className = 'dialog-content model-content';
-    dialogItem.appendChild(modelResponseObject);
+    let svgHideShow = createSvgWithTitle(icons['arrow-down'], 'show thought');
+    let svgStop = createSvgWithTitle(icons['ban'], 'stop generation', '0 0 512 512');
+    let svgDelete = createSvgWithTitle(icons['trash-can'], 'delete chat session');
+    let dialogItemControl = document.createElement('div');
+    dialogItemControl.className = 'dialog-item-control';
+    dialogItemControl.appendChild(svgHideShow);
+    dialogItemControl.appendChild(svgStop);
+    dialogItemControl.appendChild(svgDelete);
+    divInfo.appendChild(dialogItemControl);
+
+    svgHideShow.addEventListener('click', function () {
+        let parentNode = this.parentNode.parentNode.parentNode;
+        let thisModelCotContentNode = parentNode.querySelector('.model-cot-content');
+        if(thisModelCotContentNode.style.display === 'none'){
+            thisModelCotContentNode.style.display = 'block';
+            this.querySelector('path').setAttribute('d', icons['arrow-up']);
+            this.querySelector('title').innerText = 'hide thought';
+        }else{
+            thisModelCotContentNode.style.display = 'none';
+            this.querySelector('path').setAttribute('d', icons['arrow-down']);
+            this.querySelector('title').innerText = 'show thought';
+        }
+    });
+    svgStop.addEventListener('click', function () {
+        vscode.postMessage({
+            command: 'user.stop'
+        });
+    });
+
+
+    modelCotContentNode = document.createElement('div');
+    modelCotContentNode.className = 'model-cot-content';
+    dialogItem.appendChild(modelCotContentNode);
+
+    modelMainContentNode = document.createElement('div');
+    modelMainContentNode.className = 'dialog-content model-content';
+    dialogItem.appendChild(modelMainContentNode);
 
     document.getElementById('div-dialog').appendChild(dialogItem);
 
@@ -74,45 +108,26 @@ function createResponseElement() {
 
 function updateResponseStream(data) {
     modelResponseContent += data;
-    // const contentKaTeX = modelResponseContent;
-    const contentKaTeX = replaceMathFormulas(modelResponseContent);
-    // console.log(modelResponseContent);
-    // console.log(contentKaTeX);
-    const html = marked.parse(contentKaTeX);
-    modelResponseObject.innerHTML = html;
-    modelResponseObject.querySelectorAll('pre code').forEach(el => {
-        const pre = el.parentNode;
-        if(pre.querySelector('code-info-div') === null){
-            const codeClasses = el.className.split(' ');
-            let language = 'unknown';
-            for(let codeClass of codeClasses){
-                if(codeClass.startsWith('language-')){
-                    language = codeClass.substring(9);
-                    break;
-                }
-            }
-            const codeInfoDiv = document.createElement('div');
-            codeInfoDiv.className = 'code-info-div';
-            const svgInfo = createSvgWithTitle(icons['info'], language);
-            const svgCopy = createSvgWithTitle(icons['clipboard'], 'copy');
-            svgCopy.addEventListener('click', () => {
-                const path = svgCopy.querySelector('path');
-                const originalD = path.getAttribute('d');
-                path.setAttribute('d', icons['check']);
-                setTimeout(() => {
-                    path.setAttribute('d', originalD);
-                }, 500);
-                navigator.clipboard.writeText(el.textContent);
-            });
-            codeInfoDiv.appendChild(svgInfo);
-            codeInfoDiv.appendChild(svgCopy);
-            pre.appendChild(codeInfoDiv);
-        }
-        hljs.highlightElement(el);
-        // console.log(el.textContent);
-    });
-    // console.log(html);
-    // console.log(modelResponseObject);
+    let cotContent = '';
+    let mainContent = modelResponseContent;
+    if(mainContent.startsWith('<think>')){
+        [cotContent, mainContent] = splitThinkContent(mainContent);
+    }
+
+    if(cotContent !== ''){
+        renderMarkdownContent(modelCotContentNode, cotContent);
+    }
+    if(mainContent !== ''){
+        renderMarkdownContent(modelMainContentNode, mainContent);
+    }
+
+    if(cotContent !== '' && mainContent === ''){
+        modelCotContentNode.style.display = 'block';
+    }
+    else{
+        modelCotContentNode.style.display = 'none';
+    }
+    
 }
 
 function updateModelList(models, currentModel) {
@@ -184,6 +199,58 @@ function JSONparse(str) {
         console.log(e);
         return {};
     }
+}
+
+
+function renderMarkdownContent(target, content) {
+    const contentKaTeX = replaceMathFormulas(content);
+    const contentHTML = marked.parse(contentKaTeX);
+    target.innerHTML = contentHTML;
+    // console.log(contentHTML);
+    target.querySelectorAll('pre code').forEach(el => {
+        const pre = el.parentNode;
+        if(pre.querySelector('code-info-div') === null){
+            const codeClasses = el.className.split(' ');
+            let language = 'unknown';
+            for(let codeClass of codeClasses){
+                if(codeClass.startsWith('language-')){
+                    language = codeClass.substring(9);
+                    break;
+                }
+            }
+            const codeInfoDiv = document.createElement('div');
+            codeInfoDiv.className = 'code-info-div';
+            const svgInfo = createSvgWithTitle(icons['info'], language);
+            const svgCopy = createSvgWithTitle(icons['clipboard'], 'copy');
+            svgCopy.addEventListener('click', () => {
+                const path = svgCopy.querySelector('path');
+                const originalD = path.getAttribute('d');
+                path.setAttribute('d', icons['check']);
+                setTimeout(() => {
+                    path.setAttribute('d', originalD);
+                }, 500);
+                navigator.clipboard.writeText(el.textContent);
+            });
+            codeInfoDiv.appendChild(svgInfo);
+            codeInfoDiv.appendChild(svgCopy);
+            pre.appendChild(codeInfoDiv);
+        }
+        hljs.highlightElement(el);
+    });
+}
+
+function splitThinkContent(currentResponse){
+    let pos = currentResponse.indexOf('</think>');
+    let thinkContent = '';
+    let restContent = '';
+    if(pos < 0){
+        thinkContent = currentResponse.substring(7);
+    }
+    else{
+        thinkContent = currentResponse.substring(7, pos);
+        restContent = currentResponse.substring(pos + 8);
+    }
+    return [thinkContent, restContent];
 }
 
 function replaceMathFormulas(markdownText) {

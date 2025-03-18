@@ -65,7 +65,10 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                     vscode.window.showErrorMessage("No model selected, please select a model first.");
                     break;
                 case 'user.request':
-                    this.requestModel.handelRequest(message.prompt, message.model, this._view);
+                    this.requestModel.handleRequest(message.prompt, message.model, this._view);
+                    break;
+                case 'user.stop':
+                    this.requestModel.handleStop(this._view);
                     break;
                 case 'models.load':
                     this.configFile.updateModelListFromConfig(this._view);

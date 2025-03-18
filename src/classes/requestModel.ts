@@ -1,10 +1,23 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { getTimeStr } from '../utils/functions';
 import ollama from 'ollama';
 import OpenAI from 'openai';
 
-export class RequestModel{
+interface RequestModelInterface{
+    chatMessages: any[];
+    chatSession: any[];
+    isRequesting: boolean;
+    chatSessionFolderUri: vscode.Uri;
+    handleStop(view?: vscode.WebviewView): void;
+    handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView): void;
+    requestOllama(prompt: string, model: string, view?: vscode.WebviewView): void;
+    requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, view?: vscode.WebviewView): void;
+    clearChatSession(view?: vscode.WebviewView): void;
+    pushUserMessage(content: string): void;
+    pushModelMessage(content: string, modelType: string, model: string, success?: boolean): void;
+}
+
+export class RequestModel implements RequestModelInterface{
     chatMessages: any[] = [];
     chatSession: any[] = [];
     isRequesting: boolean = false;
@@ -16,7 +29,12 @@ export class RequestModel{
         }
     }
 
-    public handelRequest(prompt: string, modelStr: string, view?: vscode.WebviewView){
+    public handleStop(view?: vscode.WebviewView){
+        if(!this.isRequesting) { return; }
+        vscode.window.showInformationMessage('Not implemented yet.');
+    }
+
+    public handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView){
         if(modelStr === undefined || modelStr === ''){
             vscode.window.showErrorMessage('No model selected, please select a model first.');
             return;
@@ -26,14 +44,17 @@ export class RequestModel{
         if(model['type'] === 'ollama'){
             this.requestOllama(prompt, model['model'], view);
         }
-        else{
+        else if(model['type'] === 'openai'){
             this.requestOpenAI(prompt, model['model'], model['base_url'], model['api_key'], view);
+        }
+        else {
+            vscode.window.showErrorMessage('Error: unexpected model type. Check your config file.');
+            return;
         }
     }
     
     public async requestOllama(prompt: string, model: string, view?: vscode.WebviewView){
         let responseContent = '';
-        this.pushUserMessage(prompt);
         view?.webview.postMessage({command: 'response.new'});
         try{
             const response = await ollama.chat({
@@ -61,6 +82,11 @@ export class RequestModel{
             return;
         }
         view?.webview.postMessage({command: 'response.end'});
+        if(responseContent.startsWith('<think>') && responseContent.indexOf('</think>') >= 0){
+            const pos = responseContent.indexOf('</think>');
+            responseContent = responseContent.substring(pos + 8);
+        }
+        this.pushUserMessage(prompt);
         this.pushModelMessage(responseContent, 'ollama', model);
         this.isRequesting = false;
     }
@@ -68,7 +94,6 @@ export class RequestModel{
     public async requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, view?: vscode.WebviewView) {
         let responseContent = '';
         let isReasoning = false;
-        this.pushUserMessage(prompt);
         view?.webview.postMessage({command: 'response.new'});
         try {
             const openai = new OpenAI({
@@ -117,6 +142,7 @@ export class RequestModel{
             return;
         }
         view?.webview.postMessage({command: 'response.end'});
+        this.pushUserMessage(prompt);
         this.pushModelMessage(responseContent, 'openai', model);
         this.isRequesting = false;
     }

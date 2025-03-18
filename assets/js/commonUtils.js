@@ -5,7 +5,9 @@ let sendShortcut = '';
 
 let currentModelName = 'Model';
 let modelResponseContent;
-let modelResponseObject;
+
+let modelCotContentNode;
+let modelMainContentNode;
 
 let toDelteModel;
 
@@ -16,7 +18,7 @@ vscode.postMessage({
     command: 'init.ready'
 });
 
-autosize(document.getElementById('ta-del-model-info'));
+// autosize(document.getElementById('ta-del-model-info'));
 autosize(document.getElementById('ta-prompt-input'));
 
 function adjustDialogHeight() {
@@ -73,18 +75,18 @@ document.getElementById('option-openai').click();
 
 
 
-function createSvg(icon){
+function createSvg(icon, size = '0 0 448 512'){
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 448 512');
+    svg.setAttribute('viewBox', size);
     let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', icon);
     svg.appendChild(path);
     return svg;
 }
 
-function createSvgWithTitle(icon, titleText) {
+function createSvgWithTitle(icon, titleText, size = '0 0 448 512') {
     let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 448 512');
+    svg.setAttribute('viewBox', size);
     let title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
     title.textContent = titleText;
     svg.appendChild(title);

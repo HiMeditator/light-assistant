@@ -71,7 +71,6 @@ export function activate(context: vscode.ExtensionContext) {
         // vscode.commands.executeCommand('revealFileInOS', sessionDirUri);
         const quickPick = vscode.window.createQuickPick();
         let sessionItems = [];
-        console.log(chatSessions.manifest);
         for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
             const session = chatSessions.manifest[i];
             sessionItems.push({
