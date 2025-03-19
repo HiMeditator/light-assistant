@@ -1,8 +1,9 @@
 # Light Assistant 用户手册
 
-插件版本 v0.0.3
+适用于插件版本 v0.0.3
 
 [English Version](user-manual.md)
+[日本語版](user-manual_ja.md)
 
 ## 配置模型
 

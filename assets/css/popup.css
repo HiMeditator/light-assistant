@@ -3,6 +3,7 @@ body{
 }
 
 #root{
+    padding-top: 5px;
     height: 100vh;
     overflow: hidden;
     background-color: var(--vscode-sideBar-background, #ffffff);

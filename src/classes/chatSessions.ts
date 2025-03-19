@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { getTimeStr } from '../utils/functions';
+import { LangDict } from './langDict';
 import { RequestModel } from './requestModel';
 
 
@@ -12,6 +13,7 @@ interface ChatSessionsInterface {
     requestModel: RequestModel;
     deleteChatSession(fileName: string, view?: vscode.WebviewView): void;
     newChatSession(view?: vscode.WebviewView, saveChatLog?: boolean): void;
+    loadWelcomeMessage(view?: vscode.WebviewView): void;
     loadLastChatSession(view?: vscode.WebviewView): void;
     loadChatSession(fileName: string, view?: vscode.WebviewView): void;
     saveChatSession(): void;
@@ -64,7 +66,7 @@ export class ChatSessions implements ChatSessionsInterface {
 
     public newChatSession(view?: vscode.WebviewView, saveChatLog = true){
         if(this.requestModel.isRequesting){
-            vscode.window.showInformationMessage('Fetching the response from model, please try again later.');
+            vscode.window.showInformationMessage(LangDict.get('ts.fetchingModelInfo'));
             return;
         }
         if(saveChatLog){
@@ -74,14 +76,21 @@ export class ChatSessions implements ChatSessionsInterface {
         this.requestModel.clearChatSession(view);
     }
 
+    public loadWelcomeMessage(view?: vscode.WebviewView) {
+        view?.webview.postMessage({ command: 'welcome.load' });
+    }
+
     public loadLastChatSession(view?: vscode.WebviewView){
-        if(this.manifest.length === 0) { return; }
+        if(this.manifest.length === 0) { 
+            this.loadWelcomeMessage(view);
+            return;
+        }
         this.loadChatSession(this.manifest[this.manifest.length - 1].name, view);
     }
 
     public loadChatSession(fileName: string, view?: vscode.WebviewView){
         if(this.requestModel.isRequesting){
-            vscode.window.showInformationMessage('Fetching the response from model, please try again later.');
+            vscode.window.showInformationMessage(LangDict.get('ts.fetchingModelInfo'));
             return;
         }
         this.saveChatSession();
@@ -119,13 +128,14 @@ export class ChatSessions implements ChatSessionsInterface {
                         command: 'response.load',
                         model: message['model'],
                         data: full_content,
-                        id: message['iso_time']
+                        id: message['iso_time'],
+                        type: message['type']
                     });
                 }
             }
         }
         catch (error) {
-            vscode.window.showErrorMessage(`Error loading chat session: ${error}`);
+            vscode.window.showErrorMessage(`${LangDict.get('ts.loadChatSessionError')} ${error}`);
         }
     }
 

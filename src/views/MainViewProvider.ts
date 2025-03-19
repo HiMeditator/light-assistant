@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { LangDict } from '../classes/langDict';
 import { ConfigFile } from '../classes/configFile';
 import { RequestModel } from '../classes/requestModel';
 import { ChatSessions } from '../classes/chatSessions';
@@ -34,12 +35,22 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
     }
     
     public initView(){
-        this._view?.webview.postMessage({command: 'icons', icons: JSON.stringify(this.faIcons)});
-        this.updateConfiguration();
+        this._view?.webview.postMessage({
+            command: 'icons', 
+            icons: JSON.stringify(this.faIcons)
+        });
+        this._view?.webview.postMessage({
+            command: 'lang.dict', 
+            data: JSON.stringify(LangDict.getDict())
+        });
         this.configFile.updateModelListFromConfig(this._view);
         this.chatSessions.syncManifestWithFiles();
+        this.updateConfiguration();
         if(this.config.get<boolean>('loadLastChatSession')){
             this.chatSessions.loadLastChatSession(this._view);
+        }
+        else{
+            this.chatSessions.loadWelcomeMessage(this._view);
         }
     }
 
@@ -62,7 +73,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                     this.initView();
                     break;
                 case 'error.noModel':
-                    vscode.window.showErrorMessage("No model selected, please select a model first.");
+                    vscode.window.showErrorMessage(LangDict.get('ts.modelNotSelected'));
                     break;
                 case 'user.request':
                     this.requestModel.handleRequest(message.prompt, message.model, this._view);
@@ -101,6 +112,12 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         const htmlPath = vscode.Uri.joinPath(this._extensionUri, 'assets/main.html');
         let htmlContent = fs.readFileSync(htmlPath.fsPath, 'utf8');
         // console.log(htmlContent);
+        const dictKeys = Object.keys(LangDict.getDict());
+        for(const key of dictKeys) {
+            if(key.startsWith('html.')){
+                htmlContent = htmlContent.replace(`{{${key}}}`, LangDict.get(key));
+            }
+        }
         for(const styleSheet of styleSheets) {
             const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, '/assets/css/', styleSheet + '.css'));
             if(styleSheet.includes('highlight.js/')){

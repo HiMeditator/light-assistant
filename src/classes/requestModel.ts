@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import ollama from 'ollama';
 import OpenAI from 'openai';
+import { LangDict } from './langDict';
 
 interface RequestModelInterface{
     chatMessages: any[];
@@ -37,7 +38,7 @@ export class RequestModel implements RequestModelInterface{
 
     public handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView){
         if(modelStr === undefined || modelStr === ''){
-            vscode.window.showErrorMessage('No model selected, please select a model first.');
+            vscode.window.showErrorMessage(LangDict.get('ts.modelNotSelected'));
             return;
         }
         const messageID = new Date().toISOString();
@@ -55,7 +56,7 @@ export class RequestModel implements RequestModelInterface{
             this.requestOpenAI(prompt, model['model'], model['base_url'], model['api_key'], messageID, view);
         }
         else {
-            vscode.window.showErrorMessage('Error: unexpected model type. Check your config file.');
+            vscode.window.showErrorMessage(LangDict.get('ts.unexpectedModelError'));
             return;
         }
     }
@@ -79,7 +80,7 @@ export class RequestModel implements RequestModelInterface{
                 });
             }
         } catch(error) {
-            vscode.window.showErrorMessage(`Request failed: ${error}`);
+            vscode.window.showErrorMessage(`${LangDict.get('ts.requestFailed')} ${error}`);
             // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',
@@ -143,7 +144,7 @@ export class RequestModel implements RequestModelInterface{
                 // console.log(chunk['choices'][0]['delta'], content);
             }
         } catch(error) {
-            vscode.window.showErrorMessage(`Request failed: ${error}`);
+            vscode.window.showErrorMessage(`${LangDict.get('ts.requestFailed')} ${error}`);
             // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',

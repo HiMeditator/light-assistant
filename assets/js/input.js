@@ -4,8 +4,9 @@ document.getElementById('ta-prompt-input').addEventListener('keydown', function(
     if (event.ctrlKey && event.key === 'Enter' && g_sendShortcut === 'Ctrl+Enter') {
         handleUserRequest();
     }
-    else if (event.key === 'Enter' && g_sendShortcut === 'Enter') {
+    else if (!event.ctrlKey && event.key === 'Enter' && g_sendShortcut === 'Enter') {
         handleUserRequest();
+        event.preventDefault();
     }
 });
 
@@ -43,6 +44,7 @@ function handleUserRequest() {
     document.getElementById('ta-prompt-input').value = '';
     document.getElementById('ta-prompt-input').style.height = 'auto';
     g_currentModelName = document.getElementById('model-selected-value').textContent;
+    g_currentModelIcon = (JSONparse(model)['type'] === 'ollama')? 'circle-nodes' : 'hexagon-node';
     vscode.postMessage({
         command: 'user.request',
         prompt: userPrompt,
@@ -57,7 +59,7 @@ function updateModelList(models, currentModel) {
     const modelList = document.getElementById('model-list');
     modelList.innerHTML = '';
     document.getElementById('model-selected-value').value = '';
-    document.getElementById('model-selected-value').textContent = 'Select Model';
+    document.getElementById('model-selected-value').textContent = g_langDict['js.selectModel'];
     models = JSONparse(models);
     currentModel = JSONparse(currentModel);
     let currentLi = undefined;
@@ -86,7 +88,9 @@ function updateModelList(models, currentModel) {
             event.stopPropagation();
             g_toDeleteModel = this.parentNode.getAttribute('data-value');
             const delModel = JSON.parse(this.parentNode.getAttribute('data-value'))['model'];
-            document.getElementById("note-del-model").innerHTML = `Are you sure you want to delete <b>${delModel}</b>?`;
+            document.getElementById("note-del-model").innerHTML = 
+                g_langDict['js.confirmDelete'] + 
+                `&nbsp;&nbsp;<b>${delModel}</b>`;
             document.getElementById('popup-background').style.display = 'block';
             document.getElementById('div-del-model').style.display = 'block';
         });

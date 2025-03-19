@@ -15,7 +15,7 @@
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -42,7 +42,7 @@
       "activitybar": [
         {
           "id": "light-assistant",
-          "title": "Light Assistant",
+          "title": "%plugin.name%",
           "icon": "assets/icon/light-assistant-sidebar.png"
         }
       ]
@@ -52,7 +52,7 @@
         {
           "type": "webview",
           "id": "light-assistant.main",
-          "name": "Light Assistant",
+          "name": "%plugin.name%",
           "icon": "assets/icon/light-assistant-sidebar.png"
         }
       ]
@@ -60,22 +60,22 @@
     "commands": [
       {
         "command": "light-assistant.goto.settings",
-        "title": "Open Settings",
+        "title": "%cmd.goto.settings%",
         "icon": "$(gear)"
       },
       {
         "command": "light-assistant.goto.config",
-        "title": "Open Config",
+        "title": "%cmd.goto.config%",
         "icon": "$(json)"
       },
       {
         "command": "light-assistant.load.sessions",
-        "title": "Load Chat Session",
+        "title": "%cmd.load.sessions%",
         "icon": "$(history)"
       },
       {
         "command": "light-assistant.chat.new",
-        "title": "New Chat Session",
+        "title": "%cmd.chat.new%",
         "icon": "$(plus)"
       }
     ],
@@ -113,12 +113,12 @@
             "Enter"
           ],
           "default": "Ctrl+Enter",
-          "markdownDescription": "Set the shortcut key for sending requests. When selecting the `Enter` option, both `Ctrl+Enter` and `Enter` will trigger the action."
+          "markdownDescription": "%desc.sendRequestShortcut%"
         },
         "lightAssistant.loadLastChatSession": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Whether to load the last chat session when the extension is started."
+          "markdownDescription": "%desc.loadLastChatSession%"
         },
         "lightAssistant.codeHighlightTheme": {
           "type": "string",
@@ -131,7 +131,7 @@
             "github-dark-dimmed"
           ],
           "default": "github",
-          "markdownDescription": "Set the theme for code highlighting. **This will take effect after restarting the plugin.**"
+          "markdownDescription": "%desc.codeHighlightTheme%"
         }
       }
     }

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-
+import { LangDict } from './langDict';
 
 interface ConfigFileInterface {
     configUri: vscode.Uri;
@@ -26,7 +26,7 @@ export class ConfigFile implements ConfigFileInterface {
         }
         if(!fs.existsSync(this.configUri.fsPath)){
             fs.writeFileSync(this.configUri.fsPath, `{\n  "models": []\n}`);
-            vscode.window.showInformationMessage(`Config file created: ${this.configUri.fsPath}`);
+            vscode.window.showInformationMessage(`${LangDict.get('ts.createdConfig')} ${this.configUri.fsPath}`);
         }
     }
 
@@ -42,7 +42,7 @@ export class ConfigFile implements ConfigFileInterface {
             });
         }
         catch (error) {
-            vscode.window.showErrorMessage(`Error parsing config file: ${error}`);
+            vscode.window.showErrorMessage(`${LangDict.get('ts.parsingConfigError')} ${error}`);
         }
     }
 
@@ -52,11 +52,11 @@ export class ConfigFile implements ConfigFileInterface {
         let modelDataObj = JSON.parse(modelData);
         configObj['models'].push(JSON.parse(modelData));
         if(modelDataObj.model.length > 128){
-            vscode.window.showErrorMessage('Model name is too long!');
+            vscode.window.showErrorMessage(LangDict.get('ts.modelNameError'));
             return;
         }
         if(modelDataObj?.title && modelDataObj.title.length > 128){
-            vscode.window.showErrorMessage('Model title is too long!');
+            vscode.window.showErrorMessage(LangDict.get('ts.modelTitleError'));
             return;
         }
         fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));

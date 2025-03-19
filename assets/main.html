@@ -27,22 +27,22 @@
     <div id="popup-background"></div>
 
     <div class="div-popup" id="div-del-model">
-      <div class="popup-title">Delete Model</div>
+      <div class="popup-title">{{html.title.deleteModel}}</div>
       <div id="note-del-model"></div>
-      <button id="btn-del-submit">Yes</button> 
-      <button id="btn-del-cancel">No</button>
+      <button id="btn-del-submit">{{html.btn.yes}}</button> 
+      <button id="btn-del-cancel">{{html.btn.no}}</button>
     </div>
 
     <div class="div-popup" id="div-add-model">
       <form id="form-add-model">
-        <div class="popup-title">Add Model</div>
+        <div class="popup-title">{{html.title.addModel}}</div>
         <div id="note-add-model">
-          <p id="note-add-model-openai">The model you provided needs to be compatible with the OpenAI API.</p>
-          <p id="note-add-model-ollama">Please confirm that you have installed Ollama locally and configured the corresponding model.</p>
+          <p id="note-add-model-openai">{{html.desc.addOpenai}}</p>
+          <p id="note-add-model-ollama">{{html.desc.addOllama}}</p>
         </div>
         <div class="div-form-radio">
           <div id="option-openai">
-            <svg viewBox="0 0 512 512"><path d="{{i-hexagon-node}}"/></svg>
+            <svg viewBox="0 0 448 512"><path d="{{i-hexagon-node}}"/></svg>
             openai
           </div>
           <div id="option-ollama" class="add-model-option">
@@ -66,8 +66,8 @@
           <label for="i-api_key">api_key</label>
           <input type="text" id="i-api_key" name="api_key" required><br>
         </div>
-        <button id="btn-add-submit">Submit</button>
-        <button id="btn-add-cancel">Cancel</button>
+        <button id="btn-add-submit">{{html.btn.submit}}</button>
+        <button id="btn-add-cancel">{{html.btn.cancel}}</button>
       </form>
     </div>
 
@@ -75,7 +75,7 @@
     </div>
 
     <div id="div-input">
-      <textarea id="ta-prompt-input" rows="1" placeholder="Ask me anything..."></textarea>
+      <textarea id="ta-prompt-input" rows="1" placeholder="{{html.label.textarea}}"></textarea>
       <div id="div-options">
         <div id="model-select">
           <div id="model-option">
@@ -83,15 +83,15 @@
             </ul>
             <div id="add-model">
               <svg viewBox="0 0 448 512"><path d="{{i-plus}}"/></svg>
-              Add Model
+              {{html.label.addModel}}
             </div>
             <div id="load-config">
               <svg viewBox="0 0 512 512"><path d="{{i-rotate-right}}"/></svg>
-              Load Config
+              {{html.label.loadConfig}}
             </div>
           </div>
           <span id="model-selected">
-            <span id="model-selected-value">Select model</span>
+            <span id="model-selected-value">{{html.label.selectModel}}</span>
             <svg viewBox="0 0 448 512"><path d="{{i-arrow-down}}"/></svg>
           </span>
         </div>

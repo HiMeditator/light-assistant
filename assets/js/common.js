@@ -1,11 +1,14 @@
 const vscode = acquireVsCodeApi();
 
 let g_icons;
+let g_langDict;
 
 let g_sendShortcut = 'Ctrl+Enter';
 let g_currentModelName = 'Model';
+let g_currentModelIcon = 'lightbulb';
 let g_toDeleteModel = '';
 
+let g_isNewSession = true;
 let g_disableSend = false;
 let g_modelResponseContent = '';
 let g_modelCotContentNode;
@@ -20,17 +23,23 @@ window.addEventListener('message', event => {
         case 'icons':
             g_icons = JSON.parse(message.icons);
             break;
+        case 'lang.dict':
+            g_langDict = JSONparse(message.data);
+            break;
+        case 'welcome.load':
+            loadWelcomeMessage();
+            break;
         case 'request.load':
-            createUserRequestElement(message.prompt, message.id);
+            loadRequest(message.prompt, message.id);
             break;
         case 'request.delete':
-            document.getElementById(`${message.id}-request`).remove();
+            deleteRequest(message.id);
             break;
         case 'response.load':
-            loadResponse(message.model, message.data, message.id);
+            loadResponse(message.model, message.data, message.id, message.type);
             break;
         case 'response.delete':
-            document.getElementById(`${message.id}-response`).remove();
+            deleteResponse(message.id);
             break;
         case 'response.new':
             createResponseElement(message.id);
@@ -49,7 +58,7 @@ window.addEventListener('message', event => {
             updateConfigurations(message.configurations);
             break;
         case 'chat.new':
-            document.getElementById('div-dialog').innerHTML = '';
+            newChatSession();
             break;
     }
 });
@@ -65,10 +74,40 @@ function updateConfigurations(configurations) {
     g_sendShortcut = sendRequestShortcut;
 }
 
+function loadRequest(prompt, id){
+    if(g_isNewSession){
+        document.getElementById('div-dialog').innerHTML = '';
+        g_isNewSession = false;
+    }
+    createUserRequestElement(prompt, id);
+}
+
+function deleteRequest(id) {
+    document.getElementById(`${id}-request`).remove();
+    if(document.getElementById('div-dialog').innerHTML.trim() === ''){
+        g_isNewSession = true;
+        loadWelcomeMessage();
+    }
+}
+
+function deleteResponse(id) {
+    document.getElementById(`${id}-response`).remove();
+    if(document.getElementById('div-dialog').innerHTML.trim() === ''){
+        g_isNewSession = true;
+        loadWelcomeMessage();
+    }
+}
+
 function disableInput(value){
     g_disableSend = value;
     const textarea = document.getElementById("ta-prompt-input");
     textarea.disabled = value;
+}
+
+function newChatSession() {
+    document.getElementById('div-dialog').innerHTML = '';
+    g_isNewSession = true;
+    loadWelcomeMessage();
 }
 
 function JSONparse(str) {

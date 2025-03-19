@@ -3,7 +3,7 @@
     <h1 align="center">light-assistant</h1>
     <p>Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.</p>
     <p>
-        | <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> |
+        | <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_ja.md">日本語</a> |
     </p>
 </div>
 
@@ -17,6 +17,7 @@
 
 [User Manual](docs/user-manual.md)
 [用户手册](docs/user-manual_zh_cn.md)
+[ユーザーマニュアル](docs/user-manual_ja.md)
 
 ## Features
 
@@ -35,6 +36,6 @@
 
 ### Mathematical Formula Rendering
 
-Many code assistants do not support mathematical formula rendering, but light-assistant provides good rendering of mathematical formulas.
+Many code assistants do not support mathematical formula rendering, but Light Assistant provides good rendering of mathematical formulas.
 
 <img src="docs/img/media/04.png" style="zoom:80%;" />

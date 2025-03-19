@@ -1,8 +1,9 @@
 # Light Assistant User Manual
 
-Plugin Version v0.0.3
+Applies to plugin version v0.0.3
 
 [简体中文版](user-manual_zh_cn.md)
+[日本語版](user-manual_ja.md)
 
 ## Configuring Models
 

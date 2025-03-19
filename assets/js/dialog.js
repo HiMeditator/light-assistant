@@ -13,8 +13,15 @@ window.addEventListener('resize', () => {
     adjustDialogHeight();
 });
 
-function loadResponse(model, data, id) {
+function loadWelcomeMessage() {
+    if(g_isNewSession === false) { return; }
+    createResponseElement('welcome-message');
+    updateResponseStream(g_langDict['js.welcomeMessage']);
+}
+
+function loadResponse(model, data, id, type) {
     g_currentModelName = model;
+    g_currentModelIcon = (type === 'ollama')? 'circle-nodes' : 'hexagon-node';
     createResponseElement(id);
     updateResponseStream(data);
 }
@@ -38,7 +45,7 @@ function updateResponseStream(data) {
     if(cotContent !== '' && mainContent === ''){
         g_modelCotContentNode.style.display = 'block';
     }
-    else{
+    else if(g_isNewSession === false){
         g_modelCotContentNode.style.display = 'none';
     }
 }
@@ -68,7 +75,8 @@ function createUserRequestElement(userPrompt, id) {
 
     let infoHead = document.createElement('div');
     infoHead.className = 'info-head user-head';
-    infoHead.textContent = 'U'; 
+    let userHeadSvg = createSvg(g_icons['user']);
+    infoHead.appendChild(userHeadSvg);
     divInfo.appendChild(infoHead);
 
     let userName = document.createElement('div');
@@ -94,21 +102,35 @@ function createResponseElement(id) {
 
     const infoHead = document.createElement('div');
     infoHead.className = 'info-head model-head';
-    infoHead.textContent = 'M'; 
+    let modelHeadSize = '0 0 384 512';
+    if(g_currentModelIcon === 'circle-nodes'){
+        modelHeadSize = '0 0 512 512';
+    }
+    else if(g_currentModelIcon === 'hexagon-node'){
+        modelHeadSize = '0 0 448 512';
+    }
+    console.log(g_currentModelName, g_currentModelIcon, modelHeadSize);
+    let modelHeadSvg = createSvg(g_icons[g_currentModelIcon], modelHeadSize);
+    infoHead.appendChild(modelHeadSvg);
+
     const modelName = document.createElement('div');
     modelName.className = 'model-name';
-    modelName.textContent = g_currentModelName;
+    if(id === 'welcome-message'){
+        modelName.textContent = g_langDict['plugin.name'];
+    }
+    else{
+        modelName.textContent = g_currentModelName;
+    }
+    
     divInfo.appendChild(infoHead);
     divInfo.appendChild(modelName);
 
-    const svgHideShow = createSvgWithTitle(g_icons['arrow-down'], 'reasoning content');
-    const svgDelete = createSvgWithTitle(g_icons['trash-can'], 'delete chat session');
     const dialogItemControl = document.createElement('div');
     dialogItemControl.className = 'dialog-item-control';
-    dialogItemControl.appendChild(svgHideShow);
-    dialogItemControl.appendChild(svgDelete);
     divInfo.appendChild(dialogItemControl);
 
+    const svgHideShow = createSvgWithTitle(g_icons['arrow-down'], g_langDict['js.reasoningContent']);
+    dialogItemControl.appendChild(svgHideShow);
     svgHideShow.addEventListener('click', function () {
         const parentNode = this.parentNode.parentNode.parentNode;
         const thisModelCotContentNode = parentNode.querySelector('.model-cot-content');
@@ -120,14 +142,19 @@ function createResponseElement(id) {
             this.querySelector('path').setAttribute('d', g_icons['arrow-down']);
         }
     });
-    svgDelete.addEventListener('click', function () {
-        if(g_disableSend) { return; }
-        const parentNode = this.parentNode.parentNode.parentNode;
-        const id = parentNode.id.split('-response')[0];
-        vscode.postMessage({command: 'id.delete', id: id});
-        // console.log(`delete ${id}`);
-    });
 
+    if(id !== 'welcome-message'){
+        const svgDelete = createSvgWithTitle(g_icons['trash-can'], g_langDict['js.deleteChatSession']);
+        dialogItemControl.appendChild(svgDelete);
+        svgDelete.addEventListener('click', function () {
+            if(g_disableSend) { return; }
+            const parentNode = this.parentNode.parentNode.parentNode;
+            const id = parentNode.id.split('-response')[0];
+            vscode.postMessage({command: 'id.delete', id: id});
+            // console.log(`delete ${id}`);
+        });
+    }
+    
     g_modelCotContentNode = document.createElement('div');
     g_modelCotContentNode.className = 'model-cot-content';
     dialogItem.appendChild(g_modelCotContentNode);

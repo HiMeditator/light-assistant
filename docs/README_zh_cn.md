@@ -3,7 +3,7 @@
     <h1 align="center">light-assistant</h1>
     <p>Light Assistant（轻亮助手）是一个开源的面向 VS Code 的轻量级智能助手插件。该项目的目的之一是为 IDE 智能助手的开发提供入门参考。</p>
     <p>
-        | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> |
+        | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_ja.md">日本語</a> |
     </p>
 </div>
 
@@ -35,6 +35,6 @@
 
 ### 数学公式渲染
 
-相当多的代码助手不支持数学公式渲染，但 light-assistant 提供了良好的数学公式渲染。
+相当多的代码助手不支持数学公式渲染，但 Light Assistant 提供了良好的数学公式渲染。
 
 <img src="img/media/04.png" style="zoom:80%;" />

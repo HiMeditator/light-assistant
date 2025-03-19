@@ -80,7 +80,7 @@ pre:hover .code-info-div {
     position: absolute;
     padding: 5px 10px;
     border-radius: 5px;
-    right: 0;
+    right: -5px;
     top: 0;
 }
 
@@ -88,7 +88,7 @@ pre:hover .code-info-div {
     display: block;
 }
 .dialog-item-control svg{
-    margin: auto 4px;
+    margin: auto 5px;
     cursor: pointer;
 }
 

@@ -8,6 +8,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as os from 'os';
 
+import { LangDict } from './classes/langDict';
 import { ConfigFile } from './classes/configFile';
 import { RequestModel } from './classes/requestModel';
 import { ChatSessions } from './classes/chatSessions';
@@ -20,6 +21,8 @@ let chatSessions: ChatSessions;
 
 export function activate(context: vscode.ExtensionContext) {
 
+    LangDict.instance(context.extensionUri);
+    
     const pluginDir = vscode.Uri.joinPath(vscode.Uri.file(os.homedir()),'/.light-assistant');
 
     const configUri = vscode.Uri.joinPath(pluginDir, "config.json");
@@ -31,7 +34,6 @@ export function activate(context: vscode.ExtensionContext) {
     configFile = new ConfigFile(configUri, context);
     requestModel = new RequestModel(sessionDirUri);
     chatSessions = new ChatSessions(sessionDirUri, sessionManifestUri, requestModel);
-
 
     const mainViewProvider = new MainViewProvider(
         context.extensionUri,
@@ -77,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
                 label: session.name,
                 description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
                 detail: session.overview,
-                buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: 'Delete Session'}]
+                buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: LangDict.get('ts.deleteSession')}]
             });
         }
         quickPick.items = sessionItems;
@@ -89,7 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         });
         quickPick.onDidTriggerItemButton((event) => {
-            if (event.button.tooltip === 'Delete Session') {
+            if (event.button.tooltip === LangDict.get('ts.deleteSession')) {
                 mainViewProvider.deleteChatSession(event.item.label);
                 sessionItems = [];
                 for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
@@ -98,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
                         label: session.name,
                         description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
                         detail: session.overview,
-                        buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: 'Delete Session'}]
+                        buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: LangDict.get('ts.deleteSession')}]
                     });
                 }
                 quickPick.items = sessionItems;
