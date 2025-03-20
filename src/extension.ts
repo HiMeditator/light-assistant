@@ -52,7 +52,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 
     const configurationChange = vscode.workspace.onDidChangeConfiguration(event => {
-        if(event.affectsConfiguration('lightAssistant')){
+        if(event.affectsConfiguration('lightAssistant.sendRequestShortcut')){
+            mainViewProvider.updateConfiguration();
+        }
+        else if(event.affectsConfiguration('lightAssistant.displayInfoMessage')){
             mainViewProvider.updateConfiguration();
         }
     });

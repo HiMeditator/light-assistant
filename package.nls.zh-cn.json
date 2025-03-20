@@ -1,9 +1,11 @@
 {
-    "plugin.name": "清亮助手",
+    "language": "zh-cn",
+    "plugin.name": "轻亮助手",
     "cmd.goto.settings": "设置",
     "cmd.goto.config": "配置文件",
     "cmd.load.sessions": "对话历史",
     "cmd.chat.new": "新建对话",
+    "desc.displayInfoMessage": "是否在新会话中显示介绍信息。",
     "desc.sendRequestShortcut": "设置发送消息的快捷键。",
     "desc.loadLastChatSession": "是否在插件启动时载入最近一次的对话。",
     "desc.codeHighlightTheme": "设置代码高亮的主题。**重启插件后生效。**",
@@ -33,8 +35,9 @@
     "html.label.selectModel": "选择模型",
 
     "js.reasoningContent": "推理内容",
+    "js.copy": "复制",
     "js.deleteChatSession": "删除消息",
     "js.selectModel": "选择模型",
     "js.confirmDelete": "你确定要删除该模型吗？",
-    "js.welcomeMessage": "<think>\n\n部分模型（比如 DeepSeek）会在回答问题之前生成推理过程内容。生成的推理内容可以点击右上角的“推理内容”选项查看或隐藏。\n\n</think>\n\n欢迎使用 Light Assistant（轻亮助手），一个专为 VS Code 设计的开源轻量级智能助手插件。作为个人开发的 IDE 智能助手，Light Assistant 旨在为您提供简洁、个性化的开发辅助体验。\n\n**自由配置模型**\n\n根据您的需求灵活调整模型设置，轻松定制属于您的智能助手。\n\n**聊天记录管理**\n\n有效管理和回顾您的对话历史，确保信息随时可查，工作更有序。\n\n**数学公式渲染**\n\n补全大多数智能助手没有数学公式渲染的缺陷。\n\n\\[\n\\hat{f}(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i\\omega t} \\, dt\n\\]\n\n---\n\n更多信息请参考我们的[用户手册](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual_zh_cn.md)或访问[GitHub页面](https://github.com/HiMeditator/light-assistant)。\n"
+    "js.welcomeMessage": "<think>\n\n部分模型（比如 DeepSeek）会在回答问题之前生成推理过程内容。生成的推理内容可以点击右上角的“推理内容”选项查看或隐藏。\n\n</think>\n\n欢迎使用 Light Assistant（轻亮助手），一个专为 VS Code 设计的开源轻量级智能助手插件。作为个人开发的 IDE 智能助手，Light Assistant 旨在为您提供简洁、个性化的开发辅助体验。\n\n- 自由配置模型\n- 聊天记录管理\n- 数学公式渲染\n\n---\n\n更多信息请参考我们的[用户手册](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual_zh_cn.md)或访问[GitHub页面](https://github.com/HiMeditator/light-assistant)。\n"
 }

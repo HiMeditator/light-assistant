@@ -60,37 +60,10 @@
         <div class="div-dialog-info">
           <div class="info-head user-head">U</div>
           <div class="user-name">User</div>
-        </div>
-        <div class="dialog-content user-content">
-          Who are you?
-        </div>
-      </div>
-
-      <div class="dialog-item">
-        <div class="div-dialog-info">
-          <div class="info-head model-head">Q</div>
-          <div class="model-name">Qwen2.5-7B</div>
           <div class="dialog-item-control">
-            <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>show /hide think</title></svg>
-            <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>stop generation</title></svg>
-            <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>delete</title></svg>
+            <svg viewBox="0 0 320 512"><path d="M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z"></path><title>stop generation</title></svg>
           </div>
         </div>
-
-        <div class="model-cot-content">
-          I am Qwen, a large language model developed by Alibaba Cloud. I can help with a wide range of tasks, from answering questions and providing information to helping with writing and more. How can I assist you today?
-        </div>
-
-        <div class="dialog-content model-content">
-          I am Qwen, a large language model developed by Alibaba Cloud. I can help with a wide range of tasks, from answering questions and providing information to helping with writing and more. How can I assist you today?
-        </div>
-      </div>
-
-      <div class="dialog-item">
-        <div class="div-dialog-info">
-          <div class="info-head user-head">U</div>
-          <div class="user-name">User</div>
-        </div>
         <div class="dialog-content user-content">
           Who are you?
         </div>
@@ -103,7 +76,6 @@
           <div class="dialog-item-control">
             <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>show /hide think</title></svg>
             <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>stop generation</title></svg>
-            <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path><title>delete</title></svg>
           </div>
         </div>
 
@@ -119,11 +91,34 @@
     </div>
 
     <div id="div-input">
+
+      <div id="div-control-upper">
+        <div id="context-select" class="dropup-box">
+          <div id="context-option" class="dropup-option">
+            <ul id="context-list" class="dropup-list">
+              <li class="selected"><span>main.ts</span></li>
+              <li><span>function.ts</span></li>
+              <li><span>function.ts</span></li>
+              <li><span>function.ts</span></li>
+              <li><span>function.ts</span></li>
+              <li><span>function.ts</span></li>
+            </ul>
+          </div>
+          <svg viewBox="0 0 512 512" id="add-context"><path d="M64 80c-8.8 0-16 7.2-16 16l0 320c0 8.8 7.2 16 16 16l320 0c8.8 0 16-7.2 16-16l0-320c0-8.8-7.2-16-16-16L64 80zM0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM200 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"></path><title>Add Conext</title></svg>
+        </div>
+        <div class="selected-context">selected</div>
+        <div class="selected-context">selected</div>
+        <div class="selected-context">selected</div>
+        <div class="selected-context">selected</div>
+        <div class="selected-context">selected</div>
+      </div>
+
       <textarea id="ta-prompt-input" rows="1" placeholder="Ask me anything..."></textarea>
-      <div id="div-options">
-        <div id="model-select">
-          <div id="model-option">
-            <ul id="model-list">
+
+      <div id="div-control-lower">
+        <div id="model-select" class="dropup-box">
+          <div id="model-option" class="dropup-option">
+            <ul id="model-list" class="dropup-list">
               <li class="selected">
                 <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path></svg>
                 <span>qwe2.5-7b</span>
@@ -154,12 +149,15 @@
             <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
           </span>
         </div>
+
         <div id="send-prompt">
             <span id="send-shortcut">Ctrl+Enter</span>
             <svg viewBox="0 0 448 512"><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
         </div>
       </div>
+
     </div>
+
     </div>
     
     <script src="js/commonUtils.js"></script>

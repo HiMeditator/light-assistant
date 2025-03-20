@@ -15,7 +15,7 @@
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
   "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -106,6 +106,18 @@
     "configuration": {
       "title": "Light Assistant",
       "properties": {
+        "lightAssistant.loadLastChatSession": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "%desc.loadLastChatSession%",
+          "order": 0
+        },
+        "lightAssistant.displayInfoMessage": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%desc.displayInfoMessage%",
+          "order": 1
+        },
         "lightAssistant.sendRequestShortcut": {
           "type": "string",
           "enum": [
@@ -113,12 +125,8 @@
             "Enter"
           ],
           "default": "Ctrl+Enter",
-          "markdownDescription": "%desc.sendRequestShortcut%"
-        },
-        "lightAssistant.loadLastChatSession": {
-          "type": "boolean",
-          "default": true,
-          "markdownDescription": "%desc.loadLastChatSession%"
+          "markdownDescription": "%desc.sendRequestShortcut%",
+          "order": 2
         },
         "lightAssistant.codeHighlightTheme": {
           "type": "string",
@@ -131,7 +139,8 @@
             "github-dark-dimmed"
           ],
           "default": "github",
-          "markdownDescription": "%desc.codeHighlightTheme%"
+          "markdownDescription": "%desc.codeHighlightTheme%",
+          "order": 3
         }
       }
     }

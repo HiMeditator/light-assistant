@@ -1,3 +1,52 @@
+.dropup-box {
+    cursor: pointer;
+    position: relative;
+}
+
+.dropup-box:hover {
+    color: var(--vscode-foreground, #616161);
+}
+
+.dropup-option {
+    display: none;
+    width: auto;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 4px;
+    background-color: var(--vscode-dropdown-background, #f5f5f5);
+}
+
+.dropup-list {
+    list-style: none;
+    max-height: 240px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.dropup-list li, .droup-option div {
+    width: auto;
+    white-space: nowrap;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.dropup-list li span {
+    margin-left: 2px;
+    margin-right: 8px;
+}
+
+.dropup-list li:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.dropup-list li.selected {
+    background-color: var(--vscode-list-activeSelectionBackground, #c4d9b1);
+}
+
 #div-input::before {
     content: '';
     display: block;
@@ -15,7 +64,8 @@
     position: fixed;
     bottom: 0;
     margin: 10px;
-    padding: 5px 10px;
+    box-shadow: 0 0 0 10px var(--vscode-sideBar-background, #ffffff);
+    padding: 10px;
     background-color: var(--vscode-input-background, #ffffff);
 }
 
@@ -28,11 +78,50 @@
     border: 1px solid var(--vscode-button-hoverBackground, #5a4579);
 }
 
+#div-control-upper {
+    padding: 0 5px 5px 5px;
+    color: var(--vscode-disabledForeground, rgba(97, 97, 97, 0.5));
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#context-select {
+    margin: auto 5px;
+}
+
+#context-option {
+    bottom: 130%;
+}
+
+#add-context{
+    font-size: 20px;
+}
+
+.selected-context {
+    border-radius: 5px;
+    padding: 4px;
+    margin: 2px;
+    box-sizing: border-box;
+    color: var(--vscode-foreground, #616161);
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.selected-context:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+/* TODO: del this when js ready */
+#context-select:hover #context-option {
+    display: block;
+}
+
 #ta-prompt-input {
     width: 100%;
     max-height: 500px;
     scrollbar-width: thin;
-    padding: 10px 5px;
+    padding: 5px;
     box-sizing: border-box;
     color: var(--vscode-input-foreground, #616161);
     background-color: var(--vscode-input-background, #ffffff);
@@ -45,46 +134,19 @@
     outline: none;
 }
 
-#div-options {
+#div-control-lower {
     display: flex;
     justify-content: space-between;
+    margin: auto 5px;
     color: var(--vscode-disabledForeground, rgba(97, 97, 97, 0.5));
     align-items: center;
-}
-
-#model-select {
-    margin: 5px;
-    position: relative;
-    cursor: pointer;
 }
 
 #model-select:hover #model-option {
     display: block;
 }
 
-#model-select:hover {
-    color: var(--vscode-foreground, #616161);
-}
-
-#model-option {
-    display: none;
-    width: auto;
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    border-radius: 4px;
-    background-color: var(--vscode-dropdown-background, #f5f5f5);
-}
-
-#model-list {
-    list-style: none;
-    max-height: 240px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-}
-
-#model-list li, #add-model, #load-config {
+#add-model, #load-config {
     width: auto;
     white-space: nowrap;
     padding: 6px 12px;
@@ -93,17 +155,8 @@
     align-items: center;
 }
 
-#model-list li span {
-    margin-left: 2px;
-    margin-right: 8px;
-}
-
-#model-list li:hover, #model-option div:hover {
+#model-option div:hover {
     background-color: rgba(128, 128, 128, 0.1);
-}
-
-#model-list li.selected {
-    background-color: var(--vscode-list-activeSelectionBackground, #c4d9b1);
 }
 
 #add-model, #load-config {
@@ -125,7 +178,6 @@
 
 #send-prompt {
     user-select: none;
-    margin: 5px;
     cursor: pointer;
 }
 

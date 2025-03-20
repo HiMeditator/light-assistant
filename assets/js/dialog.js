@@ -3,7 +3,7 @@ function adjustDialogHeight() {
     const divInput = document.getElementById('div-input');
     const divInputHeight = divInput.offsetHeight;
     const windowHeight = window.innerHeight;
-    divDialog.style.height = `${windowHeight - divInputHeight - 26}px`;
+    divDialog.style.height = `${windowHeight - divInputHeight - 25}px`;
 }
 const resizeObserver = new ResizeObserver(entries => {
     adjustDialogHeight();
@@ -14,9 +14,11 @@ window.addEventListener('resize', () => {
 });
 
 function loadWelcomeMessage() {
-    if(g_isNewSession === false) { return; }
+    if(!g_isNewSession || !g_displayInfoMessage) { return; }
+    g_currentModelIcon = 'lightbulb';
     createResponseElement('welcome-message');
     updateResponseStream(g_langDict['js.welcomeMessage']);
+    g_modelContentDict['welcome-message'] = g_langDict['js.welcomeMessage'];
 }
 
 function loadResponse(model, data, id, type) {
@@ -24,6 +26,10 @@ function loadResponse(model, data, id, type) {
     g_currentModelIcon = (type === 'ollama')? 'circle-nodes' : 'hexagon-node';
     createResponseElement(id);
     updateResponseStream(data);
+    if(!data.startsWith('<think>')){
+        g_modelCotContentNode.parentNode.querySelector('.dialog-item-control').querySelector('svg').remove();
+    }
+    g_modelContentDict[id] = data;
 }
 
 function updateResponseStream(data) {
@@ -109,7 +115,6 @@ function createResponseElement(id) {
     else if(g_currentModelIcon === 'hexagon-node'){
         modelHeadSize = '0 0 448 512';
     }
-    console.log(g_currentModelName, g_currentModelIcon, modelHeadSize);
     let modelHeadSvg = createSvg(g_icons[g_currentModelIcon], modelHeadSize);
     infoHead.appendChild(modelHeadSvg);
 
@@ -141,6 +146,21 @@ function createResponseElement(id) {
             thisModelCotContentNode.style.display = 'none';
             this.querySelector('path').setAttribute('d', g_icons['arrow-down']);
         }
+    });
+
+    const svgCopy = createSvgWithTitle(g_icons['clipboard'], g_langDict['js.copy'], '0 0 384 512');
+    dialogItemControl.appendChild(svgCopy);
+    svgCopy.addEventListener('click', function () {
+        console.log(g_modelContentDict);
+        const path = svgCopy.querySelector('path');
+        if(!g_disableSend) {
+            navigator.clipboard.writeText(g_modelContentDict[id] || '');
+            path.setAttribute('d', g_icons['check']);
+            setTimeout(() => {
+                path.setAttribute('d', g_icons['clipboard']);
+            }, 500);
+        }
+
     });
 
     if(id !== 'welcome-message'){

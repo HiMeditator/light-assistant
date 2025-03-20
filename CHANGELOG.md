@@ -62,9 +62,12 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 ## v0.0.8
 
-2025-03-29
+2025-03-19
 
 - Fix: problems encountered when sending message with `Enter`
 - Improve: user interface
 - Add: welcome message
 - Add: language support for Chinese and Japanese
+
+## v0.1.0
+

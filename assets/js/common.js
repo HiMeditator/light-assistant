@@ -8,12 +8,14 @@ let g_currentModelName = 'Model';
 let g_currentModelIcon = 'lightbulb';
 let g_toDeleteModel = '';
 
+let g_displayInfoMessage = true;
 let g_isNewSession = true;
 let g_disableSend = false;
+
 let g_modelResponseContent = '';
 let g_modelCotContentNode;
+let g_modelContentDict = {};
 let g_modelMainContentNode;
-
 
 
 window.addEventListener('message', event => {
@@ -69,9 +71,9 @@ vscode.postMessage({
 
 function updateConfigurations(configurations) {
     configurations = JSONparse(configurations);
-    const sendRequestShortcut = configurations['sendRequestShortcut'];
-    document.getElementById('send-shortcut').innerText = sendRequestShortcut;
-    g_sendShortcut = sendRequestShortcut;
+    g_sendShortcut = configurations['sendRequestShortcut'];
+    g_displayInfoMessage = configurations['displayInfoMessage'];
+    document.getElementById('send-shortcut').innerText = g_sendShortcut;
 }
 
 function loadRequest(prompt, id){
@@ -102,11 +104,20 @@ function disableInput(value){
     g_disableSend = value;
     const textarea = document.getElementById("ta-prompt-input");
     textarea.disabled = value;
+    const dialogItemID = g_modelMainContentNode.parentNode.id;
+    if(!value){
+        g_modelContentDict[dialogItemID.substring(0, dialogItemID.length - 9)] = g_modelResponseContent;
+        if(!g_modelResponseContent.startsWith('<think>')){
+            g_modelCotContentNode.parentNode.querySelector('.dialog-item-control').querySelector('svg').remove();
+        }
+        // console.log(dialogItemID.substring(0, dialogItemID.length - 9), dialogItemID);
+    }
 }
 
 function newChatSession() {
     document.getElementById('div-dialog').innerHTML = '';
     g_isNewSession = true;
+    g_modelContentDict = {};
     loadWelcomeMessage();
 }
 
@@ -161,7 +172,7 @@ function renderMarkdownContent(htmlNode, content) {
             const codeInfoDiv = document.createElement('div');
             codeInfoDiv.className = 'code-info-div';
             const svgInfo = createSvgWithTitle(g_icons['info'], language);
-            const svgCopy = createSvgWithTitle(g_icons['clipboard'], 'copy');
+            const svgCopy = createSvgWithTitle(g_icons['clipboard'], g_langDict['js.copy'], '0 0 384 512');
             svgCopy.addEventListener('click', () => {
                 const path = svgCopy.querySelector('path');
                 navigator.clipboard.writeText(code.textContent);
