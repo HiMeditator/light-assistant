@@ -33,11 +33,13 @@
     "html.label.addModel": "Add Model",
     "html.label.loadConfig": "Load Config",
     "html.label.selectModel": "Select Model",
+    "html.label.addContext": "Add Context",
 
     "js.reasoningContent": "reasoning content",
     "js.copy": "copy",
+    "js.selected": "[Selected Content]",
     "js.deleteChatSession": "delete message",
     "js.selectModel": "Select Model",
     "js.confirmDelete": "Are you sure you want to delete this model?",
-    "js.welcomeMessage": "<think>\n\nSome models (e.g., DeepSeek) will generate reasoning content before answering questions. The generated reasoning content can be viewed or hidden by clicking the \"reasoning content\" option in the upper right corner.\n\n</think>\n\nWelcome to Light Assistant, an open-source lightweight intelligent assistant plugin designed specifically for VS Code. As an IDE intelligent assistant developed by one person, Light Assistant aims to provide you with a simple and personalized development assistance experience.\n\n- Flexible Model Configuration\n- Chat History Management\n- Mathematical Formula Rendering\n\n---\n\nFor more information, please refer to our [User Manual](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual.md) or visit the [GitHub page](https://github.com/HiMeditator/light-assistant).\n"
+    "js.welcomeMessage": "<think>\n\nSome models (e.g., DeepSeek) will generate reasoning content before answering questions. The generated reasoning content can be viewed or hidden by clicking the \"reasoning content\" option in the upper right corner.\n\n</think>\n\nWelcome to Light Assistant, an open-source lightweight intelligent assistant plugin designed specifically for VS Code. As an IDE intelligent assistant developed by one person, Light Assistant aims to provide you with a simple and personalized development assistance experience.\n\n- Flexible Model Configuration\n- Chat History Management\n- Mathematical Formula Rendering\n\n---\n\nFor more information, please refer to [User Manual](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual.md) or visit the [GitHub page](https://github.com/HiMeditator/light-assistant).\n"
 }

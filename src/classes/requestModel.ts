@@ -3,14 +3,18 @@ import * as fs from 'fs';
 import ollama from 'ollama';
 import OpenAI from 'openai';
 import { LangDict } from './langDict';
+import { RepoContext } from './repoContext';
 
 interface RequestModelInterface{
     chatMessages: any[];
     chatSession: any[];
     isRequesting: boolean;
+    contextShow: string;
+    contextPrompt: string;
     chatSessionFolderUri: vscode.Uri;
+    repoContext: RepoContext;
     handleStop(view?: vscode.WebviewView): void;
-    handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView): void;
+    handleRequest(prompt: string, modelStr: string, contextStr: string, view?: vscode.WebviewView): void;
     requestOllama(prompt: string, model: string, messageID: string, view?: vscode.WebviewView): void;
     requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, messageID: string, view?: vscode.WebviewView): void;
     clearChatSession(view?: vscode.WebviewView): void;
@@ -23,8 +27,11 @@ export class RequestModel implements RequestModelInterface{
     chatMessages: any[] = [];
     chatSession: any[] = [];
     isRequesting: boolean = false;
+    contextShow: string = '';
+    contextPrompt: string = '';
     constructor(
-        public chatSessionFolderUri: vscode.Uri
+        public chatSessionFolderUri: vscode.Uri,
+        public repoContext: RepoContext
     ){
         if(!fs.existsSync(this.chatSessionFolderUri.fsPath)){
             fs.mkdirSync(this.chatSessionFolderUri.fsPath, {recursive: true});
@@ -36,15 +43,17 @@ export class RequestModel implements RequestModelInterface{
         vscode.window.showInformationMessage('Not implemented yet.');
     }
 
-    public handleRequest(prompt: string, modelStr: string, view?: vscode.WebviewView){
+    public handleRequest(prompt: string, modelStr: string, contextStr: string, view?: vscode.WebviewView){
         if(modelStr === undefined || modelStr === ''){
             vscode.window.showErrorMessage(LangDict.get('ts.modelNotSelected'));
             return;
         }
         const messageID = new Date().toISOString();
+        this.contextShow = this.repoContext.getContextPromptShow(contextStr);
+        this.contextPrompt = this.repoContext.getContextPrompt(contextStr);
         view?.webview.postMessage({
             command: 'request.load',
-            prompt: prompt,
+            prompt: prompt + this.contextShow,
             id: messageID
         });
         const model = JSON.parse(modelStr);
@@ -183,14 +192,14 @@ export class RequestModel implements RequestModelInterface{
     }
 
     public pushUserMessage(content: string, messageID: string){
-        this.chatMessages.push({ 'role': 'user', 'content': content });
+        this.chatMessages.push({ 'role': 'user', 'content': content + this.contextPrompt});
         this.chatSession.push({
-            'role': 'user', 'content': content,
+            'role': 'user', 'content': content + this.contextShow,
             'iso_time': messageID
         });
     }
     public pushModelMessage(content: string, cot: string, messageID: string, modelType: string, model: string, success = true){
-        this.chatMessages.push({ 'role': 'assistant', 'content': content });
+        this.chatMessages.push({ 'role': 'assistant', 'content': content});
         this.chatSession.push({
             'role': 'assistant', 'content': content,
             'reasoning': cot, 'iso_time': messageID,

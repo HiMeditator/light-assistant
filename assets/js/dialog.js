@@ -71,28 +71,29 @@ function splitThinkContent(currentResponse){
 }
 
 function createUserRequestElement(userPrompt, id) {
-    let dialogItem = document.createElement('div');
+    const dialogItem = document.createElement('div');
     dialogItem.className = 'dialog-item';
     dialogItem.id = `${id}-request`;
 
-    let divInfo = document.createElement('div');
+    const divInfo = document.createElement('div');
     divInfo.className = 'div-dialog-info';
     dialogItem.appendChild(divInfo);
 
-    let infoHead = document.createElement('div');
+    const infoHead = document.createElement('div');
     infoHead.className = 'info-head user-head';
-    let userHeadSvg = createSvg(g_icons['user']);
+    const userHeadSvg = createSvg(g_icons['user']);
     infoHead.appendChild(userHeadSvg);
     divInfo.appendChild(infoHead);
 
-    let userName = document.createElement('div');
+    const userName = document.createElement('div');
     userName.className = 'user-name';
     userName.textContent = 'User';
     divInfo.appendChild(userName);
 
-    let userContent = document.createElement('div');
+    const userContent = document.createElement('div');
     userContent.className = 'dialog-content user-content';
-    userContent.textContent = userPrompt;
+    // userContent.textContent = userPrompt;
+    renderMarkdownContent(userContent, userPrompt);
     dialogItem.appendChild(userContent);
 
     document.getElementById('div-dialog').appendChild(dialogItem);

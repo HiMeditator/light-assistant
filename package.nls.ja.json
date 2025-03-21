@@ -33,9 +33,11 @@
     "html.label.addModel": "モデルを追加",
     "html.label.loadConfig": "コンフィグを読み込む",
     "html.label.selectModel": "モデルを選択",
+    "html.label.addContext": "コンテキストを追加",
 
     "js.reasoningContent": "推論内容",
     "js.copy": "コピー",
+    "js.selected": "『選択された内容』",
     "js.deleteChatSession": "メッセージを削除",
     "js.selectModel": "モデルを選択",
     "js.confirmDelete": "このモデルを削除してもよろしいですか。",

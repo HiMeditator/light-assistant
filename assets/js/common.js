@@ -53,6 +53,9 @@ window.addEventListener('message', event => {
         case 'response.end':
             disableInput(false);
             break;
+        case 'context.list':
+            loadContextList(message.data);
+            break;
         case 'update.models':
             updateModelList(message.models, message.currentModel);
             break;

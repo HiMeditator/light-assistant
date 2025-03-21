@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { LangDict } from '../classes/langDict';
+import { RepoContext } from '../classes/repoContext';
 import { ConfigFile } from '../classes/configFile';
 import { RequestModel } from '../classes/requestModel';
 import { ChatSessions } from '../classes/chatSessions';
@@ -13,6 +14,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
     constructor(
         private readonly _extensionUri: vscode.Uri,
         private faIcons: any,
+        private repoContext: RepoContext,
         private configFile: ConfigFile,
         private requestModel: RequestModel,
         private chatSessions: ChatSessions
@@ -67,7 +69,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
         webviewView.webview.onDidReceiveMessage(message => {
-            // console.log('ts API',message);
+            console.log('ts API',message);
             switch (message.command) {
                 case 'init.ready':
                     this.initView();
@@ -75,8 +77,14 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                 case 'error.noModel':
                     vscode.window.showErrorMessage(LangDict.get('ts.modelNotSelected'));
                     break;
+                case 'id.delete':
+                    this.requestModel.deleteMessageID(message.id, this._view);
+                    break;
+                case 'context.request':
+                    this.repoContext.getContextItem(this._view);
+                    break;
                 case 'user.request':
-                    this.requestModel.handleRequest(message.prompt, message.model, this._view);
+                    this.requestModel.handleRequest(message.prompt, message.model, message.context, this._view);
                     break;
                 case 'user.stop':
                     this.requestModel.handleStop(this._view);
@@ -93,9 +101,6 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'model.delete':
                     this.configFile.deleteModelFromConfig(message.modelData, this._view);
-                    break;
-                case 'id.delete':
-                    this.requestModel.deleteMessageID(message.id, this._view);
                     break;
             }
         });

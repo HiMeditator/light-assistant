@@ -1,6 +1,6 @@
 {
   "name": "light-assistant",
-  "displayName": "Light Assistant (Under Development)",
+  "displayName": "Light Assistant",
   "publisher": "himeditator",
   "icon": "assets/icon/light-assistant.png",
   "repository": {
@@ -14,7 +14,7 @@
   },
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
-  "description": "Light Assistant is an open-source lightweight intelligent assistant plugin for VS Code. One goal of this project is to provide a starting reference for developing IDE intelligent assistants.",
+  "description": "Light Assistant is an open-source lightweight chat assistant for VS Code.",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.96.0"

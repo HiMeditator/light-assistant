@@ -21,6 +21,7 @@
 .dropup-list {
     list-style: none;
     max-height: 240px;
+    max-width: calc(100vw - 60px);
     overflow-y: auto;
     scrollbar-width: thin;
 }
@@ -40,11 +41,7 @@
 }
 
 .dropup-list li:hover {
-    background-color: rgba(128, 128, 128, 0.1);
-}
-
-.dropup-list li.selected {
-    background-color: var(--vscode-list-activeSelectionBackground, #c4d9b1);
+    background-color: rgba(128, 128, 128, 0.15);
 }
 
 #div-input::before {
@@ -88,14 +85,38 @@
 
 #context-select {
     margin: auto 5px;
+    width: auto;
+    color: var(--vscode-foreground, #616161);
+}
+
+#add-context:hover {
+    border-radius: 5px;
+    background-color: rgba(128, 128, 128, 0.15);
 }
 
 #context-option {
-    bottom: 130%;
+    bottom: 140%;
 }
 
-#add-context{
-    font-size: 20px;
+#context-option li span{
+    border-radius: 5px;
+    border: 1px solid transparent;
+}
+
+#context-option li.selected span{
+    border: 1px solid var(--vscode-button-hoverBackground, #5a4579);
+}
+
+#context-option li.selected sub{
+    border-bottom: 1px solid var(--vscode-button-hoverBackground, #5a4579);
+}
+
+#context-list li sub{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
+    text-align: left;
 }
 
 .selected-context {
@@ -112,14 +133,10 @@
     background-color: rgba(128, 128, 128, 0.2);
 }
 
-/* TODO: del this when js ready */
-#context-select:hover #context-option {
-    display: block;
-}
-
 #ta-prompt-input {
     width: 100%;
     max-height: 500px;
+    line-height: 1.5em;
     scrollbar-width: thin;
     padding: 5px;
     box-sizing: border-box;
@@ -163,6 +180,16 @@
     border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 
+#model-list li.selected {
+    background-color: var(--vscode-list-activeSelectionBackground, #c4d9b1);
+}
+
+#model-list li span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #model-list li svg:last-child {
     display: none;
     margin-left: auto;
@@ -174,6 +201,14 @@
 
 #model-list li:hover svg:last-child:hover {
     background-color: rgba(128, 128, 128, 0.2);
+}
+
+#model-selected {
+    display: inline-block;
+    max-width: calc(70vw - 21px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #send-prompt {

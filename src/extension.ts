@@ -9,12 +9,14 @@ import * as fs from 'fs';
 import * as os from 'os';
 
 import { LangDict } from './classes/langDict';
+import { RepoContext } from './classes/repoContext';
 import { ConfigFile } from './classes/configFile';
 import { RequestModel } from './classes/requestModel';
 import { ChatSessions } from './classes/chatSessions';
 import { MainViewProvider } from './views/MainViewProvider';
 
 let faIcons: any;
+let repoContext: RepoContext;
 let configFile: ConfigFile;
 let requestModel: RequestModel;
 let chatSessions: ChatSessions;
@@ -31,13 +33,15 @@ export function activate(context: vscode.ExtensionContext) {
     const faPath = vscode.Uri.joinPath(context.extensionUri, '/assets/icon/font-awesome.json').fsPath;
     
     faIcons = JSON.parse(fs.readFileSync(faPath, 'utf8'));
+    repoContext = new RepoContext();
     configFile = new ConfigFile(configUri, context);
-    requestModel = new RequestModel(sessionDirUri);
+    requestModel = new RequestModel(sessionDirUri, repoContext);
     chatSessions = new ChatSessions(sessionDirUri, sessionManifestUri, requestModel);
 
     const mainViewProvider = new MainViewProvider(
         context.extensionUri,
         faIcons,
+        repoContext,
         configFile,
         requestModel,
         chatSessions
@@ -50,7 +54,6 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
-
     const configurationChange = vscode.workspace.onDidChangeConfiguration(event => {
         if(event.affectsConfiguration('lightAssistant.sendRequestShortcut')){
             mainViewProvider.updateConfiguration();
@@ -61,6 +64,11 @@ export function activate(context: vscode.ExtensionContext) {
     });
     context.subscriptions.push(configurationChange);
 
+    const addTextEditor = vscode.window.onDidChangeActiveTextEditor(editor => {
+        if(editor === undefined) { return; }
+        repoContext.includeTextEditors[editor.document.uri.fsPath] = editor;
+    });
+    context.subscriptions.push(addTextEditor);
 
     const gotoSettings = vscode.commands.registerCommand('light-assistant.goto.settings', () => {
         vscode.commands.executeCommand('workbench.action.openSettings', '@ext:himeditator.light-assistant');

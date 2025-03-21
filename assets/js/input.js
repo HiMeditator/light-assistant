@@ -1,5 +1,18 @@
 autosize(document.getElementById('ta-prompt-input'));
 
+document.getElementById('root').addEventListener('click', function() {
+    document.getElementById('context-option').style.display = 'none';
+});
+
+document.getElementById('context-option').addEventListener('click', function(event) {
+    event.stopPropagation();    
+});
+
+document.getElementById('add-context').addEventListener('click', function() {
+    vscode.postMessage({command: 'context.request'});
+});
+
+
 document.getElementById('ta-prompt-input').addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'Enter' && g_sendShortcut === 'Ctrl+Enter') {
         handleUserRequest();
@@ -45,11 +58,73 @@ function handleUserRequest() {
     document.getElementById('ta-prompt-input').style.height = 'auto';
     g_currentModelName = document.getElementById('model-selected-value').textContent;
     g_currentModelIcon = (JSONparse(model)['type'] === 'ollama')? 'circle-nodes' : 'hexagon-node';
+    const contextDivs = document.querySelectorAll('.selected-context');
+    const contextList = [];
+    for(const item of contextDivs){
+        contextList.push(item.getAttribute('data-value'));
+        item.remove();
+    }
+    document.getElementById('context-list').innerHTML = '';
     vscode.postMessage({
         command: 'user.request',
         prompt: userPrompt,
-        model: model
+        model: model,
+        context: JSON.stringify(contextList)
     });
+}
+
+function loadContextList(data){
+    contextList = JSONparse(data);
+    const liList = [];
+    document.getElementById('context-list').querySelectorAll('li').forEach(li => {
+        console.log('check',li.getAttribute('data-value'));
+        if(!contextList.includes(li.getAttribute('data-value'))){
+            li.remove();
+        }
+        else{
+            liList.push(li.getAttribute('data-value'));
+        }
+    });
+    for(const item of contextList){
+        if(liList.includes(item)) { continue; }
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        const sub = document.createElement('sub');
+        if(item === '__selected__') {
+            span.textContent = g_langDict['js.selected'];
+        }
+        else {
+            span.textContent = item.split('\\').pop();
+        }
+        sub.textContent = item;
+        li.setAttribute('data-value', item);
+        li.appendChild(span);
+        li.appendChild(sub);
+        document.getElementById('context-list').appendChild(li);
+        li.addEventListener('click', function () {
+            if(li.classList.contains('selected')){
+                document.querySelectorAll('.selected-context').forEach(selected => {
+                    if(selected.getAttribute('data-value') === item){
+                        selected.remove();
+                    }
+                });
+                li.classList.remove('selected');
+            }
+            else{
+                li.classList.add('selected');
+                const div = document.createElement('div'); 
+                div.classList.add('selected-context');
+                div.textContent = li.querySelector('span').textContent;
+                div.setAttribute('data-value', item);
+                document.getElementById('div-control-upper').appendChild(div);
+                div.addEventListener('click', function () {
+                    li.classList.remove('selected');
+                    div.remove();
+                });
+            }
+        });
+    }
+    document.getElementById('context-option').style.display = 'block';
 }
 
 function updateModelList(models, currentModel) {

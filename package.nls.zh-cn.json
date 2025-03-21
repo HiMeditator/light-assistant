@@ -33,11 +33,13 @@
     "html.label.addModel": "添加模型",
     "html.label.loadConfig": "载入配置",
     "html.label.selectModel": "选择模型",
+    "html.label.addContext": "添加上下文",
 
     "js.reasoningContent": "推理内容",
     "js.copy": "复制",
     "js.deleteChatSession": "删除消息",
+    "js.selected": "『选中的内容』",
     "js.selectModel": "选择模型",
     "js.confirmDelete": "你确定要删除该模型吗？",
-    "js.welcomeMessage": "<think>\n\n部分模型（比如 DeepSeek）会在回答问题之前生成推理过程内容。生成的推理内容可以点击右上角的“推理内容”选项查看或隐藏。\n\n</think>\n\n欢迎使用 Light Assistant（轻亮助手），一个专为 VS Code 设计的开源轻量级智能助手插件。作为个人开发的 IDE 智能助手，Light Assistant 旨在为您提供简洁、个性化的开发辅助体验。\n\n- 自由配置模型\n- 聊天记录管理\n- 数学公式渲染\n\n---\n\n更多信息请参考我们的[用户手册](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual_zh_cn.md)或访问[GitHub页面](https://github.com/HiMeditator/light-assistant)。\n"
+    "js.welcomeMessage": "<think>\n\n部分模型（比如 DeepSeek）会在回答问题之前生成推理过程内容。生成的推理内容可以点击右上角的“推理内容”选项查看或隐藏。\n\n</think>\n\n欢迎使用 Light Assistant（轻亮助手），一个专为 VS Code 设计的开源轻量级智能助手插件。作为个人开发的 IDE 智能助手，Light Assistant 旨在为您提供简洁、个性化的开发辅助体验。\n\n- 自由配置模型\n- 聊天记录管理\n- 数学公式渲染\n\n---\n\n更多信息请参考[用户手册](https://github.com/HiMeditator/light-assistant/blob/main/docs/user-manual_zh_cn.md)或访问[GitHub页面](https://github.com/HiMeditator/light-assistant)。\n"
 }
