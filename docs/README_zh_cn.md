@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant（轻亮助手）是一个开源的面向 VS Code 的轻量级智能助手插件。该项目的目的之一是为 IDE 智能助手的开发提供入门参考。</p>
+    <p>Light Assistant（轻亮助手）是一个开源的面向 VS Code 的轻量级智能助手。比起代码能力，Light Assistant 更注重大模型聊天功能。</p>
     <p>
         | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <b>简体中文</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_ja.md">日本語</a> |
     </p>
@@ -9,32 +9,29 @@
 
 <hr>
 
-<div align="center" >
-    <p><b>目前，本插件正在初步开发中，仅聊天功能开发完成。</b>更多功能和信息敬请期待。</p>
-</div>
 
 ## 用户手册
 
-[用户手册](user-manual_zh_cn.md)
-[User Manual](user-manual.md)
+- [用户手册](user-manual_zh_cn.md)
+- [User Manual](user-manual.md)
+- [ユーザーマニュアル](user-manual_ja.md)
 
 ## 特性
 
-### 自由配置模型
-
-<img src="img/media/01.png" />
-
-### IDE 内聊天
-
-<img src="img/media/02.png" style="zoom:60%;" />
-
-### 聊天记录管理
-
-<img src="img/media/03.png" style="zoom:40%;" />
-<img src="img/media/05.png" style="zoom:50%;" />
-
 ### 数学公式渲染
 
-相当多的代码助手不支持数学公式渲染，但 Light Assistant 提供了良好的数学公式渲染。
+弥补了大多数智能助手没有数学公式渲染的缺点。
+
+<img src="img/media/01.png" style="zoom:60%;" />
+
+### 方便的模型配置
+
+<img src="img/media/02.png" />
+
+### 选择聊天上下文
+
+<img src="img/media/03.png" style="zoom:80%;" />
+
+### 聊天记录管理
 
 <img src="img/media/04.png" style="zoom:80%;" />

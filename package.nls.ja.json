@@ -9,6 +9,7 @@
     "desc.sendRequestShortcut": "メッセージ送信のショートカットキーを設定します。",
     "desc.loadLastChatSession": "プラグイン起動時に前回のチャットを読み込むかどうか。",
     "desc.codeHighlightTheme": "コードハイライトのテーマを設定します。**プラグイン再起動後に有効になります。**",
+    "desc.maxChatHistory": "保存できるチャットセッションの最大数です。`-1` は無制限を示します（推奨されません）。",
 
     "ts.deleteSession": "セッションを削除する",
     "ts.fetchingModelInfo": "モデルの応答を取得中です。しばらくしてからもう一度お試しください。",
@@ -37,6 +38,7 @@
 
     "js.reasoningContent": "推論内容",
     "js.copy": "コピー",
+    "js.stopGeneration": "生成を停止",
     "js.selected": "『選択された内容』",
     "js.deleteChatSession": "メッセージを削除",
     "js.selectModel": "モデルを選択",

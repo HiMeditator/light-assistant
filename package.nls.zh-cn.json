@@ -9,6 +9,7 @@
     "desc.sendRequestShortcut": "设置发送消息的快捷键。",
     "desc.loadLastChatSession": "是否在插件启动时载入最近一次的对话。",
     "desc.codeHighlightTheme": "设置代码高亮的主题。**重启插件后生效。**",
+    "desc.maxChatHistory": "允许保存的会话记录的最大数量。`-1` 表示无限量（不建议）。",
 
     "ts.deleteSession": "删除会话",
     "ts.fetchingModelInfo": "正在获取模型回复，请稍后再试。",
@@ -37,6 +38,7 @@
 
     "js.reasoningContent": "推理内容",
     "js.copy": "复制",
+    "js.stopGeneration": "停止生成",
     "js.deleteChatSession": "删除消息",
     "js.selected": "『选中的内容』",
     "js.selectModel": "选择模型",

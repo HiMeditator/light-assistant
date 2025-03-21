@@ -30,6 +30,7 @@ function loadResponse(model, data, id, type) {
         g_modelCotContentNode.parentNode.querySelector('.dialog-item-control').querySelector('svg').remove();
     }
     g_modelContentDict[id] = data;
+    document.getElementById(`${id}-request`).querySelector('.dialog-item-control').remove();
 }
 
 function updateResponseStream(data) {
@@ -89,6 +90,18 @@ function createUserRequestElement(userPrompt, id) {
     userName.className = 'user-name';
     userName.textContent = 'User';
     divInfo.appendChild(userName);
+
+    const divControl =  document.createElement('div');
+    divControl.className = 'dialog-item-control';
+    divInfo.appendChild(divControl);
+
+    const svgStop = createSvgWithTitle(g_icons['pause'], g_langDict['js.stopGeneration'], '0 0 320 512');
+    divControl.appendChild(svgStop);
+    svgStop.addEventListener('click', function () {
+        vscode.postMessage({
+            command: 'user.stop', id: id
+        });
+    });
 
     const userContent = document.createElement('div');
     userContent.className = 'dialog-content user-content';

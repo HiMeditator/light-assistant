@@ -1,13 +1,13 @@
 # Light Assistant User Manual
 
-Applies to plugin version v0.0.3
+Applies to plugin version v0.1.0
 
-[简体中文版](user-manual_zh_cn.md)
-[日本語版](user-manual_ja.md)
+- [简体中文版](user-manual_zh_cn.md)
+- [日本語版](user-manual_ja.md)
+
+![](./img/manual/01.png)
 
 ## Configuring Models
-
-![](img/manual/01.png)
 
 ### Configuring Models via Configuration File
 
@@ -78,12 +78,24 @@ In the lower-left corner of the plugin, hover over the `Select Model` option and
 
 ## Chatting
 
+### Chat Options
+
 After configuring the models, you can start chatting. Enter content in the input box and press `Ctrl+Enter` or click the send button to send the chat content.
 
-You can click the `View Chat Logs` option in the top-right corner of the plugin interface to view chat log files.
+Click the `Add Context` option above the input box to add file contents from the IDE as context. Only files that have been opened in the code editor are supported.
 
-You can click the `New Chat Session` option in the top-right corner of the plugin interface to create a new session.
+Click on any file already added to the context to remove it.
 
-## Other Features
+### Conversation Management
 
-You can click the `Open Settings` option in the top-right corner of the plugin interface to modify settings.
+You can click the `Chat Sessions` option in the top-right corner of the plugin interface to view chat record files.
+
+You can click the `New Chat Session` option in the top-right corner of the plugin interface to create a new conversation.
+
+### Chat Content
+
+While the LLM is generating content, hover over the top-left corner of the user message box and click the `Stop Generation` option to stop the current response.
+
+## Settings
+
+You can click the `Open Settings` option in the top-right corner of the plugin interface to access the plugin settings page.

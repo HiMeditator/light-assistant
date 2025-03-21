@@ -3,12 +3,13 @@
     "plugin.name": "Light Assistant",
     "cmd.goto.settings": "Open Settings",
     "cmd.goto.config": "Open Config",
-    "cmd.load.sessions": "Load Chat Session",
+    "cmd.load.sessions": "Chat Sessions",
     "cmd.chat.new": "New Chat Session",
     "desc.displayInfoMessage": "Whether to display introductory information in a new chat session.",
     "desc.sendRequestShortcut": "Set the shortcut key for sending message.",
     "desc.loadLastChatSession": "Whether to load the last chat session when the extension is started.",
     "desc.codeHighlightTheme": "Set the theme for code highlighting. **This will take effect after restarting the plugin.**",
+    "desc.maxChatHistory": "The maximum number of chat sessions allowed to be saved. `-1` indicates unlimited (not recommended).",
 
     "ts.deleteSession": "Delete Session",
     "ts.fetchingModelInfo": "Fetching the response from model, please try again later.",
@@ -37,6 +38,7 @@
 
     "js.reasoningContent": "reasoning content",
     "js.copy": "copy",
+    "js.stopGeneration": "stop generation",
     "js.selected": "[Selected Content]",
     "js.deleteChatSession": "delete message",
     "js.selectModel": "Select Model",

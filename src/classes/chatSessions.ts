@@ -235,6 +235,14 @@ export class ChatSessions implements ChatSessionsInterface {
                 });
             }
         }
+        const config = vscode.workspace.getConfiguration('lightAssistant');
+        const maxNum = config.get<number>('maxChatHistory') || 128;
+        if(maxNum < 0) { return; }
+        while(this.manifest.length > maxNum){
+            const delPath = vscode.Uri.joinPath(this.sessionDirUri, this.manifest[0].name);
+            fs.unlinkSync(delPath.fsPath);
+            this.manifest.shift();
+        }
         // console.log(this.manifest);
     }
 }

@@ -45,13 +45,13 @@ window.addEventListener('message', event => {
             break;
         case 'response.new':
             createResponseElement(message.id);
-            disableInput(true);
+            disableInput(true, message.id);
             break;
         case 'response.stream':
             updateResponseStream(message.data);
             break;
         case 'response.end':
-            disableInput(false);
+            disableInput(false, message.id);
             break;
         case 'context.list':
             loadContextList(message.data);
@@ -103,7 +103,7 @@ function deleteResponse(id) {
     }
 }
 
-function disableInput(value){
+function disableInput(value, id){
     g_disableSend = value;
     const textarea = document.getElementById("ta-prompt-input");
     textarea.disabled = value;
@@ -113,6 +113,7 @@ function disableInput(value){
         if(!g_modelResponseContent.startsWith('<think>')){
             g_modelCotContentNode.parentNode.querySelector('.dialog-item-control').querySelector('svg').remove();
         }
+        document.getElementById(`${id}-request`).querySelector('.dialog-item-control').remove();
         // console.log(dialogItemID.substring(0, dialogItemID.length - 9), dialogItemID);
     }
 }
@@ -163,7 +164,7 @@ function renderMarkdownContent(htmlNode, content) {
     // console.log(contentHTML);
     htmlNode.querySelectorAll('pre code').forEach(code => {
         const pre = code.parentNode;
-        if(pre.querySelector('code-info-div') === null){
+        if(pre.querySelector('.code-info-div') === null){
             const codeClasses = code.className.split(' ');
             let language = 'unknown';
             for(let codeClass of codeClasses){

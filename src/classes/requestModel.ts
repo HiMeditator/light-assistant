@@ -9,6 +9,7 @@ interface RequestModelInterface{
     chatMessages: any[];
     chatSession: any[];
     isRequesting: boolean;
+    stopSign: boolean;
     contextShow: string;
     contextPrompt: string;
     chatSessionFolderUri: vscode.Uri;
@@ -27,6 +28,7 @@ export class RequestModel implements RequestModelInterface{
     chatMessages: any[] = [];
     chatSession: any[] = [];
     isRequesting: boolean = false;
+    stopSign: boolean = false;
     contextShow: string = '';
     contextPrompt: string = '';
     constructor(
@@ -40,7 +42,8 @@ export class RequestModel implements RequestModelInterface{
 
     public handleStop(view?: vscode.WebviewView){
         if(!this.isRequesting) { return; }
-        vscode.window.showInformationMessage('Not implemented yet.');
+        this.stopSign = true;
+        // vscode.window.showInformationMessage('Not implemented yet.');
     }
 
     public handleRequest(prompt: string, modelStr: string, contextStr: string, view?: vscode.WebviewView){
@@ -85,22 +88,31 @@ export class RequestModel implements RequestModelInterface{
                 responseContent += part.message.content;
                 view?.webview.postMessage({
                     command: 'response.stream',
-                    data: part.message.content
+                    data: part.message.content,
+                    id: messageID
                 });
+                if(this.stopSign){
+                    view?.webview.postMessage({command: 'response.end', id: messageID});
+                    this.stopSign = false;
+                    return;
+                }
             }
         } catch(error) {
             vscode.window.showErrorMessage(`${LangDict.get('ts.requestFailed')} ${error}`);
             // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',
-                data: `**${error}**`
+                data: ` **${error}** `,
+                id: messageID
             });
-            view?.webview.postMessage({command: 'response.end'});
+            view?.webview.postMessage({command: 'response.end', id: messageID});
+            this.stopSign = false;
             this.pushModelMessage(`${error}`, cot, messageID, 'ollama', model, false);
             this.isRequesting = false;
             return;
         }
-        view?.webview.postMessage({command: 'response.end'});
+        view?.webview.postMessage({command: 'response.end', id: messageID});
+        this.stopSign = false;
         if(responseContent.startsWith('<think>') && responseContent.indexOf('</think>') >= 0){
             const pos = responseContent.indexOf('</think>');
             cot = responseContent.substring(0, pos + 8);
@@ -148,23 +160,32 @@ export class RequestModel implements RequestModelInterface{
                 responseContent += delta['content'];
                 view?.webview.postMessage({
                     command: 'response.stream',
-                    data: content
+                    data: content,
+                    id: messageID
                 });
                 // console.log(chunk['choices'][0]['delta'], content);
+                if(this.stopSign){
+                    view?.webview.postMessage({command: 'response.end', id: messageID});
+                    this.stopSign = false;
+                    return;
+                }
             }
         } catch(error) {
             vscode.window.showErrorMessage(`${LangDict.get('ts.requestFailed')} ${error}`);
             // console.log(error);
             view?.webview.postMessage({
                 command: 'response.stream',
-                data: `**${error}**`
+                data: ` **${error}** `,
+                id: messageID
             });
-            view?.webview.postMessage({command: 'response.end'});
+            view?.webview.postMessage({command: 'response.end', id: messageID});
+            this.stopSign = false;
             this.pushModelMessage(`${error}`, cot, messageID, 'openai', model, false);
             this.isRequesting = false;
             return;
         }
-        view?.webview.postMessage({command: 'response.end'});
+        view?.webview.postMessage({command: 'response.end', id: messageID});
+        this.stopSign = false;
         this.pushModelMessage(responseContent, cot, messageID, 'openai', model);
         this.isRequesting = false;
     }

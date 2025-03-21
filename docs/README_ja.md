@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="../assets/icon/light-assistant.png"  width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant（ライトアシスタント）は、VS Code 向けのオープンソースの軽量な智能アシスタントプラグインです。このプロジェクトの目的の一つは、IDE の智能アシスタント開発の入門参考を提供することです。</p>
+    <p>Light Assistant（ライトアシスタント）は、VS Code 向けのオープンソースで軽量なインテリジェントアシスタントです。コード作成能力よりも、大規模モデルのチャット機能に重点を置いています。</p>
     <p>
         | <a href="https://github.com/HiMeditator/light-assistant/blob/main/README.md">English</a> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> | <b>日本語</b> |
     </p>
@@ -21,21 +21,20 @@
 
 ## 特徴
 
-### モデルの自由な設定
+### 数式レンダリング
 
-<img src="img/media/01.png" />
+ほとんどのインテリジェントアシスタントが数式レンダリングに対応していないという欠点を補っています。
 
-### IDE 内でのチャット
+<img src="img/media/01.png" style="zoom:60%;"/>
 
-<img src="img/media/02.png" style="zoom:60%;" />
+### 自由なモデル設定
 
-### チャット履歴の管理
+<img src="img/media/02.png"/>
 
-<img src="img/media/03.png" style="zoom:40%;" />
-<img src="img/media/05.png" style="zoom:50%;" />
+### チャットコンテキストの選択
 
-### 数学式のレンダリング
+<img src="img/media/03.png" style="zoom:80%;"/>
 
-多くのコードアシスタントは数学式のレンダリングをサポートしていませんが、Light Assistant では良好な数学式のレンダリングが可能です。
+### チャット記録の管理
 
-<img src="img/media/04.png" style="zoom:80%;" />
+<img src="img/media/04.png" style="zoom:80%;"/>

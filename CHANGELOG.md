@@ -71,3 +71,7 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 ## v0.1.0
 
+2025-03-21
+
+- Add: context feature
+- Add: stop generation

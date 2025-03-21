@@ -126,6 +126,14 @@
           ],
           "default": "Ctrl+Enter",
           "markdownDescription": "%desc.sendRequestShortcut%",
+          "order": 3
+        },
+        "lightAssistant.maxChatHistory": {
+          "type": "number",
+          "default": 128,
+          "minimum": -1,
+          "maximum": 255,
+          "markdownDescription": "%desc.maxChatHistory%",
           "order": 2
         },
         "lightAssistant.codeHighlightTheme": {
@@ -140,7 +148,7 @@
           ],
           "default": "github",
           "markdownDescription": "%desc.codeHighlightTheme%",
-          "order": 3
+          "order": 4
         }
       }
     }
