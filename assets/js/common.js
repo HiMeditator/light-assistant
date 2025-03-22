@@ -20,7 +20,7 @@ let g_modelMainContentNode;
 
 window.addEventListener('message', event => {
     const message = event.data;
-    // console.log('js API', message);
+    // console.log('ts API', message);
     switch (message.command) {
         case 'icons':
             g_icons = JSON.parse(message.icons);
@@ -32,7 +32,7 @@ window.addEventListener('message', event => {
             loadWelcomeMessage();
             break;
         case 'request.load':
-            loadRequest(message.prompt, message.id);
+            loadRequest(message.prompt, message.context, message.id);
             break;
         case 'request.delete':
             deleteRequest(message.id);
@@ -79,12 +79,12 @@ function updateConfigurations(configurations) {
     document.getElementById('send-shortcut').innerText = g_sendShortcut;
 }
 
-function loadRequest(prompt, id){
+function loadRequest(prompt, contextStr, id){
     if(g_isNewSession){
         document.getElementById('div-dialog').innerHTML = '';
         g_isNewSession = false;
     }
-    createUserRequestElement(prompt, id);
+    createUserRequestElement(prompt, contextStr, id);
 }
 
 function deleteRequest(id) {
@@ -114,7 +114,6 @@ function disableInput(value, id){
             g_modelCotContentNode.parentNode.querySelector('.dialog-item-control').querySelector('svg').remove();
         }
         document.getElementById(`${id}-request`).querySelector('.dialog-item-control').remove();
-        // console.log(dialogItemID.substring(0, dialogItemID.length - 9), dialogItemID);
     }
 }
 

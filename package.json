@@ -14,8 +14,8 @@
   },
   "qna": "https://github.com/HiMeditator/light-assistant/issues",
   "license": "MIT",
-  "description": "Light Assistant is an open-source lightweight chat assistant for VS Code.",
-  "version": "0.1.0",
+  "description": "Light Assistant is an open-source lightweight chat assistant for VS Code. Compared to coding capabilities, Light Assistant places more emphasis on the experience of chatting with LLMs within IDE.",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -33,7 +33,8 @@
     "copilot",
     "openai",
     "ollama",
-    "chat"
+    "chat",
+    "LLM"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
@@ -112,11 +113,25 @@
           "markdownDescription": "%desc.loadLastChatSession%",
           "order": 0
         },
+        "lightAssistant.continuousChat": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%desc.continuousChat%",
+          "order": 1
+        },
         "lightAssistant.displayInfoMessage": {
           "type": "boolean",
           "default": true,
           "markdownDescription": "%desc.displayInfoMessage%",
-          "order": 1
+          "order": 2
+        },
+        "lightAssistant.maxChatHistory": {
+          "type": "number",
+          "default": 128,
+          "minimum": -1,
+          "maximum": 255,
+          "markdownDescription": "%desc.maxChatHistory%",
+          "order": 3
         },
         "lightAssistant.sendRequestShortcut": {
           "type": "string",
@@ -126,15 +141,7 @@
           ],
           "default": "Ctrl+Enter",
           "markdownDescription": "%desc.sendRequestShortcut%",
-          "order": 3
-        },
-        "lightAssistant.maxChatHistory": {
-          "type": "number",
-          "default": 128,
-          "minimum": -1,
-          "maximum": 255,
-          "markdownDescription": "%desc.maxChatHistory%",
-          "order": 2
+          "order": 4
         },
         "lightAssistant.codeHighlightTheme": {
           "type": "string",
@@ -148,7 +155,7 @@
           ],
           "default": "github",
           "markdownDescription": "%desc.codeHighlightTheme%",
-          "order": 4
+          "order": 5
         }
       }
     }

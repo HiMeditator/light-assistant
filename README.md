@@ -1,7 +1,7 @@
 <div align="center" >
     <img src="assets/icon/light-assistant.png" width="90px" height="90px"/>
     <h1 align="center">light-assistant</h1>
-    <p>Light Assistant is an open-source lightweight intelligent assistant for VS Code. Compared to coding capabilities, Light Assistant focuses more on the large model chat function.</p>
+    <p>Light Assistant is an open-source lightweight intelligent assistant for VS Code. Compared to coding capabilities, Light Assistant places more emphasis on the experience of chatting with LLMs within IDE.</p>
     <p>
         | <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_ja.md">日本語</a> |
     </p>
@@ -22,16 +22,16 @@
 
 Makes up for the shortcoming of most intelligent assistants lacking mathematical formula rendering.
 
-<img src="docs/img/media/01.png" style="zoom:60%;"/>
+<img src="docs/img/media/01.gif" />
 
 ### Convenient Model Configuration
 
-<img src="docs/img/media/02.png"/>
+<img src="docs/img/media/02.gif" />
 
 ### Select Chat Context
 
-<img src="docs/img/media/03.png" style="zoom:80%;"/>
+<img src="docs/img/media/03.gif" />
 
 ### Chat Record Management
 
-<img src="docs/img/media/04.png" style="zoom:80%;"/>
+<img src="docs/img/media/04.gif" />

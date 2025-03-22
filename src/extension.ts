@@ -36,6 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
     repoContext = new RepoContext();
     configFile = new ConfigFile(configUri, context);
     requestModel = new RequestModel(sessionDirUri, repoContext);
+    ChatSessions.context = context;
     chatSessions = new ChatSessions(sessionDirUri, sessionManifestUri, requestModel);
 
     const mainViewProvider = new MainViewProvider(
@@ -87,30 +88,29 @@ export function activate(context: vscode.ExtensionContext) {
         for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
             const session = chatSessions.manifest[i];
             sessionItems.push({
-                label: session.name,
+                label: session.overview,
                 description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
-                detail: session.overview,
+                detail: session.name,
                 buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: LangDict.get('ts.deleteSession')}]
             });
         }
         quickPick.items = sessionItems;
         quickPick.onDidChangeSelection(selection => {
-            // console.log(selection);
             if(selection[0]){
-                mainViewProvider.loadChatSession(selection[0].label);
+                mainViewProvider.loadChatSession(selection[0].detail || '');
                 quickPick.dispose();
             }
         });
         quickPick.onDidTriggerItemButton((event) => {
             if (event.button.tooltip === LangDict.get('ts.deleteSession')) {
-                mainViewProvider.deleteChatSession(event.item.label);
+                mainViewProvider.deleteChatSession(event.item.detail || '');
                 sessionItems = [];
                 for (let i = chatSessions.manifest.length - 1; i >= 0; i--){
                     const session = chatSessions.manifest[i];
                     sessionItems.push({
-                        label: session.name,
+                        label: session.overview,
                         description: `$(clock) ${session.update}  $(folder) ${session.workspace}`,
-                        detail: session.overview,
+                        detail: session.name,
                         buttons: [{iconPath: new vscode.ThemeIcon('trash'), tooltip: LangDict.get('ts.deleteSession')}]
                     });
                 }

@@ -71,7 +71,7 @@ function splitThinkContent(currentResponse){
     return [thinkContent, restContent];
 }
 
-function createUserRequestElement(userPrompt, id) {
+function createUserRequestElement(userPrompt, contextStr, id) {
     const dialogItem = document.createElement('div');
     dialogItem.className = 'dialog-item';
     dialogItem.id = `${id}-request`;
@@ -108,8 +108,22 @@ function createUserRequestElement(userPrompt, id) {
     // userContent.textContent = userPrompt;
     renderMarkdownContent(userContent, userPrompt);
     dialogItem.appendChild(userContent);
-
     document.getElementById('div-dialog').appendChild(dialogItem);
+
+    if(!contextStr) { return; }
+    const contextList = JSONparse(contextStr);
+    if(!contextList || contextList.length === 0) { return; }
+    const contextDiv = document.createElement('div');
+    contextDiv.className = 'dialog-context-file';
+    for(const context of contextList){
+        const contextItem = document.createElement('span');
+        contextItem.textContent = context.split('\\').pop();
+        contextDiv.appendChild(contextItem);
+        contextItem.addEventListener('click', function () {
+            vscode.postMessage({command: 'context.goto', context: context});
+        });
+    }
+    userContent.appendChild(contextDiv);
 }
 
 function createResponseElement(id) {
@@ -148,7 +162,10 @@ function createResponseElement(id) {
     dialogItemControl.className = 'dialog-item-control';
     divInfo.appendChild(dialogItemControl);
 
-    const svgHideShow = createSvgWithTitle(g_icons['arrow-down'], g_langDict['js.reasoningContent']);
+    const svgHideShow = createSvgWithTitle(
+        id === 'welcome-message' ? g_icons['arrow-up'] : g_icons['arrow-down'],
+        g_langDict['js.reasoningContent']
+    );
     dialogItemControl.appendChild(svgHideShow);
     svgHideShow.addEventListener('click', function () {
         const parentNode = this.parentNode.parentNode.parentNode;
@@ -165,7 +182,7 @@ function createResponseElement(id) {
     const svgCopy = createSvgWithTitle(g_icons['clipboard'], g_langDict['js.copy'], '0 0 384 512');
     dialogItemControl.appendChild(svgCopy);
     svgCopy.addEventListener('click', function () {
-        console.log(g_modelContentDict);
+        // console.log(g_modelContentDict);
         const path = svgCopy.querySelector('path');
         if(!g_disableSend) {
             navigator.clipboard.writeText(g_modelContentDict[id] || '');
@@ -174,7 +191,14 @@ function createResponseElement(id) {
                 path.setAttribute('d', g_icons['clipboard']);
             }, 500);
         }
-
+        else{
+            svgCopy.setAttribute('viewBox', '0 0 512 512');
+            path.setAttribute('d', g_icons['ban']);
+            setTimeout(() => {
+                svgCopy.setAttribute('viewBox', '0 0 384 512');
+                path.setAttribute('d', g_icons['clipboard']);
+            }, 500);
+        }
     });
 
     if(id !== 'welcome-message'){

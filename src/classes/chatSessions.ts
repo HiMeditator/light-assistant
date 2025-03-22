@@ -23,6 +23,7 @@ interface ChatSessionsInterface {
 
 
 export class ChatSessions implements ChatSessionsInterface {
+    public static context: vscode.ExtensionContext;
     manifest: any[] = [];
     sessionName: string;
     constructor(
@@ -109,14 +110,18 @@ export class ChatSessions implements ChatSessionsInterface {
             this.requestModel.clearChatSession(view);
             for(const message of chatSession){
                 if(message['role'] === 'user'){
+                    this.requestModel.contextStr = JSON.stringify(message['contextFile']);
+                    this.requestModel.contextPrompt = message['contextPrompt'];
                     this.requestModel.pushUserMessage(message['content'], message['iso_time']);
                     view?.webview.postMessage({
                         command: 'request.load',
                         prompt: message['content'],
+                        context: this.requestModel.contextStr,
                         id: message['iso_time']
                     });
                 }
-                else{
+                else if(message['role'] === 'assistant'){
+                    this.requestModel.modelTitle = message['title']? message['title'] : message['model'];
                     this.requestModel.pushModelMessage(
                         message['content'], message['reasoning'],
                         message['iso_time'], message['type'],
@@ -126,11 +131,14 @@ export class ChatSessions implements ChatSessionsInterface {
                     // console.log(full_content);
                     view?.webview.postMessage({
                         command: 'response.load',
-                        model: message['model'],
+                        model: this.requestModel.modelTitle,
                         data: full_content,
                         id: message['iso_time'],
                         type: message['type']
                     });
+                }
+                else if(message['role'] === 'system'){
+                    this.requestModel.pushSystemMessage(message['content'], message['iso_time']);
                 }
             }
         }
@@ -172,6 +180,9 @@ export class ChatSessions implements ChatSessionsInterface {
         }
         if(!inManifest){
             let content = this.requestModel.chatSession[0].content;
+            if(this.requestModel.chatSession[0].role === 'system'){
+                content = this.requestModel.chatSession[1].content;
+            }
             if(content.length > 64){
                 content = content.substring(0, 64) + '...';
             }

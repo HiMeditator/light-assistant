@@ -69,7 +69,9 @@ svg{
 
 .div-form-entry {
     margin: 20px;
+    display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .popup-title {
@@ -79,8 +81,8 @@ svg{
 
 #note-del-model {
     margin: 20px 0;
+    text-align: left;
 }
-
 
 #note-add-model {
     margin: 16px 0;
@@ -92,13 +94,20 @@ svg{
 
 #div-add-model label {
     display: inline-block;
-    width: min(30%, 50px);
-    text-align: right;
+    width: min(30%, 60px);
+    text-align: center;
 }
 
-#div-add-model input {
+#div-add-model input, #div-add-model textarea {
     display: inline-block;
-    width: calc(90% - min(30%, 50px));
+    width: calc(90% - min(30%, 60px));
+}
+
+#div-add-model textarea {
+    overflow: auto;
+    scrollbar-width: thin;
+    resize: vertical;
+    max-height: 40vh;
 }
 
 #option-openai, #option-ollama {

@@ -59,7 +59,9 @@ document.getElementById('btn-add-submit').onclick = () => {
     let modelData = {};
     modelData['model'] = document.getElementById('i-model').value;
     modelData['title'] = document.getElementById('i-title').value;
+    modelData['system'] = document.getElementById('i-system').value;
     if(modelData['title'].trim() === '') { delete modelData['title']; }
+    if(modelData['system'].trim() === '') { delete modelData['system']; }
     if(optionOllama.classList.contains('checked')){
         modelData['type'] = 'ollama';
     }

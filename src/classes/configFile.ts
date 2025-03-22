@@ -67,9 +67,27 @@ export class ConfigFile implements ConfigFileInterface {
         let configContent = this.getConfigContent();
         let configObj = JSON.parse(configContent);
         const modelToDelete = JSON.parse(modelData);
-        configObj['models'] = configObj['models'].filter( (model: any) => 
-            model.model !== modelToDelete.model || model.type !== modelToDelete.type
-        );
+        configObj['models'] = configObj['models'].filter( (model: any) => {
+            let sameBasic = false;
+            let sameTitle = false;
+            let sameSystem = false;
+            if(model.model === modelToDelete.model && model.type === modelToDelete.type){
+                sameBasic = true;
+                if(model.title && modelToDelete.title){
+                    sameTitle = model.title === modelToDelete.title;
+                }
+                else if(!model.title && !modelToDelete.title){
+                    sameTitle = true;
+                }
+                if(model.system && modelToDelete.system){
+                    sameSystem = model.system === modelToDelete.system;
+                }
+                else if(!model.system && !modelToDelete.system){
+                    sameSystem = true;
+                }
+            }
+            return !sameBasic || !sameSystem || !sameTitle;
+        });
         fs.writeFileSync(this.configUri.fsPath, JSON.stringify(configObj, null, 2));
         this.updateModelListFromConfig(view);
     }

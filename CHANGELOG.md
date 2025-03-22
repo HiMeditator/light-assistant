@@ -75,3 +75,12 @@ This is the first release of the plugin, and currently it only has the chatting 
 
 - Add: context feature
 - Add: stop generation
+
+## v0.1.1
+
+2025-03-22
+
+- Bug fix
+- Improve: user interface
+- Add: system prompt config
+- Add: disable continuous chat

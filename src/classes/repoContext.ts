@@ -39,23 +39,11 @@ export class RepoContext {
                 delete this.includeTextEditors[key];
             }
         }
-        console.log(this.contextItems);
+        // console.log(this.contextItems);
         view?.webview.postMessage({
             command: 'context.list',
             data:  JSON.stringify(this.contextItems)
         });
-    }
-
-    public getContextPromptShow(contextStr: string){
-        const contextList = JSON.parse(contextStr);
-        let promptShow = '';
-        for(const context of contextList){
-            const name = (context === '__selected__')?
-                LangDict.get('js.selected') : context.split('\\').pop();
-            promptShow += `\\(\\boxed{\\mathrm{${name}}}\\)  `;
-        }
-        if(promptShow === '') { return ''; };
-        return '\n\n---\n' + promptShow;
     }
 
     public getContextPrompt(contextStr: string){

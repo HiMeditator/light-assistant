@@ -6,6 +6,7 @@
     "cmd.load.sessions": "チャット履歴",
     "cmd.chat.new": "新しいチャット",
     "desc.displayInfoMessage": "新しいチャットで紹介情報を表示するかどうか。",
+    "desc.continuousChat": "連続チャット機能を有効にするかどうか。有効にすると、モデルはチャットの全記録を取得しますが、それにより入力 `tokens` がより多く消費されます。無効にすると、モデルは現在のリクエスト内容のみを受け取り、同じ会話中の記憶能力を失います。",
     "desc.sendRequestShortcut": "メッセージ送信のショートカットキーを設定します。",
     "desc.loadLastChatSession": "プラグイン起動時に前回のチャットを読み込むかどうか。",
     "desc.codeHighlightTheme": "コードハイライトのテーマを設定します。**プラグイン再起動後に有効になります。**",

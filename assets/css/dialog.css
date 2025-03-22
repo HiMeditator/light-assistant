@@ -75,6 +75,14 @@ pre:hover .code-info-div {
     background-color: cornflowerblue;
 }
 
+.model-name {
+    display: inline-block;
+    max-width: calc(100vw - 150px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .dialog-item-control {
     display: none;
     position: absolute;
@@ -98,6 +106,25 @@ pre:hover .code-info-div {
     margin: 5px;
     overflow-x: auto;
     scrollbar-width: thin;
+}
+
+.dialog-context-file{
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(128, 128, 128, 0.4);
+}
+
+.dialog-context-file span{
+    display: inline-block;
+    padding: 2px 4px;
+    border-radius: 5px;
+    margin: 2px 5px;
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.dialog-context-file span:hover{
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .model-cot-content {

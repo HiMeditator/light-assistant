@@ -6,6 +6,7 @@
     "cmd.load.sessions": "Chat Sessions",
     "cmd.chat.new": "New Chat Session",
     "desc.displayInfoMessage": "Whether to display introductory information in a new chat session.",
+    "desc.continuousChat": "Whether to enable continuous chat. If enabled, the model will retrieve the entire chat session history, but it will consume more input `tokens`. If disabled, the model will only receive the current request content and lose the memory of the ongoing chat.",
     "desc.sendRequestShortcut": "Set the shortcut key for sending message.",
     "desc.loadLastChatSession": "Whether to load the last chat session when the extension is started.",
     "desc.codeHighlightTheme": "Set the theme for code highlighting. **This will take effect after restarting the plugin.**",

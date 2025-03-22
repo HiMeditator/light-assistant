@@ -77,7 +77,6 @@ function loadContextList(data){
     contextList = JSONparse(data);
     const liList = [];
     document.getElementById('context-list').querySelectorAll('li').forEach(li => {
-        console.log('check',li.getAttribute('data-value'));
         if(!contextList.includes(li.getAttribute('data-value'))){
             li.remove();
         }
@@ -162,10 +161,18 @@ function updateModelList(models, currentModel) {
         svgDel.addEventListener('click', function (event) {
             event.stopPropagation();
             g_toDeleteModel = this.parentNode.getAttribute('data-value');
-            const delModel = JSON.parse(this.parentNode.getAttribute('data-value'))['model'];
-            document.getElementById("note-del-model").innerHTML = 
-                g_langDict['js.confirmDelete'] + 
-                `&nbsp;&nbsp;<b>${delModel}</b>`;
+            const delModel = JSON.parse(this.parentNode.getAttribute('data-value'));
+            const noteNode = document.getElementById("note-del-model");
+            if(delModel['api_key']){
+                delModel['api_key'] = '******';
+            }
+            if(delModel['system'] && delModel['system'].length > 32){
+                delModel['system'] = delModel['system'].substring(0, 32) + '...';
+            }
+            noteNode.innerHTML = '';
+            const fullNote = g_langDict['js.confirmDelete'] + 
+                `\n\n\`\`\`json\n${JSON.stringify(delModel,null,2)}\n\`\`\``;
+            renderMarkdownContent(noteNode, fullNote);
             document.getElementById('popup-background').style.display = 'block';
             document.getElementById('div-del-model').style.display = 'block';
         });

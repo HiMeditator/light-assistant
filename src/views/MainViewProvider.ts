@@ -69,7 +69,7 @@ export class MainViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
         webviewView.webview.onDidReceiveMessage(message => {
-            console.log('ts API',message);
+            // console.log('js API', message);
             switch (message.command) {
                 case 'init.ready':
                     this.initView();

@@ -6,6 +6,7 @@
     "cmd.load.sessions": "对话历史",
     "cmd.chat.new": "新建对话",
     "desc.displayInfoMessage": "是否在新会话中显示介绍信息。",
+    "desc.continuousChat": "是否启用连续对话。如果启用，模型会获取同一个对话的全部记录，但是会消耗更多的输入 `tokens`。如果不启用，模型只会获取当前请求内容，失去在同一个对话中的记忆能力。",
     "desc.sendRequestShortcut": "设置发送消息的快捷键。",
     "desc.loadLastChatSession": "是否在插件启动时载入最近一次的对话。",
     "desc.codeHighlightTheme": "设置代码高亮的主题。**重启插件后生效。**",

@@ -10,7 +10,8 @@ interface RequestModelInterface{
     chatSession: any[];
     isRequesting: boolean;
     stopSign: boolean;
-    contextShow: string;
+    modelTitle: string;
+    contextStr: string;
     contextPrompt: string;
     chatSessionFolderUri: vscode.Uri;
     repoContext: RepoContext;
@@ -20,6 +21,7 @@ interface RequestModelInterface{
     requestOpenAI(prompt: string, model: string, base_url: string, api_key: string, messageID: string, view?: vscode.WebviewView): void;
     clearChatSession(view?: vscode.WebviewView): void;
     deleteMessageID(messageID: string, view?: vscode.WebviewView): void;
+    pushSystemMessage(content: string, messageID: string): void;
     pushUserMessage(content: string, messageID: string): void;
     pushModelMessage(content: string, cot: string, messageID: string, modelType: string, model: string, success?: boolean): void;
 }
@@ -29,7 +31,8 @@ export class RequestModel implements RequestModelInterface{
     chatSession: any[] = [];
     isRequesting: boolean = false;
     stopSign: boolean = false;
-    contextShow: string = '';
+    modelTitle: string = '';
+    contextStr: string = '[]';
     contextPrompt: string = '';
     constructor(
         public chatSessionFolderUri: vscode.Uri,
@@ -47,19 +50,25 @@ export class RequestModel implements RequestModelInterface{
     }
 
     public handleRequest(prompt: string, modelStr: string, contextStr: string, view?: vscode.WebviewView){
+        // console.log(modelStr);
         if(modelStr === undefined || modelStr === ''){
             vscode.window.showErrorMessage(LangDict.get('ts.modelNotSelected'));
             return;
         }
         const messageID = new Date().toISOString();
-        this.contextShow = this.repoContext.getContextPromptShow(contextStr);
+        this.contextStr = contextStr;
         this.contextPrompt = this.repoContext.getContextPrompt(contextStr);
         view?.webview.postMessage({
             command: 'request.load',
-            prompt: prompt + this.contextShow,
+            prompt: prompt,
+            context: contextStr,
             id: messageID
         });
         const model = JSON.parse(modelStr);
+        this.modelTitle = model['title'] ? model['title'] : model['model'];
+        if(this.chatMessages.length === 0 && model['system']){
+            this.pushSystemMessage(model['system'], new Date().toISOString());
+        }
         this.isRequesting = true;
         if(model['type'] === 'ollama'){
             this.requestOllama(prompt, model['model'], messageID, view);
@@ -77,11 +86,15 @@ export class RequestModel implements RequestModelInterface{
         let responseContent = '';
         let cot = '';
         this.pushUserMessage(prompt, messageID);
+        const laConfig = vscode.workspace.getConfiguration('lightAssistant');
+        const continuousChat = laConfig.get<boolean>('continuousChat');
+        const messages = continuousChat ? this.chatMessages : [this.chatMessages[this.chatMessages.length - 1]];
+        // console.log(messages);
         view?.webview.postMessage({command: 'response.new', id: messageID});
         try{
             const response = await ollama.chat({
                 model: model,
-                messages: this.chatMessages,
+                messages: messages,
                 stream: true
             });
             for await (const part of response) {
@@ -94,6 +107,8 @@ export class RequestModel implements RequestModelInterface{
                 if(this.stopSign){
                     view?.webview.postMessage({command: 'response.end', id: messageID});
                     this.stopSign = false;
+                    this.isRequesting = false;
+                    this.pushModelMessage(responseContent, cot, messageID, 'openai', model);
                     return;
                 }
             }
@@ -127,6 +142,10 @@ export class RequestModel implements RequestModelInterface{
         let cot = '';
         let isReasoning = false;
         this.pushUserMessage(prompt, messageID);
+        const laConfig = vscode.workspace.getConfiguration('lightAssistant');
+        const continuousChat = laConfig.get<boolean>('continuousChat');
+        const messages = continuousChat ? this.chatMessages : [this.chatMessages[this.chatMessages.length - 1]];
+        // console.log(messages);
         view?.webview.postMessage({command: 'response.new', id: messageID});
         try {
             const openai = new OpenAI({
@@ -135,7 +154,7 @@ export class RequestModel implements RequestModelInterface{
             });
             const completion = await openai.chat.completions.create({
                 model: model,
-                messages: this.chatMessages,
+                messages: messages,
                 stream: true
             });
             for await (const chunk of completion) {
@@ -167,6 +186,8 @@ export class RequestModel implements RequestModelInterface{
                 if(this.stopSign){
                     view?.webview.postMessage({command: 'response.end', id: messageID});
                     this.stopSign = false;
+                    this.isRequesting = false;
+                    this.pushModelMessage(responseContent, cot, messageID, 'openai', model);
                     return;
                 }
             }
@@ -210,12 +231,29 @@ export class RequestModel implements RequestModelInterface{
                 break;
             }
         }
+        if(this.chatSession.length === 1 && this.chatSession[0]['role'] === 'system'){
+            this.chatSession.splice(0, 1);
+            this.chatMessages.splice(0, 1);
+        }
+    }
+
+    public pushSystemMessage(content: string, messageID: string){
+        this.chatMessages.push({ 'role': 'system', 'content': content});
+        this.chatSession.push({
+            'role': 'system', 'content': content,
+            'contextFile': [],
+            'contextPrompt': '',
+            'iso_time': messageID
+        });
+        // console.log('sytem prompt', this.chatSession);
     }
 
     public pushUserMessage(content: string, messageID: string){
         this.chatMessages.push({ 'role': 'user', 'content': content + this.contextPrompt});
         this.chatSession.push({
-            'role': 'user', 'content': content + this.contextShow,
+            'role': 'user', 'content': content,
+            'contextFile': JSON.parse(this.contextStr),
+            'contextPrompt': this.contextPrompt,
             'iso_time': messageID
         });
     }
@@ -224,7 +262,8 @@ export class RequestModel implements RequestModelInterface{
         this.chatSession.push({
             'role': 'assistant', 'content': content,
             'reasoning': cot, 'iso_time': messageID,
-            'type': modelType, 'model': model, 'success': success
+            'type': modelType, 'model': model,
+            'title': this.modelTitle, 'success': success
         });
     }
 }

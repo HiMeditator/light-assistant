@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="div-form-entry">
-          <label for="i-model">model</label>
+          <label for="i-model">*model</label>
           <input type="text" id="i-model" name="model" required>
         </div>
         <div class="div-form-entry">
@@ -59,12 +59,16 @@
           <input type="text" id="i-title" name="title">
         </div>
         <div id="div-url-input" class="div-form-entry">
-          <label for="i-base_url">base_url</label>
+          <label for="i-base_url">*base_url</label>
           <input type="text" id="i-base_url" name="base_url" required><br>
         </div>
         <div id="div-api-input" class="div-form-entry">
-          <label for="i-api_key">api_key</label>
-          <input type="text" id="i-api_key" name="api_key" required><br>
+          <label for="i-api_key">*api_key</label>
+          <input type="password" id="i-api_key" name="api_key" required><br>
+        </div>
+        <div class="div-form-entry">
+          <label for="i-system">system</label>
+          <textarea id="i-system" name="system" rows="2" placeholder="system prompt"></textarea>
         </div>
         <button id="btn-add-submit">{{html.btn.submit}}</button>
         <button id="btn-add-cancel">{{html.btn.cancel}}</button>

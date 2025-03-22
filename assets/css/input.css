@@ -20,7 +20,7 @@
 
 .dropup-list {
     list-style: none;
-    max-height: 240px;
+    max-height: 295px;
     max-width: calc(100vw - 60px);
     overflow-y: auto;
     scrollbar-width: thin;
@@ -76,8 +76,7 @@
 }
 
 #div-control-upper {
-    padding: 0 5px 5px 5px;
-    color: var(--vscode-disabledForeground, rgba(97, 97, 97, 0.5));
+    padding: 0 5px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -89,13 +88,21 @@
     color: var(--vscode-foreground, #616161);
 }
 
+#add-context {
+    padding: 4px 0;
+    margin: 2px 0;
+}
+
 #add-context:hover {
     border-radius: 5px;
     background-color: rgba(128, 128, 128, 0.15);
 }
 
 #context-option {
-    bottom: 140%;
+    bottom: calc(100% + 5px);
+    border-radius: 5px;
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    box-shadow: 0 0 5px 2px rgba(128, 128, 128, 0.4);
 }
 
 #context-option li span{
