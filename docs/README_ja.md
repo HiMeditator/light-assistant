@@ -34,3 +34,8 @@
 ### チャット記録の管理
 
 <img src="img/media/04.gif" />
+
+## クレジット
+
+- [アイコン](../assets/icon/credits.md)
+- [JSライブラリ](../assets/js/libs/credits.md)

@@ -178,7 +178,11 @@ function updateModelList(models, currentModel) {
         });
         modelList.appendChild(li);
         if(model['type'] === currentModel['type'] && model['model'] === currentModel['model']){
-            currentLi = li;
+            if(!model['title'] && !currentModel['title'] || model['title'] === currentModel['title']){
+                if(!model['system'] && !currentModel['system'] || model['system'] === currentModel['system']){
+                    currentLi = li;
+                }
+            }
         }
     }
     if(currentLi !== undefined){ currentLi.click(); }

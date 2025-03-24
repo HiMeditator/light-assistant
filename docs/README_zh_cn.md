@@ -35,3 +35,8 @@
 ### 聊天记录管理
 
 <img src="img/media/04.gif" />
+
+## 致谢
+
+- [图标](../assets/icon/credits.md)
+- [JS库](../assets/js/libs/credits.md)

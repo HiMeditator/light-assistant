@@ -35,3 +35,8 @@ Makes up for the shortcoming of most intelligent assistants lacking mathematical
 ### Chat Record Management
 
 <img src="docs/img/media/04.gif" />
+
+## Credits
+
+- [icons](./assets/icon/credits.md)
+- [js-libs](./assets/js/libs/credits.md)

@@ -115,7 +115,10 @@ function createUserRequestElement(userPrompt, contextStr, id) {
     if(!contextList || contextList.length === 0) { return; }
     const contextDiv = document.createElement('div');
     contextDiv.className = 'dialog-context-file';
-    for(const context of contextList){
+    for(let context of contextList){
+        if(context === '__selected__'){
+            context = g_langDict['js.selected'];
+        }
         const contextItem = document.createElement('span');
         contextItem.textContent = context.split('\\').pop();
         contextDiv.appendChild(contextItem);

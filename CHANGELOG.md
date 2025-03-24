@@ -84,3 +84,9 @@ This is the first release of the plugin, and currently it only has the chatting 
 - Improve: user interface
 - Add: system prompt config
 - Add: disable continuous chat
+
+## v0.1.2
+
+2025-03-24
+
+- Bug fix
