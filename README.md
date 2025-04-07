@@ -1,13 +1,19 @@
+<div align="center">
+    <h1>Attention</h1>
+    <p>This project has been deprecated. The new project address is: <a href="https://github.com/HiMeditator/light-at">Light At</a>.</p>
+    <p>该项目已被弃用，新项目地址：<a href="https://github.com/HiMeditator/light-at">Light At</a>。</p>
+    <p>このプロジェクトは非推奨となりました。新しいプロジェクトのアドレスは：<a href="https://github.com/HiMeditator/light-at">Light At</a>です。</p>
+</div>
+
+<hr>
+
 <div align="center" >
-    <img src="assets/icon/light-assistant.png" width="90px" height="90px"/>
-    <h1 align="center">light-assistant</h1>
     <p>Light Assistant is an open-source lightweight intelligent assistant for VS Code. Compared to coding capabilities, Light Assistant places more emphasis on the experience of chatting with LLMs within IDE.</p>
     <p>
         | <b>English</b> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_zh_cn.md">简体中文</a> | <a href="https://github.com/HiMeditator/light-assistant/blob/main/docs/README_ja.md">日本語</a> |
     </p>
 </div>
 
-<hr>
 
 
 ## User Manual
